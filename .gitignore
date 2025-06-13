@@ -1,0 +1,30 @@
+# Ignorer node_modules (les dépendances)
+node_modules/
+
+# Ignorer le fichier .env contenant des infos sensibles
+.env
+
+# Ignorer les logs et fichiers temporaires
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorer les fichiers système (OS)
+.DS_Store
+Thumbs.db
+
+# Ignorer les fichiers de build (si tu utilises TypeScript ou un bundler)
+dist/
+build/
+
+# Ignorer les fichiers de tests temporaires
+coverage/
+
+# Si tu utilises une base SQLite locale
+*.sqlite
+*.sqlite3
+
+# Ignore les fichiers .env de test/de développement
+.env.*
+!.env.example

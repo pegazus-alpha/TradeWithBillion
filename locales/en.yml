@@ -1,0 +1,160 @@
+en:
+  langue:
+    choix: "Welcome! Please choose a language / Choisissez une langue:"
+    definie: "Language set to French."
+
+  menu:
+    depot: "💰 Deposit"
+    retrait: "📤 Withdraw"
+    infos: "ℹ️ Info"
+    liens_utiles: "🔗 Useful links"
+    support: "📞 Support"
+    a_propos: "👤 About"
+    upgrade: "⬆️ Increase my deposit"
+
+  boutons:
+    langues:
+      - "Français"
+      - "English"
+    confirmation:
+      confirmer: "✅ Confirm"
+      annuler: "❌ Cancel"
+    reseaux_blockchain:
+      - "TRC20"
+      - "ERC20"
+      - "BEP20"
+
+  messages:
+    annulation: "❌ Action cancelled."
+    operation_annulee: "Operation cancelled."
+    depot_confirme_admin: "✅ Deposit of {montant} USDT confirmed for user ID {user_id}."
+    depot_confirme_user: "✅ Your deposit of {montant} USDT has been successfully confirmed. Thank you!"
+
+  commandes:
+    start: "/start - Start the bot"
+    retrait: "/withdraw - Withdraw funds"
+    depot: "/deposit - Make a deposit"
+    upgrade: "/upgrade - Add an amount"
+    infos: "/info - View your information"
+    liens_utiles: "/useful_links - View useful links"
+    a_propos: "/about - About the bot"
+    support: "/support - Contact support"
+    liste_utilisateurs: "/user_list - List of users (admin)"
+    info_utilisateur: "/user_info - User details (admin)"
+    set_description: "/set_description - Set description (admin)"
+
+  etats_conversation:
+    adresse_portefeuille: "Please enter your wallet address."
+    reseau_blockchain: "Choose the blockchain network."
+    montant_depot: "Enter the amount to deposit."
+    montant_depot_supplementaire: "Enter the additional amount to add to your deposit."
+
+  erreurs:
+    db_connexion: "[Error] Database connection."
+    utilisateur_notification: "[User notification error] : {erreur}"
+    callback_query: "[Error] callback_query_handler_admin: {erreur}"
+    set_langue: "[Error] set_langue: {erreur}"
+
+  admin:
+    acces_refuse: "⛔ Access reserved for administrator."
+    aucun_utilisateur: "No registered users."
+    liste_utilisateurs_titre: "👥 List of users:"
+    utilisateur_id: "🆔 ID:"
+    langue: "🌐 Language:"
+    montant_depose: "💰 Deposited amount:"
+    date_enregistrement: "📅 Date:"
+    separateur: "-----------------------"
+    erreur_recuperation: "Error retrieving users: {erreur}"
+    demande_id: "Please provide a user ID: `/info_utilisateur <id>`"
+    utilisateur_non_trouve: "User not found."
+    infos_utilisateur: "🔍 User info {id}:"
+    adresse_wallet: "Wallet address:"
+    erreur_generale: "Error: {erreur}"
+    usage_set_description: "Usage: /set_description <wallet_id> <new_description>"
+    description_maj: "✅ Description successfully updated."
+
+  depot:
+    demander_montant: "What amount would you like to deposit? (in USDT):"
+    instructions:
+      intro: "Thank you. To make a deposit of {montant} USDT, here is the information:"
+      adresse_wallet: "📥 Box wallet address: `0xDEPOTEXEMPLE123456789ABC`"
+      reseau: "🌐 Blockchain network: Binance Smart Chain (BSC)"
+    confirmer: "✅ Confirm"
+    annuler: "❌ Cancel"
+    admin_notification:
+      titre: "📥 [DEPOSIT INITIATED]"
+      utilisateur: "👤 User: {utilisateur}"
+      id: "🆔 Telegram ID: {id}"
+      montant: "💵 Declared amount: {montant} USDT"
+
+  support: "For live support, contact @m0x1mus."
+
+  liens_utiles: |
+    🔗 Useful links:
+
+    📊 CoinMarketCap: https://coinmarketcap.com
+    📈 CoinGecko: https://coingecko.com
+    💱 Binance: https://binance.com
+    🌐 Ethereum: https://ethereum.org
+    🔍 BSCScan: https://bscscan.com
+    ☀️ Solana: https://solana.com
+
+  a_propos: |
+    💼 Automated trading on Futures with TWB – Earn 20% weekly!
+
+    This advanced system trades for you and generates a 20% weekly return for 2 months or more, depending on your investment.
+    The best part? No lock-in!
+    Your funds stay flexible – withdraw your capital anytime, no restriction.
+
+    📌 How it works:
+    1️⃣ Deposit – Securely fund your account.
+    2️⃣ Wait 7 days – Let TWB do the work.
+    3️⃣ Withdraw profits – Enjoy steady returns without hassle.
+
+  retrait:
+    demande_adresse: "Please enter your wallet address for the withdrawal:"
+    demande_reseau: "Thank you. Now select the blockchain network used:"
+    erreur: "An error occurred. Please try again."
+    adresse_invalide: "❌ The wallet address does not match the format of the selected network."
+    confirmation: "✅ Your request has been recorded. The admin will contact you soon."
+    admin_message: |
+      📤 [WITHDRAWAL]
+      👤 Username: {username}
+      🆔 Telegram ID: {telegram_id}
+      🔢 UDI: {udi}
+      💸 Binance deposit address: {binance_depot}
+      💰 Balance: {solde}
+      🔍 Wallet address: {adresse}
+      🌐 Blockchain network: {reseau}
+
+  depot_supplementaire:
+    non_enregistre: "❌ You must first register using /start to make your first deposit."
+    demande_montant: "💰 What additional amount would you like to deposit? (in USDT):"
+    montant_invalide: "❌ Please enter a valid amount (numbers only)."
+    instructions_utilisateur: |
+      Thank you. To make an additional deposit of {montant} USDT, here is the information:
+      📥 Box wallet address: `0xDEPOTEXEMPLE123456789ABC`
+      🌐 Blockchain network: Binance Smart Chain (BSC)
+
+      Once the transfer is made, the admin will confirm your deposit.
+    bouton_confirmer: "✅ Confirm deposit"
+    bouton_annuler: "❌ Cancel"
+    message_admin: |
+      📥 [ADDITIONAL DEPOSIT INITIATED]
+      👤 User: {username}
+      🆔 Telegram ID: {telegram_id}
+      💵 Declared additional amount: {montant} USDT
+      ℹ️ User already registered
+
+  utilisateur:
+    enregistrement:
+      erreur: "❌ An error occurred during your registration."
+    infos:
+      titre: |
+        🆔 Your UDI number: {udi}
+        💼 Binance deposit address: {adresse_wallet}
+        💰 Balance: {solde}
+        📅 Registration date: {date_enregistrement}
+      non_enregistre: "📅 Registration date: not yet registered, please make an investment."
+    erreur:
+      get_infos: "❌ Unable to retrieve your information at the moment."

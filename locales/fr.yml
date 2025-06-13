@@ -1,0 +1,160 @@
+fr: 
+  langue:
+    choix: "Bienvenue ! Choisissez une langue / Please choose a language:"
+    definie: "Langue définie sur Français."
+
+  menu:
+    depot: "💰 Dépôt"
+    retrait: "📤 Retrait"
+    infos: "ℹ️ Infos"
+    lines_utiles: "🔗 Liens utiles"
+    support: "📞 Support"
+    a_propos: "👤 À propos"
+    upgrade: "⬆️ Augmenter mon dépôt"
+
+  boutons:
+    langues:
+      - "Français"
+      - "English"
+    confirmation:
+      confirmer: "✅ Confirmer"
+      annuler: "❌ Annuler"
+    reseaux_blockchain:
+      - "TRC20"
+      - "ERC20"
+      - "BEP20"
+
+  messages:
+    annulation: "❌ Action annulée."
+    operation_annulee: "Opération annulée."
+    depot_confirme_admin: "✅ Dépôt de {montant} USDT confirmé pour l'utilisateur ID {user_id}."
+    depot_confirme_user: "✅ Votre dépôt de {montant} USDT a été confirmé avec succès. Merci !"
+
+  commandes:
+    start: "/start - Démarrer le bot"
+    retrait: "/retrait - Retirer des fonds"
+    depot: "/depot - Faire un dépôt"
+    upgrade: "/upGrade - Ajouter un montant"
+    infos: "/infos - Voir vos informations"
+    liens_utiles: "/liens_utiles - Voir les liens utiles"
+    a_propos: "/a_propos - À propos du bot"
+    support: "/support - Contacter le support"
+    liste_utilisateurs: "/liste_utilisateurs - Liste des utilisateurs (admin)"
+    info_utilisateur: "/info_utilisateur - Détails utilisateur (admin)"
+    set_description: "/set_description - Définir description (admin)"
+
+  etats_conversation:
+    adresse_portefeuille: "Veuillez entrer votre adresse de portefeuille."
+    reseau_blockchain: "Choisissez le réseau blockchain."
+    montant_depot: "Entrez le montant à déposer."
+    montant_depot_supplementaire: "Entrez le montant supplémentaire à ajouter à votre dépôt."
+
+  erreurs:
+    db_connexion: "[Erreur] Connexion à la base de données."
+    utilisateur_notification: "[Erreur notification utilisateur] : {erreur}"
+    callback_query: "[Erreur] callback_query_handler_admin: {erreur}"
+    set_langue: "[Erreur] set_langue: {erreur}"
+
+
+  admin:
+    acces_refuse: "⛔ Accès réservé à l'administrateur."
+    aucun_utilisateur: "Aucun utilisateur enregistré."
+    liste_utilisateurs_titre: "👥 Liste des utilisateurs :"
+    utilisateur_id: "🆔 ID :"
+    langue: "🌐 Langue :"
+    montant_depose: "💰 Montant déposé :"
+    date_enregistrement: "📅 Date :"
+    separateur: "-----------------------"
+    erreur_recuperation: "Erreur lors de la récupération des utilisateurs : {erreur}"
+    demande_id: "Veuillez fournir un ID utilisateur : `/info_utilisateur <id>`"
+    utilisateur_non_trouve: "Utilisateur non trouvé."
+    infos_utilisateur: "🔍 Infos utilisateur {id} :"
+    adresse_wallet: "Adresse Wallet :"
+    erreur_generale: "Erreur : {erreur}"
+    usage_set_description: "Usage : /set_description <id_wallet> <nouvelle_description>"
+    description_maj: "✅ Description mise à jour avec succès."
+
+  depot:
+    demander_montant: "Quel montant souhaitez-vous déposer ? (en USDT) :"
+    instructions:
+      intro: "Merci. Pour effectuer un dépôt de {montant} USDT, voici les informations :"
+      adresse_wallet: "📥 Adresse wallet de la boîte : `0xDEPOTEXEMPLE123456789ABC`"
+      reseau: "🌐 Réseau blockchain : Binance Smart Chain (BSC)"
+    confirmer: "✅ Confirmer"
+    annuler: "❌ Annuler"
+    admin_notification:
+      titre: "📥 [DEPÔT INITIÉ]"
+      utilisateur: "👤 Utilisateur : {utilisateur}"
+      id: "🆔 ID Telegram : {id}"
+      montant: "💵 Montant déclaré : {montant} USDT"
+
+  support: "Pour un support en direct, contactez @m0x1mus."
+
+  liens_utiles: |
+    🔗 Liens utiles :
+
+    📊 CoinMarketCap : https://coinmarketcap.com
+    📈 CoinGecko : https://coingecko.com
+    💱 Binance : https://binance.com
+    🌐 Ethereum : https://ethereum.org
+    🔍 BSCScan : https://bscscan.com
+    ☀️ Solana : https://solana.com
+
+  a_propos: |
+    💼 Trading automatisé sur les Futures avec TWB – Gagnez 20% par semaine !
+
+    Ce système avancé trade pour vous et génère 20% de rendement hebdomadaire pendant 2 mois ou plus, selon votre investissement.
+    Le meilleur ? Aucun blocage !
+    Vos fonds restent flexibles – retirez votre capital à tout moment, sans restriction.
+
+    📌 Comment ça marche :
+    1️⃣ Dépôt – Alimentez votre compte en toute sécurité.
+    2️⃣ Attendez 7 jours – Laissez TWB faire son travail.
+    3️⃣ Retirez vos profits – Profitez de gains réguliers sans tracas.
+
+  retrait:
+    demande_adresse: "Merci de saisir votre adresse de portefeuille pour le retrait :"
+    demande_reseau: "Merci. Maintenant, sélectionnez le réseau blockchain utilisé :"
+    erreur: "Une erreur est survenue. Veuillez recommencer."
+    adresse_invalide: "❌ L'adresse du portefeuille ne correspond pas au format du réseau spécifié."
+    confirmation: "✅ Votre demande a bien été enregistrée. L’admin vous contactera bientôt."
+    admin_message: |
+      📤 [RETRAIT]
+      👤 Nom d'utilisateur : {username}
+      🆔 ID Telegram : {telegram_id}
+      🔢 UDI : {udi}
+      💸 Adresse de dépôt Binance : {binance_depot}
+      💰 Solde : {solde}
+      🔍 Adresse portefeuille : {adresse}
+      🌐 Réseau blockchain : {reseau}
+  depot_supplementaire:
+    non_enregistre: "❌ Vous devez d'abord vous enregistrer en utilisant /start pour faire votre premier dépôt."
+    demande_montant: "💰 Quel montant supplémentaire souhaitez-vous déposer ? (en USDT) :"
+    montant_invalide: "❌ Veuillez entrer un montant valide (nombre uniquement)."
+    instructions_utilisateur: |
+      Merci. Pour effectuer un dépôt supplémentaire de {montant} USDT, voici les informations :
+      📥 Adresse wallet de la boîte : `0xDEPOTEXEMPLE123456789ABC`
+      🌐 Réseau blockchain : Binance Smart Chain (BSC)
+
+      Une fois le transfert effectué, l'admin confirmera votre dépôt.
+    bouton_confirmer: "✅ Confirmer le dépôt"
+    bouton_annuler: "❌ Annuler"
+    message_admin: |
+      📥 [DÉPÔT SUPPLÉMENTAIRE INITIÉ]
+      👤 Utilisateur : {username}
+      🆔 ID Telegram : {telegram_id}
+      💵 Montant supplémentaire déclaré : {montant} USDT
+      ℹ️ Utilisateur déjà enregistré
+
+  utilisateur:
+    enregistrement:
+      erreur: "❌ Une erreur est survenue lors de votre enregistrement."
+    infos:
+      titre: |
+        🆔 Votre numéro UDI : {udi}
+        💼 Adresse dépôt Binance : {adresse_wallet}
+        💰 Solde: {solde}
+        📅 Date d'enregistrement : {date_enregistrement}
+      non_enregistre: "📅 Date d'enregistrement : pas encore enregistré, faites un investissement."
+    erreur:
+      get_infos: "❌ Impossible de récupérer vos informations pour le moment."
