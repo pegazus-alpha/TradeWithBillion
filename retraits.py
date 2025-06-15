@@ -78,7 +78,8 @@ async def recevoir_reseau(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         await query.edit_message_text(i18n.t("retraits.invalid_wallet_format"))
         return ConversationHandler.END
 
-    enregistrer_retrait(user.id, user.username or user.first_name, address, network)
+    montant = infos['benefice_total']
+    enregistrer_retrait(user.id, user.username or user.first_name, address, network, montant)
 
     await context.bot.send_message(
         chat_id=user.id,
@@ -107,19 +108,22 @@ async def recevoir_reseau(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     await query.edit_message_text(i18n.t("retraits.withdrawal_request_recorded"))
     return ConversationHandler.END
 
-def enregistrer_retrait(user_id: int, username: str, adresse: str, reseau: str):
+def enregistrer_retrait(user_id: int, username: str, adresse: str, reseau: str, montant: float):
     try:
+        from datetime import datetime
+        date_retrait = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         conn = sqlite3.connect("bot.db")
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO retraits (user_id, username, adresse, reseau)
-            VALUES (?, ?, ?, ?)
-        """, (user_id, username, adresse, reseau))
+            INSERT INTO retraits (user_id, username, adresse, reseau, montant, date_retrait)
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (user_id, username, adresse, reseau, montant, date_retrait))
         conn.commit()
     except Exception as e:
         print(f"[Error] enregistrer_retrait: {e}")
     finally:
         conn.close()
+
 
 def is_valid_wallet(address: str, network: str) -> bool:
     network = network.lower()
@@ -151,23 +155,22 @@ async def recevoir_hash_retrait(update: Update, context: ContextTypes.DEFAULT_TY
         await update.message.reply_text(i18n.t("retraits.user_not_found"))
         return ConversationHandler.END
 
-    # Récupérer les informations nécessaires de l'utilisateur
+    # Récupérer le montant depuis la table retraits (dernière demande de cet utilisateur)
     montant = 0
-    username = ""
-    adresse = ""
-    reseau = ""
     try:
         conn = sqlite3.connect("bot.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT benefice_total, username, adresse, reseau FROM utilisateurs WHERE user_id = ?", (user_id,))
+        cursor.execute("""
+            SELECT montant FROM retraits 
+            WHERE user_id = ? 
+            ORDER BY date_retrait DESC 
+            LIMIT 1
+        """, (user_id,))
         row = cursor.fetchone()
         if row:
             montant = row[0]
-            username = row[1] if row[1] else ""
-            adresse = row[2] if row[2] else ""
-            reseau = row[3] if row[3] else ""
     except Exception as e:
-        print(f"Error getting user info: {e}")
+        print(f"Error getting withdrawal amount: {e}")
     finally:
         if 'conn' in locals():
             conn.close()
@@ -184,24 +187,6 @@ async def recevoir_hash_retrait(update: Update, context: ContextTypes.DEFAULT_TY
             parse_mode="Markdown"
         )
         await update.message.reply_text(i18n.t("retraits.user_notified"))
-        
-        # Créer une occurrence dans la table retraits
-        try:
-            conn = sqlite3.connect("bot.db")
-            cursor = conn.cursor()
-            from datetime import datetime
-            date_retrait = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            
-            cursor.execute("""
-                INSERT INTO retraits (user_id, username, adresse, reseau, montant, date_retrait)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (user_id, username, adresse, reseau, montant, date_retrait))
-            conn.commit()
-        except Exception as e:
-            print(f"Error inserting into retraits table: {e}")
-        finally:
-            if 'conn' in locals():
-                conn.close()
         
         # Mettre benefice_total à 0
         try:
