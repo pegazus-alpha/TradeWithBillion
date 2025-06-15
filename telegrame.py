@@ -6,8 +6,11 @@ from telegram.ext import (
     ApplicationBuilder, CommandHandler, MessageHandler, filters,
     ContextTypes, ConversationHandler, CallbackQueryHandler
 )
+from datetime import datetime, timedelta
+import asyncio
 
-import datar
+# Import your existing modules
+from datar import*
 from admin import *
 from depot import *
 from globale import *
@@ -18,33 +21,275 @@ from menu import *
 from etats import*
 from store import*
 
+# Import internationalization
+from lang import*
+import i18n
+
 load_dotenv()
 
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
 
+# Helper function to get translated text
+
+# =# ====== AUTOMATIC BENEFITS SYSTEM OPTIMISÉ ======
+async def verifier_et_mettre_a_jour_benefices(application):
+    """Checks and updates benefits - called every 30 minutes but updates only when 7+ days have passed"""
+    try:
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        
+        # Get all users with deposits (montant_depot > 0)
+        cursor.execute("""
+            SELECT user_id, montant_depot, benefice_total, date_mise_a_jour, adresse_wallet, cycle 
+            FROM utilisateurs 
+            WHERE montant_depot > 0
+        """)
+        utilisateurs = cursor.fetchall()
+        
+        if not utilisateurs:
+            # No users with deposits, skip processing
+            return
+        
+        date_actuelle = datetime.now()
+        users_updated = 0
+        
+        for user_id, montant_depot, benefice_total, date_mise_a_jour_str, adresse_wallet, cycle in utilisateurs:
+            try:
+                # Set locale for this user (for proper translation)
+                try:
+                    # Try to get user language from database or default to 'en'
+                    set_user_locale(application.update)
+                except:
+                    i18n.set('locale', 'en')
+                
+                # Convert update date to datetime
+                if date_mise_a_jour_str:
+                    date_mise_a_jour = datetime.strptime(date_mise_a_jour_str, "%Y-%m-%d %H:%M:%S")
+                else:
+                    # If no update date, use current date minus 8 days to trigger immediate update
+                    date_mise_a_jour = date_actuelle - timedelta(days=8)
+                    cursor.execute(
+                        "UPDATE utilisateurs SET date_mise_a_jour = ? WHERE user_id = ?",
+                        (date_mise_a_jour.strftime("%Y-%m-%d %H:%M:%S"), user_id)
+                    )
+                
+                # Calculate time difference in days
+                difference_days = (date_actuelle - date_mise_a_jour).total_seconds() / (24 * 3600)
+                
+                # Check if at least 7 days have passed
+                if difference_days >= 7.0:
+                    # Calculate how many complete weeks have passed
+                    weeks_passees = int(difference_days / 7)
+                    
+                    # Calculate new benefits (25% of deposit amount per week)
+                    nouveaux_benefices = montant_depot * 0.25 * weeks_passees
+                    nouveau_benefice_total = (benefice_total or 0) + nouveaux_benefices
+                    
+                    # Increment cycle count
+                    nouveau_cycle = (cycle or 0) + weeks_passees
+                    
+                    # Check if user has reached 8 cycles limit
+                    nouveau_montant_depot = montant_depot
+                    if nouveau_cycle >= 8:
+                        nouveau_montant_depot = 0  # Reset deposit amount after 8 cycles
+                        nouveau_cycle = 0  # Reset cycle count after 8 cycles
+                    
+                    # Update database with current time
+                    nouvelle_date_maj = date_actuelle.strftime("%Y-%m-%d %H:%M:%S")
+                    cursor.execute("""
+                        UPDATE utilisateurs 
+                        SET benefice_total = ?, date_mise_a_jour = ?, cycle = ?, montant_depot = ?
+                        WHERE user_id = ?
+                    """, (nouveau_benefice_total, nouvelle_date_maj, nouveau_cycle, nouveau_montant_depot, user_id))
+                    
+                    users_updated += 1
+                    
+                    # Send notification to user with translation
+                    message_utilisateur = f"""{i18n.t('BENEFITS_UPDATE_TITLE')}
+
+{i18n.t('telegrame.NEW_BENEFITS').format(amount=f"{nouveaux_benefices:.2f}", weeks=weeks_passees)}
+{i18n.t('telegrame.TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total:.2f}")}
+{i18n.t('telegrame.INITIAL_INVESTMENT').format(amount=f"{montant_depot:.2f}")}
+{i18n.t('telegrame.WALLET_ADDRESS').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
+Cycles complétés: {nouveau_cycle}/8
+
+{i18n.t('telegrame.BENEFITS_ADDED_MESSAGE')}
+{i18n.t('telegrame.JOIN_CHANNEL_MESSAGE')}"""
+                    
+                    # Add cycle completion message if 8 cycles reached
+                    if nouveau_cycle >= 8:
+                        message_utilisateur += f"\n\n🎉 Félicitations! Vous avez complété tous vos 8 cycles d'investissement!"
+                    
+                    try:
+                        await application.bot.send_message(chat_id=user_id, text=message_utilisateur)
+                    except Exception as e:
+                        print(i18n.t('telegrame.ERROR_USER_NOTIFICATION').format(error=str(e)))
+                    
+                    # Send notification to admin (always in English for admin)
+                    # i18n.set('locale', 'en')
+                    message_admin = f"""{i18n.t('telegrame.ADMIN_BENEFITS_UPDATE')}
+
+{i18n.t('telegrame.ADMIN_USER_ID').format(user_id=user_id)}
+{i18n.t('telegrame.ADMIN_BENEFITS_ADDED').format(amount=f"{nouveaux_benefices:.2f}")}
+{i18n.t('telegrame.ADMIN_NEW_TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total:.2f}")}
+{i18n.t('telegrame.ADMIN_INVESTMENT').format(amount=f"{montant_depot:.2f}")}
+{i18n.t('telegrame.WALLET_ADDRESS').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
+{i18n.t('telegrame.ADMIN_UPDATE_DATE').format(date=nouvelle_date_maj)}
+{i18n.t('telegrame.ADMIN_WEEKS_PROCESSED').format(weeks=weeks_passees)}
+Cycles: {nouveau_cycle}/8"""
+                    
+                    # Add admin message if 8 cycles completed
+                    if nouveau_cycle >= 8:
+                        message_admin += f"\n⚠️ User {user_id} has completed all 8 cycles. Deposit amount reset to 0."
+                    
+                    try:
+                        await application.bot.send_message(chat_id=ADMIN_ID, text=message_admin)
+                    except Exception as e:
+                        print(i18n.t('telegrame.ERROR_ADMIN_NOTIFICATION').format(user_id=user_id, error=str(e)))
+                        
+            except Exception as e:
+                print(i18n.t('telegrame.ERROR_USER_PROCESSING').format(user_id=user_id, error=str(e)))
+                continue
+        
+        # Only commit if there were updates
+        if users_updated > 0:
+            conn.commit()
+            i18n.set('locale', 'en')  # Reset to English for logs
+            print(i18n.t('telegrame.LOG_BENEFITS_UPDATED').format(count=users_updated, time=date_actuelle.strftime('%H:%M:%S')))
+        
+    except Exception as e:
+        i18n.set('locale', 'en')
+        print(i18n.t('telegrame.ERROR_BENEFITS_VERIFICATION').format(error=str(e)))
+    finally:
+        if 'conn' in locals():
+            conn.close()
+
+async def demarrer_verification_benefices(application):
+    """Starts periodic benefits verification - checks every 30 minutes"""
+    i18n.set('locale', 'en')  # System messages in English
+    print(i18n.t('telegrame.LOG_STARTING_BENEFITS_SYSTEM'))
+    print(i18n.t('telegrame.LOG_CHECKING_FREQUENCY'))
+    
+    while True:
+        try:
+            # Run benefits check every 30 minutes
+            await verifier_et_mettre_a_jour_benefices(application)
+            
+            # Wait 30 minutes (1800 seconds) before next verification
+            await asyncio.sleep(1800)
+            
+        except Exception as e:
+            print(i18n.t('telegrame.ERROR_VERIFICATION_LOOP').format(error=str(e)))
+            # In case of error, wait 5 minutes before retrying
+            await asyncio.sleep(300)
+
+# ====== END OF AUTOMATIC BENEFITS SYSTEM ======
+
+# ====== UNIVERSAL CANCELLATION SYSTEM ======
+USER_IN_CONVERSATION = {}
+
+async def cancel_all_conversations(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Universal function to cancel any ongoing conversation"""
+    user_lang=set_user_locale(update)
+    user_id = update.effective_user.id
+    USER_IN_CONVERSATION.pop(user_id, None)
+    context.user_data.clear()
+    
+    # Set user locale for proper translation
+    set_user_locale(update)
+    await update.message.reply_text(i18n.t('telegrame.OPERATION_CANCELLED'), reply_markup=get_menu_markup(user_id))
+    return ConversationHandler.END
+
+def is_command_while_in_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> bool:
+    user_lang=set_user_locale(update)
+    """Checks if user types a command while in a conversation"""
+    if not update.message or not update.message.text:
+        return False
+    text = update.message.text.strip()
+    user_id = update.effective_user.id
+    if text.startswith('/') and USER_IN_CONVERSATION.get(user_id, False):
+        return True
+    return False
+
+async def handle_command_interruption(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Handles interruption by a command during a conversation"""
+    user_id = update.effective_user.id
+    command = update.message.text.strip()
+    USER_IN_CONVERSATION.pop(user_id, None)
+    context.user_data.clear()
+    
+    # Set user locale for proper translation
+    set_user_locale(update)
+    
+    if command == '/cancel':
+        await update.message.reply_text(i18n.t('telegrame.OPERATION_CANCELLED'), reply_markup=get_menu_markup(user_id))
+    else:
+        await update.message.reply_text(i18n.t('telegrame.PREVIOUS_OPERATION_CANCELLED').format(command=command), reply_markup=get_menu_markup(user_id))
+    return ConversationHandler.END
+
+def create_universal_message_handler(handler_function):
+    """Wrapper that adds universal cancellation handling to your existing handlers"""
+    async def wrapped_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+        if is_command_while_in_conversation(update, context):
+            return await handle_command_interruption(update, context)
+        return await handler_function(update, context)
+    return wrapped_handler
+# ====== END OF UNIVERSAL SYSTEM ======
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
+    
+    # Set user locale and save language preference
+    user_lang = set_user_locale(update)
+    
+    # Save user language preference in database
+    try:
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE utilisateurs SET langue = ? WHERE user_id = ?
+        """, (user_lang, user.id))
+        if cursor.rowcount == 0:
+            # User doesn't exist, create basic record with language
+            cursor.execute("""
+                INSERT OR IGNORE INTO utilisateurs (user_id, langue) 
+                VALUES (?, ?)
+            """, (user.id, user_lang))
+        conn.commit()
+    except Exception as e:
+        print(f"Error saving language preference: {e}")
+    finally:
+        if 'conn' in locals():
+            conn.close()
+    
     await update.message.reply_text(
-        "Welcome! To begin, use the commands to proceed.",
+        f"{i18n.t('telegrame.WELCOME_MESSAGE',locale=user_lang)}",
         reply_markup=menu.get_menu_markup(user.id)
     )
+    return ConversationHandler.END
+
+async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    user = update.effective_user
+    set_user_locale(update)
+    await update.message.reply_text("/start")
     return ConversationHandler.END
 
 async def callback_query_handler_admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     data = query.data
-
-    if data.startswith("confirmer_"):
+   
+    # Set user locale for proper translation
+    set_user_locale(update)
+    print(f"\ndonnées: {data}\n")
+    if data.startswith("confirmer_") :
         parts = data.split("_")
-
         if len(parts) == 4 and parts[1] == "supp":
             user_id = int(parts[2])
             montant = float(parts[3])
         else:
             user_id = int(parts[1])
             montant = float(parts[2])
-
         adresse_wallet = None
         try:
             conn = sqlite3.connect("bot.db")
@@ -53,34 +298,116 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
             row = cursor.fetchone()
             adresse_wallet = row[0] if row else None
         except Exception as e:
-            print(f"[Error] callback_query_handler_admin: {e}")
+            print(i18n.t('telegrame.ERROR_CALLBACK_ADMIN').format(error=str(e)))
         finally:
             conn.close()
+        
+        # Récupérer le nom depuis Telegram
+        nom = None
+                # Récupérer le nom depuis Telegram
+        nom = None
+        if query.from_user:
+            first = query.from_user.first_name or ""
+            last = query.from_user.last_name or ""
+            full_name = (first + " " + last).strip()
+            username = f"@{query.from_user.username}" if query.from_user.username else ""
 
+            if full_name:
+                nom = full_name
+            elif username:
+                nom = username
+            else:
+                nom = f"Utilisateur_{user_id}"  # valeur de repli sûre
+
+        
         if utilisateur_existe(user_id):
-            mettre_a_jour_solde(user_id, montant)
+            await query.edit_message_text(i18n.t('telegrame.EXISTING_INVESTMENT_ERROR'))
         else:
-            enregistrer_utilisateur(user_id, montant, adresse_wallet)
-
-        admin_text = f"✅ Deposit of {montant} USDT confirmed for user ID {user_id}."
-        user_text = f"✅ Your deposit of {montant} USDT has been successfully confirmed. Thank you!\nJoin our channel to stay updated with all the latest information:\nhttps://t.me/+c0mWuQVC6OEwMTM0"
-
+            enregistrer_utilisateur(user_id, montant, adresse_wallet, nom=nom)
+        admin_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_ADMIN').format(amount=montant, user_id=user_id)
+        user_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_USER').format(amount=montant)
         await query.edit_message_text(admin_text)
         try:
+            # Set locale for the target user
+            try:
+                conn = sqlite3.connect("bot.db")
+                cursor = conn.cursor()
+                cursor.execute("SELECT langue FROM utilisateurs WHERE user_id = ?", (user_id,))
+                lang_row = cursor.fetchone()
+                target_user_lang = lang_row[0] if lang_row and lang_row[0] else 'en'
+                i18n.set('locale', target_user_lang)
+                user_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_USER').format(amount=montant)
+            except:
+                pass
+            finally:
+                if 'conn' in locals():
+                    conn.close()
+                   
             await context.bot.send_message(chat_id=user_id, text=user_text)
         except Exception as e:
-            print(f"[User notification error]: {e}")
+            print(i18n.t('telegrame.ERROR_USER_NOTIFICATION').format(error=str(e)))
+    elif data.startswith("annuler_"):
+        parts = data.split("_")
+        if len(parts) == 2:
+            try:
+                user_id = int(parts[1])
+                await query.edit_message_text(i18n.t('telegrame.ACTION_CANCELLED'))
+                print(f"[INFO] Annulation confirmée pour l'utilisateur {user_id}")
+                # Déterminer la langue de l'utilisateur
+                try:
+                    conn = sqlite3.connect("bot.db")
+                    cursor = conn.cursor()
+                    cursor.execute("SELECT langue FROM utilisateurs WHERE user_id = ?", (user_id,))
+                    row = cursor.fetchone()
+                    user_lang = row[0] if row and row[0] else 'en'
+                    i18n.set('locale', user_lang)
+                except:
+                    user_lang = 'en'
+                finally:
+                    if 'conn' in locals():
+                        conn.close()
+                # Envoyer la notification à l'utilisateur
+                await context.bot.send_message(
+                    chat_id=user_id,
+                    text=i18n.t('telegrame.ACTION_CANCELLED'),
+                    reply_markup=get_menu_markup(user_id)
+                )
+                print(f"[INFO] Notification d'annulation envoyée à l'utilisateur {user_id}")
+            except Exception as e:
+                print(i18n.t('telegrame.ERROR_USER_NOTIFICATION').format(error=str(e)))
+        else:
+            print("[ERREUR] Format du callback_data invalide pour annulation.")
 
-    elif data == "annuler":
-        await query.edit_message_text("❌ Action cancelled.")
-    
 async def annuler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    await update.message.reply_text("Operation cancelled.", reply_markup=get_menu_markup(user.id))
+    set_user_locale(update)
+    await update.message.reply_text(i18n.t('telegrame.OPERATION_CANCELLED'), reply_markup=get_menu_markup(user.id))
     return ConversationHandler.END
+
+async def post_init(application):
+    """Démarre les tâches après l'initialisation de l'application"""
+    asyncio.create_task(demarrer_verification_benefices(application))
 
 def main():
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
+    init_db()
+    
+    # Add langue column to users table if not exists
+    try:
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        cursor.execute("ALTER TABLE utilisateurs ADD COLUMN langue TEXT DEFAULT 'en'")
+        conn.commit()
+    except sqlite3.OperationalError:
+        # Column already exists
+        pass
+    finally:
+        conn.close()
+        
+    application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^confirmer_\d+_\d+"))
+    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^confir_supp_\d+_\d+"))
+    application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^annuler_\d+$"))
+    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^annuler_supp_\d+_$"))
 
     conv_handler = ConversationHandler(
         entry_points=[
@@ -101,7 +428,10 @@ def main():
             MONTANT_DEPOT: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_montant_depot)],
             MONTANT_DEPOT_SUPPLEMENTAIRE: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_montant_depot_supplementaire)],
         },
-        fallbacks=[CommandHandler('cancel', annuler)],
+        fallbacks=[
+            CommandHandler('cancel', cancel_all_conversations),
+            MessageHandler(filters.COMMAND, handle_command_interruption)
+        ],
     )
     application.add_handler(conv_handler)
 
@@ -110,14 +440,17 @@ def main():
         states={
             SAISIE_HASH_RETRAIT: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait)],
         },
-        fallbacks=[CommandHandler('cancel', annuler)],
+        fallbacks=[
+            CommandHandler('cancel', cancel_all_conversations),
+            MessageHandler(filters.COMMAND, handle_command_interruption)
+        ],
     )
     application.add_handler(admin_conv_handler)
     
+
     not_handler = CallbackQueryHandler(retrait_not, pattern=r"^retrait_not_\d+$")
     application.add_handler(not_handler)
 
-    application.add_handler(CallbackQueryHandler(callback_query_handler_admin))
     
     application.add_handler(CallbackQueryHandler(gerer_callback_produit, 
                                                pattern=r"^(info_produit_|commander_produit_|retour_boutique|contact_support)"))
@@ -129,7 +462,10 @@ def main():
     application.add_handler(MessageHandler(filters.Regex("^🆘 Support$"), support))
     application.add_handler(MessageHandler(filters.Regex("^👥 User List$"), liste_utilisateurs))
     application.add_handler(MessageHandler(filters.Regex("^🔍 User Info$"), info_utilisateur))
-    application.add_handler(MessageHandler(filters.Regex("^📝 Set Description$"), set_description))
+    application.add_handler(MessageHandler(filters.Regex("^❌cancel$"), cancel_all_conversations))
+
+    # Start automatic benefits verification in background
+    application.post_init = post_init
 
     application.run_polling()
 

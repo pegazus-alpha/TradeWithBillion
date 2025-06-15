@@ -1,0 +1,756 @@
+# French translation file
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Bot Telegram\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-14 12:00+0000\n"
+"PO-Revision-Date: 2025-06-14 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# Messages d'accès refusé (admin.py)
+msgid "admin.access_denied"
+msgstr "Accès refusé. Vous n'êtes pas autorisé à utiliser cette commande."
+
+# Messages pour liste_utilisateurs
+msgid "admin.no_users_found"
+msgstr "Aucun utilisateur trouvé dans la base de données."
+
+msgid "admin.users_list_header"
+msgstr "Liste des utilisateurs enregistrés :"
+
+msgid "admin.user_id_label"
+msgstr "ID Utilisateur"
+
+msgid "admin.language_label"
+msgstr "Langue"
+
+msgid "admin.amount_deposited_label"
+msgstr "Montant Déposé"
+
+msgid "admin.registration_date_label"
+msgstr "Date d'Inscription"
+
+msgid "admin.total_profit_label"
+msgstr "Profit Total"
+
+msgid "admin.last_update_label"
+msgstr "Dernière Mise à Jour"
+
+msgid "admin.separator"
+msgstr "------------------------"
+
+msgid "admin.error_retrieving_users"
+msgstr "Erreur lors de la récupération des utilisateurs : {error}"
+
+# Messages pour info_utilisateur
+msgid "admin.provide_user_id"
+msgstr "Veuillez fournir un ID utilisateur.\\nUtilisation : /info_utilisateur <user_id>"
+
+msgid "admin.user_not_found"
+msgstr "Utilisateur non trouvé."
+
+msgid "admin.user_info_header"
+msgstr "Informations pour l'utilisateur ID {user_id} :"
+
+msgid "admin.wallet_address_label"
+msgstr "Adresse du Portefeuille"
+
+msgid "admin.error_occurred"
+msgstr "Une erreur s'est produite : {error}"
+
+# Messages pour set_description
+msgid "admin.set_description_usage"
+msgstr "Utilisation : /set_description <wallet_id> <nouvelle_description>"
+
+msgid "admin.description_updated"
+msgstr "Description mise à jour avec succès."
+
+# Messages pour la fonction depot (depot.py)
+msgid "depot.investment_exists"
+msgstr "❌ Vous avez déjà un investissement en cours, utilisez /top_up à la place"
+
+msgid "depot.enter_deposit_amount"
+msgstr "Veuillez saisir le montant USDT que vous souhaitez déposer :"
+
+# Messages pour recevoir_montant_depot
+msgid "depot.invalid_positive_amount"
+msgstr "❌ Veuillez saisir un montant positif valide. Réessayez :"
+
+msgid "depot.invalid_numeric_amount"
+msgstr "❌ Veuillez saisir un montant numérique valide. Réessayez :"
+
+msgid "depot.deposit_amount_confirm"
+msgstr "Vous souhaitez déposer {amount} USDT.\\n\\nVeuillez envoyer le montant à l'adresse de portefeuille suivante :\\n\\nUtilisez le réseau blockchain Binance Smart Chain (BEP20)."
+
+msgid "depot.enter_transaction_hash"
+msgstr "Maintenant, veuillez saisir le hash de votre transaction pour confirmer le dépôt :"
+
+# Messages pour recevoir_hash_depot
+msgid "depot.btn_confirm"
+msgstr "✅ Confirmer"
+
+msgid "depot.btn_cancel"
+msgstr "❌ Annuler"
+
+msgid "depot.admin_deposit_notification"
+msgstr "Nouvelle demande de dépôt :\\nUtilisateur : {username}\\nID Utilisateur : {user_id}\\nMontant : {amount} USDT\\nHash de Transaction :"
+
+msgid "depot.deposit_request_processing"
+msgstr "✅ Votre demande de dépôt et hash de transaction est en cours de traitement. Vous serez notifié sous peu."
+
+# Messages pour la fonction support (globale.py)
+msgid "globale.support_message"
+msgstr "Si vous avez besoin d'assistance, veuillez contacter notre équipe à @TWBLiveChat"
+
+# Messages pour liens_utiles
+msgid "globale.useful_links_header"
+msgstr "🔗 Liens utiles :"
+
+msgid "globale.coinmarketcap_link"
+msgstr "📊 CoinMarketCap : https://coinmarketcap.com"
+
+msgid "globale.coingecko_link"
+msgstr "📈 CoinGecko : https://coingecko.com"
+
+msgid "globale.binance_link"
+msgstr "💱 Binance : https://binance.com"
+
+msgid "globale.ethereum_link"
+msgstr "🌐 Ethereum : https://ethereum.org"
+
+msgid "globale.bscscan_link"
+msgstr "🔍 BSCScan : https://bscscan.com"
+
+msgid "globale.solana_link"
+msgstr "☀️ Solana : https://solana.com"
+
+# Messages pour a_propos
+msgid "globale.about_us_header"
+msgstr "À propos de nous :"
+
+msgid "globale.about_title"
+msgstr "Trading Automatisé de Futures et Gagnez 25% par Semaine avec TWB"
+
+msgid "globale.about_description"
+msgstr "Ce système avancé trade pour vous, générant 25% de rendement hebdomadaire sur votre capital pendant 2 mois ou plus—évolutif selon votre investissement."
+
+msgid "globale.best_part_title"
+msgstr "Le Plus ? Pas de Blocage !"
+
+msgid "globale.best_part_description"
+msgstr "Vos fonds restent flexibles—retirez votre capital à tout moment sans restrictions."
+
+msgid "globale.how_it_works_title"
+msgstr "Comment ça Marche :"
+
+msgid "globale.step_1"
+msgstr "⿡ Déposer – Financez votre compte en toute sécurité."
+
+msgid "globale.step_2"
+msgstr "⿢ Attendre 7 Jours – Laissez TWB faire sa magie."
+
+msgid "globale.step_3"
+msgstr "⿣ Retirer les Profits – Profitez de gains constants et sans tracas"
+
+# Messages pour la fonction retrait (retraits.py)
+msgid "retraits.enter_wallet_address"
+msgstr "Veuillez saisir votre adresse de portefeuille pour le retrait :"
+
+# Messages pour recevoir_adresse
+msgid "retraits.invalid_input"
+msgstr "❌ Saisie invalide. Veuillez réessayer."
+
+msgid "retraits.select_blockchain_network"
+msgstr "Veuillez sélectionner le réseau blockchain :"
+
+# Messages pour recevoir_reseau
+msgid "retraits.invalid_wallet_format"
+msgstr "❌ Le format de l'adresse de portefeuille ne correspond pas au réseau blockchain sélectionné."
+
+msgid "retraits.withdrawal_request_received"
+msgstr "✅ Votre demande de retrait a été reçue. Veuillez patienter un moment."
+
+msgid "retraits.withdrawal_request_recorded"
+msgstr "✅ Votre demande de retrait a été enregistrée."
+
+# Messages pour l'admin
+msgid "retraits.admin_withdrawal_header"
+msgstr "📤 [RETRAIT]"
+
+msgid "retraits.admin_username"
+msgstr "👤 Nom d'utilisateur : @{username}"
+
+msgid "retraits.admin_telegram_id"
+msgstr "🆔 ID Telegram : {user_id}"
+
+msgid "retraits.admin_udi"
+msgstr "🔢 UDI : {udi}"
+
+msgid "retraits.admin_binance_deposit"
+msgstr "💸 Adresse de Dépôt Binance : {binance_depot}"
+
+msgid "retraits.admin_balance"
+msgstr "💰 Solde : {balance}"
+
+msgid "retraits.admin_available_amount"
+msgstr "💸 Montant Disponible : {available_amount}"
+
+msgid "retraits.admin_wallet_address"
+msgstr "🔍 Adresse de Portefeuille : {address}"
+
+msgid "retraits.admin_blockchain_network"
+msgstr "🌐 Réseau Blockchain : {network}"
+
+# Boutons pour l'admin
+msgid "retraits.btn_done"
+msgstr "✅ Terminé"
+
+msgid "retraits.btn_not"
+msgstr "❌ Non"
+
+# Messages pour recevoir_hash_retrait
+msgid "retraits.invalid_hash"
+msgstr "❌ Hash invalide. Veuillez réessayer."
+
+msgid "retraits.invalid_hash_format"
+msgstr "❌ Format de hash invalide. Le hash doit commencer par '0x' et contenir 64 caractères hexadécimaux."
+
+msgid "retraits.user_not_found"
+msgstr "⚠️ Erreur : utilisateur non trouvé."
+
+msgid "retraits.withdrawal_processed"
+msgstr "✅ Votre retrait a été traité avec succès.\\n\\n🔗 Hash de transaction :"
+
+msgid "retraits.user_notified"
+msgstr "✅ L'utilisateur a été notifié avec le hash de transaction."
+
+msgid "retraits.failed_notify_user"
+msgstr "⚠️ Échec de la notification à l'utilisateur : {error}"
+
+# Messages pour retrait_done
+msgid "retraits.enter_transaction_hash"
+msgstr "✅ Veuillez saisir le hash de transaction pour confirmer le retrait :"
+
+# Messages pour retrait_not
+msgid "retraits.withdrawal_not_confirmed"
+msgstr "❌ Le retrait n'a pas été confirmé."
+
+# Données des produits (store.py)
+msgid "store.product_1_name"
+msgstr "Produit 1"
+
+msgid "store.product_1_description"
+msgstr "Description du produit 1"
+
+msgid "store.product_2_name"
+msgstr "Produit 2"
+
+msgid "store.product_2_description"
+msgstr "Description du produit 2"
+
+msgid "store.product_3_name"
+msgstr "Produit 3"
+
+msgid "store.product_3_description"
+msgstr "Description du produit 3"
+
+msgid "store.product_4_name"
+msgstr "Produit 4"
+
+msgid "store.product_4_description"
+msgstr "Description du produit 4"
+
+msgid "store.product_5_name"
+msgstr "Produit 5"
+
+msgid "store.product_5_description"
+msgstr "Description du produit 5"
+
+msgid "store.product_6_name"
+msgstr "Produit 6"
+
+msgid "store.product_6_description"
+msgstr "Description du produit 6"
+
+msgid "store.product_7_name"
+msgstr "Produit 7"
+
+msgid "store.product_7_description"
+msgstr "Description du produit 7"
+
+msgid "store.product_8_name"
+msgstr "Produit 8"
+
+msgid "store.product_8_description"
+msgstr "Description du produit 8"
+
+msgid "store.product_price_placeholder"
+msgstr "-- USDT"
+
+# Messages pour our_store
+msgid "store.store_header"
+msgstr "🏪 **NOTRE BOUTIQUE**"
+
+msgid "store.store_intro"
+msgstr "Découvrez notre sélection de produits de qualité !\\nVoici notre galerie de produits disponibles :"
+
+msgid "store.gallery_caption"
+msgstr "🛍️ Voici nos produits disponibles :"
+
+msgid "store.store_footer_header"
+msgstr "📞 **CONTACT**"
+
+msgid "store.store_footer_message"
+msgstr "Pour toute question ou commande, veuillez contacter notre équipe de support !\\n\\n🔔 Restez à l'écoute pour découvrir nos nouveaux produits !"
+
+# Messages pour les détails des produits
+msgid "store.product_price_label"
+msgstr "💰 Prix : {price}"
+
+msgid "store.product_separator"
+msgstr "━━━━━━━━━━━━━━━━━━━━"
+
+# Boutons
+msgid "store.btn_more_info"
+msgstr "💬 Plus d'infos"
+
+msgid "store.btn_order"
+msgstr "🛒 Commander"
+
+msgid "store.btn_order_now"
+msgstr "🛒 Commander maintenant"
+
+msgid "store.btn_back_to_store"
+msgstr "⬅️ Retour à la boutique"
+
+msgid "store.btn_contact_support"
+msgstr "📞 Contacter le support"
+
+# Messages pour gerer_callback_produit - Info produit
+msgid "store.detailed_description_header"
+msgstr "📝 **Description détaillée :**"
+
+msgid "store.price_header"
+msgstr "💰 **Prix :** {price}"
+
+msgid "store.features_header"
+msgstr "✅ **Caractéristiques :**"
+
+msgid "store.feature_premium_quality"
+msgstr "• Qualité premium"
+
+msgid "store.feature_fast_delivery"
+msgstr "• Livraison rapide"
+
+msgid "store.feature_warranty"
+msgstr "• Garantie incluse"
+
+msgid "store.contact_more_info"
+msgstr "📞 Contactez-nous pour plus d'informations !"
+
+# Messages pour gerer_callback_produit - Commander produit
+msgid "store.order_header"
+msgstr "🛒 **COMMANDE : {product_name}**"
+
+msgid "store.order_instructions_header"
+msgstr "📞 **Pour finaliser votre commande :**"
+
+msgid "store.order_step_1"
+msgstr "1. Contactez notre support"
+
+msgid "store.order_step_2"
+msgstr "2. Spécifiez le produit"
+
+msgid "store.order_step_3"
+msgstr "3. Confirmez votre adresse de livraison"
+
+msgid "store.order_confirmation"
+msgstr "✅ Notre équipe vous contactera sous peu !"
+
+# Messages pour retour boutique
+msgid "store.back_to_store_message"
+msgstr "🏪 Retour à la boutique...\\n\\nUtilisez la commande /our_store pour voir à nouveau nos produits."
+
+# Messages pour contact support
+msgid "store.contact_support_header"
+msgstr "📞 **CONTACTER LE SUPPORT**"
+
+msgid "store.support_intro"
+msgstr "Notre équipe est là pour vous aider !"
+
+msgid "store.support_email"
+msgstr "📧 Email : support@votreentreprise.com"
+
+msgid "store.support_telegram"
+msgstr "💬 Telegram : @votre_support"
+
+msgid "store.support_hours"
+msgstr "⏰ Horaires : 9h–18h (Lun–Ven)"
+
+msgid "store.support_response"
+msgstr "Nous vous répondrons dans les plus brefs délais !"
+
+# Messages d'accueil et navigation (telegrame.py)
+msgid "telegrame.welcome_message"
+msgstr "Bienvenue ! Pour commencer, utilisez les commandes pour procéder."
+
+msgid "telegrame.operation_cancelled"
+msgstr "❌ Opération annulée."
+
+msgid "telegrame.previous_operation_cancelled"
+msgstr "❌ Opération précédente annulée. Démarrage de la nouvelle commande : {command}"
+
+msgid "telegrame.action_cancelled"
+msgstr "❌ Action annulée."
+
+# Messages du système de bénéfices automatiques
+msgid "telegrame.benefits_update_title"
+msgstr "🎉 **Mise à Jour des Bénéfices !**"
+
+msgid "telegrame.new_benefits"
+msgstr "💰 **Nouveaux bénéfices :** {amount:.2f} USDT ({weeks} semaine(s))"
+
+msgid "telegrame.total_benefits"
+msgstr "📈 **Total des bénéfices :** {amount:.2f} USDT"
+
+msgid "telegrame.initial_investment"
+msgstr "💳 **Investissement initial :** {amount:.2f} USDT"
+
+msgid "telegrame.wallet_address"
+msgstr "🏦 **Adresse de portefeuille :** {address}"
+
+msgid "telegrame.wallet_not_provided"
+msgstr "Non fournie"
+
+msgid "telegrame.benefits_added_message"
+msgstr "Vos bénéfices ont été automatiquement ajoutés à votre compte !"
+
+msgid "telegrame.join_channel_message"
+msgstr "Rejoignez notre canal pour rester informé : https://t.me/+c0mWuQVC6OEwMTM0"
+
+# Messages admin pour les bénéfices
+msgid "telegrame.admin_benefits_update"
+msgstr "📊 **Mise à jour automatique des bénéfices**"
+
+msgid "telegrame.admin_user_id"
+msgstr "👤 **ID Utilisateur :** {user_id}"
+
+msgid "telegrame.admin_benefits_added"
+msgstr "💰 **Bénéfices ajoutés :** {amount:.2f} USDT"
+
+msgid "telegrame.admin_new_total_benefits"
+msgstr "📈 **Nouveaux bénéfices totaux :** {amount:.2f} USDT"
+
+msgid "telegrame.admin_investment"
+msgstr "💳 **Investissement :** {amount:.2f} USDT"
+
+msgid "telegrame.admin_update_date"
+msgstr "🕒 **Date de mise à jour :** {date}"
+
+msgid "telegrame.admin_weeks_processed"
+msgstr "⏱️ **Semaines traitées :** {weeks}"
+
+# Messages de confirmation de dépôts
+msgid "telegrame.existing_investment_error"
+msgstr "❌ Vous avez déjà un investissement en cours, utilisez /top_up à la place"
+
+msgid "telegrame.deposit_confirmed_admin"
+msgstr "✅ Dépôt de {amount} USDT confirmé pour l'utilisateur ID {user_id}."
+
+msgid "telegrame.deposit_confirmed_user"
+msgstr "✅ Votre dépôt de {amount} USDT a été confirmé avec succès. Merci !\\nRejoignez notre canal pour rester informé de toutes les dernières informations :\\nhttps://t.me/+c0mWuQVC6OEwMTM0"
+
+# Boutons du menu principal
+msgid "telegrame.menu_deposit"
+msgstr "💰 Dépôt"
+
+msgid "telegrame.menu_withdraw"
+msgstr "💸 Retrait"
+
+msgid "telegrame.menu_top_up"
+msgstr "📈 Recharge"
+
+msgid "telegrame.menu_our_store"
+msgstr "🏪 Notre Boutique"
+
+msgid "telegrame.menu_my_info"
+msgstr "👤 Mes Infos"
+
+msgid "telegrame.menu_market_update"
+msgstr "📊 Actualité Marché"
+
+msgid "telegrame.menu_about"
+msgstr "ℹ️ À Propos"
+
+msgid "telegrame.menu_support"
+msgstr "🆘 Support"
+
+# Boutons admin
+msgid "telegrame.admin_user_list"
+msgstr "👥 Liste Utilisateurs"
+
+msgid "telegrame.admin_user_info"
+msgstr "🔍 Info Utilisateur"
+
+# Bouton d'annulation
+msgid "telegrame.cancel_button"
+msgstr "❌ Annuler"
+
+# Messages de logs système
+msgid "telegrame.log_starting_benefits_system"
+msgstr "🚀 Démarrage du système de vérification automatique des bénéfices..."
+
+msgid "telegrame.log_checking_frequency"
+msgstr "⏰ Vérification toutes les 30 minutes, mise à jour des bénéfices toutes les 7 jours"
+
+msgid "telegrame.log_benefits_updated"
+msgstr "✅ Bénéfices mis à jour pour {count} utilisateur(s) à {time}"
+
+# Messages d'erreur (pour les logs)
+msgid "telegrame.error_user_notification"
+msgstr "[Erreur de notification utilisateur] : {error}"
+
+msgid "telegrame.error_admin_notification"
+msgstr "[Erreur de notification admin pour l'utilisateur {user_id}] : {error}"
+
+msgid "telegrame.error_user_processing"
+msgstr "[Erreur de traitement utilisateur {user_id}] : {error}"
+
+msgid "telegrame.error_benefits_verification"
+msgstr "[Erreur de vérification des bénéfices] : {error}"
+
+msgid "telegrame.error_verification_loop"
+msgstr "[Erreur dans la boucle de vérification] : {error}"
+
+msgid "telegrame.error_callback_admin"
+msgstr "[Erreur] callback_query_handler_admin : {error}"
+
+# Patterns de callback
+msgid "telegrame.pattern_confirm"
+msgstr "confirmer_"
+
+msgid "telegrame.pattern_cancel"
+msgstr "annuler"
+
+msgid "telegrame.pattern_withdrawal_done"
+msgstr "retrait_done_"
+
+msgid "telegrame.pattern_withdrawal_not"
+msgstr "retrait_not_"
+
+msgid "telegrame.pattern_product_info"
+msgstr "info_produit_"
+
+msgid "telegrame.pattern_order_product"
+msgstr "commander_produit_"
+
+msgid "telegrame.pattern_store_return"
+msgstr "retour_boutique"
+
+msgid "telegrame.pattern_contact_support"
+msgstr "contact_support"
+
+# Messages de dépôt supplémentaire (update.py)
+msgid "update.must_register_first"
+msgstr "❌ Vous devez d'abord vous inscrire en utilisant /deposit avant de faire un dépôt."
+
+msgid "update.balance_update_not_profitable"
+msgstr "Il ne serait pas rentable pour vous de faire cela maintenant. Veuillez attendre la fin du cycle dans {days} jours."
+
+msgid "update.balance_update_wait"
+msgstr "La mise à jour du solde n'est pas possible aujourd'hui. Veuillez attendre {days} jours de plus pour la prochaine fenêtre de mise à jour."
+
+msgid "update.balance_update_allowed"
+msgstr "La mise à jour du solde est autorisée."
+
+msgid "update.registration_date_not_found"
+msgstr "Date d'inscription non trouvée."
+
+msgid "update.additional_deposit_amount"
+msgstr "💰 Combien souhaitez-vous déposer en plus ? (en USDT) :"
+
+msgid "update.invalid_amount_error"
+msgstr "❌ Veuillez saisir un montant valide et positif (chiffres uniquement)."
+
+msgid "update.amount_error_restart"
+msgstr "❌ Erreur : Montant non trouvé. Veuillez redémarrer le processus."
+
+# Messages d'instructions de dépôt supplémentaire
+msgid "update.additional_deposit_info"
+msgstr "Merci. Pour effectuer un dépôt supplémentaire de {amount:.2f} USDT, voici les informations :\\n📥 Adresse de portefeuille de la plateforme dans le message suivant :\\n🌐 Réseau blockchain : Binance Smart Chain (BSC)\\n\\nUne fois le transfert effectué, l'admin confirmera votre dépôt."
+
+msgid "update.hash_request_message"
+msgstr "Veuillez maintenant saisir le hash de votre transaction pour confirmer le dépôt supplémentaire :"
+
+# Messages de traitement
+msgid "update.processing_request"
+msgstr "✅ Votre demande de dépôt supplémentaire et hash de transaction est en cours de traitement. Vous serez notifié sous peu."
+
+msgid "update.processing_error"
+msgstr "❌ Erreur lors du traitement de la demande. Veuillez réessayer."
+
+# Messages admin pour dépôt supplémentaire
+msgid "update.admin_additional_deposit_title"
+msgstr "📥 [DÉPÔT SUPPLÉMENTAIRE INITIÉ]"
+
+msgid "update.admin_user_info"
+msgstr "👤 Utilisateur : @{username}"
+
+msgid "update.admin_telegram_id"
+msgstr "🆔 ID Telegram : {user_id}"
+
+msgid "update.admin_declared_amount"
+msgstr "💵 Montant supplémentaire déclaré : {amount:.2f} USDT"
+
+msgid "update.admin_transaction_hash"
+msgstr "🔗 Hash de Transaction :"
+
+msgid "update.admin_user_registered"
+msgstr "ℹ️ Utilisateur déjà enregistré"
+
+# Boutons pour dépôt supplémentaire
+msgid "update.confirm_deposit_button"
+msgstr "✅ Confirmer le dépôt"
+
+msgid "update.cancel_button_supp"
+msgstr "❌ Annuler"
+
+# Messages de confirmation admin
+msgid "update.additional_deposit_confirmed"
+msgstr "✅ Dépôt supplémentaire de {amount:.2f} USDT confirmé pour l'utilisateur {user_id}."
+
+msgid "update.additional_deposit_confirmed_user"
+msgstr "✅ Votre dépôt supplémentaire de {amount:.2f} USDT a été confirmé avec succès et ajouté à votre solde."
+
+msgid "update.balance_update_failed"
+msgstr "❌ Échec de la mise à jour du solde pour l'utilisateur {user_id}. Veuillez vérifier la base de données."
+
+msgid "update.additional_deposit_cancelled"
+msgstr "❌ Dépôt supplémentaire annulé"
+
+msgid "update.invalid_confirmation_data"
+msgstr "❌ Données de confirmation invalides."
+
+# Messages de logs pour update
+msgid "update.log_database_path"
+msgstr "[DEBUG] Utilisation de la base de données à : {path}"
+
+msgid "update.log_updating_user"
+msgstr "[DEBUG] Mise à jour user_id : {user_id} avec montant_ajoute : {amount}"
+
+msgid "update.log_sql_update"
+msgstr "[DEBUG] SQL : UPDATE utilisateurs SET montant_depot = {total} WHERE user_id = {user_id}"
+
+msgid "update.log_balance_success"
+msgstr "[SUCCÈS] Solde mis à jour pour l'utilisateur {user_id} : {current} + {added} = {total}"
+
+msgid "update.log_user_not_found"
+msgstr "[ERREUR] Utilisateur {user_id} non trouvé dans la base de données"
+
+msgid "update.log_callback_data"
+msgstr "[DEBUG] Données de callback reçues : {data}"
+
+msgid "update.log_parsed_parts"
+msgstr "[DEBUG] Parties analysées : {parts}"
+
+msgid "update.log_confirming_deposit"
+msgstr "[DEBUG] Confirmation du dépôt : user_id={user_id}, amount={amount}"
+
+msgid "update.log_admin_notification_success"
+msgstr "[SUCCÈS] Notification admin envoyée pour l'utilisateur {user_id}"
+
+msgid "update.log_admin_notification_failed"
+msgstr "[ERREUR] Échec de l'envoi de la notification admin : {error}"
+
+msgid "update.log_user_notified"
+msgstr "[SUCCÈS] Utilisateur {user_id} notifié du dépôt confirmé"
+
+msgid "update.log_user_notification_failed"
+msgstr "[ERREUR] Échec de la notification de l'utilisateur {user_id} : {error}"
+
+msgid "update.log_deposit_cancelled"
+msgstr "[INFO] Dépôt supplémentaire annulé par l'admin"
+
+msgid "update.log_invalid_confirmation"
+msgstr "[ERREUR] Données de confirmation invalides : {error}"
+
+# Messages de test
+msgid "update.log_testing_balance"
+msgstr "[DEBUG] Test de mise à jour du solde pour l'utilisateur {user_id} avec le montant {amount}"
+
+msgid "update.log_user_does_not_exist"
+msgstr "[ERREUR] L'utilisateur {user_id} n'existe pas"
+
+msgid "update.log_test_success"
+msgstr "[SUCCÈS] Test de mise à jour du solde terminé"
+
+msgid "update.log_test_failed"
+msgstr "[ERREUR] Échec du test de mise à jour du solde"
+
+# Erreurs générales
+msgid "update.error_get_registration_date"
+msgstr "[Erreur] get_user_registration_date : {error}"
+
+msgid "update.error_update_balance"
+msgstr "[Erreur] mettre_a_jour_solde : {error}"
+
+# Patterns de callback pour update
+msgid "update.pattern_confirm_supp"
+msgstr "confir_supp_"
+
+msgid "update.pattern_cancel_supp"
+msgstr "annuler_supp"
+
+# États de conversation
+msgid "update.hash_transaction_depot_supplementaire"
+msgstr "hash_transaction_depot_supplementaire"
+
+# Messages d'informations utilisateur (user.py)
+msgid "user.user_udi_number"
+msgstr "🆔 Votre numéro UDI : {udi}"
+
+msgid "user.user_binance_address"
+msgstr "💼 Adresse de dépôt Binance : {address}"
+
+msgid "user.user_balance"
+msgstr "💰 Solde : {balance}"
+
+msgid "user.user_registration_date"
+msgstr "📅 Date d'inscription : {date}"
+
+# Messages d'état utilisateur
+msgid "user.user_not_registered"
+msgstr "ℹ️ Vous n'êtes pas encore inscrit. Veuillez faire un investissement pour commencer."
+
+msgid "user.user_address_not_registered"
+msgstr "Non enregistré"
+
+msgid "user.user_balance_zero"
+msgstr "0 USDT"
+
+msgid "user.user_info_error"
+msgstr "Erreur"
+
+# Messages de logs pour user
+msgid "user.log_error_register_user"
+msgstr "[Erreur] enregistrer_utilisateur : {error}"
+
+msgid "user.log_error_get_user_info"
+msgstr "[Erreur] get_infos_utilisateur : {error}"
+
+msgid "user.log_error_user_exists"
+msgstr "[Erreur] utilisateur_existe : {error}"
+
+# Langue par défaut
+msgid "user.default_language"
+msgstr "fr"

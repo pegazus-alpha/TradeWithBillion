@@ -1,4 +1,3 @@
-
 import sqlite3
 
 def init_db():
@@ -7,10 +6,14 @@ def init_db():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS utilisateurs (
             user_id INTEGER PRIMARY KEY,
+            nom TEXT,
             langue TEXT,
             montant_depot FLOAT,
+            benefice_total FLOAT DEFAULT 0,
             date_enregistrement TEXT,
-            adresse_wallet TEXT
+            adresse_wallet TEXT,
+            date_mise_a_jour TEXT,
+            cycle INTEGER DEFAULT 0
         )
     """)
     cursor.execute("""
@@ -19,25 +22,11 @@ def init_db():
             user_id INTEGER,
             username TEXT,
             adresse TEXT,
-            reseau TEXT
-        )
-    """)
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS wallets_boite (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nom_wallet TEXT,
-            adresse_wallet TEXT,
             reseau TEXT,
-            remarques TEXT
+            montant FLOAT,
+            date_retrait TEXT
         )
     """)
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS parrainages (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        parrain_id INTEGER,
-        filleul_id INTEGER,
-        gain TEXT DEFAULT '0'
-    )
-""")
+    
     conn.commit()
     conn.close()

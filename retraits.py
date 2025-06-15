@@ -3,19 +3,40 @@ import sqlite3
 import re
 from dotenv import load_dotenv
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.ext import ContextTypes, ConversationHandler, CallbackQueryHandler, MessageHandler, filters
+from telegram.ext import ContextTypes, ConversationHandler
 from user import get_infos_utilisateur
 import menu
-from etats import*
+from etats import *
+from lang import*
+import i18n
 load_dotenv()
 
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
-
-# En haut de ton fichier ou dans un module global
 RETRAIT_EN_ATTENTE = {}
 
 async def retrait(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    msg = "Please enter your wallet address for the withdrawal:"
+    set_user_locale(update)
+    user = update.effective_user
+
+    try:
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT benefice_total FROM utilisateurs WHERE user_id = ?", (user.id,))
+        row = cursor.fetchone()
+        if not row:
+            await update.message.reply_text(i18n.t("retraits.user_not_registered"))
+            return ConversationHandler.END
+        benefice_total = row[0]
+        if benefice_total <= 0:
+            await update.message.reply_text(i18n.t("retraits.no_benefits"))
+            return ConversationHandler.END
+    except Exception as e:
+        await update.message.reply_text(i18n.t("retraits.database_error").format(error=str(e)))
+        return ConversationHandler.END
+    finally:
+        conn.close()
+
+    msg = i18n.t("retraits.enter_wallet_address")
     if update.message:
         await update.message.reply_text(msg)
     elif update.callback_query:
@@ -23,11 +44,14 @@ async def retrait(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.callback_query.message.reply_text(msg)
     else:
         return ConversationHandler.END
+
     return ADRESSE_PORTEFEUILLE
 
+
 async def recevoir_adresse(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    set_user_locale(update)
     if not update.message or not update.message.text:
-        await update.effective_chat.send_message("❌ Invalid input. Please try again.")
+        await update.effective_chat.send_message(i18n.t("retraits.invalid_input"))
         return ConversationHandler.END
 
     adresse = update.message.text.strip()
@@ -37,10 +61,11 @@ async def recevoir_adresse(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     buttons = [[InlineKeyboardButton(text=n, callback_data=n)] for n in networks]
     reply_markup = InlineKeyboardMarkup(buttons)
 
-    await update.message.reply_text("Please select the blockchain network:", reply_markup=reply_markup)
+    await update.message.reply_text(i18n.t("retraits.select_blockchain_network"), reply_markup=reply_markup)
     return RESEAU_BLOCKCHAIN
 
 async def recevoir_reseau(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    set_user_locale(update)
     query = update.callback_query
     await query.answer()
 
@@ -50,35 +75,36 @@ async def recevoir_reseau(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     infos = get_infos_utilisateur(user.id)
 
     if not is_valid_wallet(address, network):
-        await query.edit_message_text("❌ The wallet address format does not match the selected blockchain network.")
+        await query.edit_message_text(i18n.t("retraits.invalid_wallet_format"))
         return ConversationHandler.END
 
     enregistrer_retrait(user.id, user.username or user.first_name, address, network)
 
     await context.bot.send_message(
         chat_id=user.id,
-        text="✅ Your withdrawal request has been received. Please wait a moment.",
+        text=i18n.t("retraits.withdrawal_request_received"),
         reply_markup=menu.get_menu_markup(user.id)
     )
 
     msg_admin = (
-        f"📤 [WITHDRAWAL]\n"
-        f"👤 Username: @{user.username or user.first_name}\n"
-        f"🆔 Telegram ID: {user.id}\n"
-        f"🔢 UDI: {infos['udi']}\n"
-        f"💸 Binance Deposit Address: {infos['binance_depot']}\n"
-        f"💰 Balance: {infos['solde']}\n"
-        f"🔍 Wallet Address: {address}\n"
-        f"🌐 Blockchain Network: {network}"
+        f"{i18n.t('retraits.admin_withdrawal_header')}\n"
+        f"{i18n.t('retraits.admin_username').format(username=user.username or user.first_name)}\n"
+        f"{i18n.t('retraits.admin_telegram_id').format(user_id=user.id)}\n"
+        f"{i18n.t('retraits.admin_udi').format(udi=infos['udi'])}\n"
+        f"{i18n.t('retraits.admin_binance_deposit').format(binance_depot=infos['binance_depot'])}\n"
+        f"{i18n.t('retraits.admin_balance').format(balance=infos['solde'])}\n"
+        f"{i18n.t('retraits.admin_available_amount').format(available_amount=infos['benefice_total'])}\n"
+        f"{i18n.t('retraits.admin_wallet_address').format(address=address)}\n"
+        f"{i18n.t('retraits.admin_blockchain_network').format(network=network)}"
     )
     keyboard = InlineKeyboardMarkup([
         [
-            InlineKeyboardButton("✅ Done", callback_data=f"retrait_done_{user.id}"),
-            InlineKeyboardButton("❌ Not", callback_data=f"retrait_not_{user.id}")
+            InlineKeyboardButton(i18n.t("retraits.btn_done"), callback_data=f"retrait_done_{user.id}"),
+            # InlineKeyboardButton(i18n.t("retraits.btn_not"), callback_data=f"retrait_not_{user.id}")
         ]
     ])
     await context.bot.send_message(chat_id=ADMIN_ID, text=msg_admin, reply_markup=keyboard)
-    await query.edit_message_text("✅ Your withdrawal request has been recorded.")
+    await query.edit_message_text(i18n.t("retraits.withdrawal_request_recorded"))
     return ConversationHandler.END
 
 def enregistrer_retrait(user_id: int, username: str, adresse: str, reseau: str):
@@ -107,29 +133,49 @@ def is_valid_wallet(address: str, network: str) -> bool:
         return True
 
 async def recevoir_hash_retrait(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    set_user_locale(update)
     if not update.message or not update.message.text:
-        await update.effective_chat.send_message("❌ Hash invalide. Veuillez réessayer.")
+        await update.effective_chat.send_message(i18n.t("retraits.invalid_hash"))
         return SAISIE_HASH_RETRAIT
-    
+
     hash_tx = update.message.text.strip()
 
     if not is_valid_tx_hash(hash_tx):
-        await update.message.reply_text("❌ Format de hash invalide. Le hash doit commencer par '0x' et contenir 64 caractères hexadécimaux.")
+        await update.message.reply_text(i18n.t("retraits.invalid_hash_format"))
         return SAISIE_HASH_RETRAIT
-    admin_id = update.effective_user.id
 
+    admin_id = update.effective_user.id
     user_id = RETRAIT_EN_ATTENTE.get(admin_id)
 
     if not user_id:
-        await update.message.reply_text("⚠️ Error: user not found.")
+        await update.message.reply_text(i18n.t("retraits.user_not_found"))
         return ConversationHandler.END
 
-    etherscan_url = f"https://etherscan.io/tx/{hash_tx}"
+    # Récupérer les informations nécessaires de l'utilisateur
+    montant = 0
+    username = ""
+    adresse = ""
+    reseau = ""
+    try:
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT benefice_total, username, adresse, reseau FROM utilisateurs WHERE user_id = ?", (user_id,))
+        row = cursor.fetchone()
+        if row:
+            montant = row[0]
+            username = row[1] if row[1] else ""
+            adresse = row[2] if row[2] else ""
+            reseau = row[3] if row[3] else ""
+    except Exception as e:
+        print(f"Error getting user info: {e}")
+    finally:
+        if 'conn' in locals():
+            conn.close()
 
     try:
         await context.bot.send_message(
             chat_id=user_id,
-            text=f"✅ Your withdrawal has been successfully processed.\n\n🔗 Transaction hash:",
+            text=f"{i18n.t('retraits.withdrawal_processed').format(montant=montant)}",
             parse_mode="Markdown"
         )
         await context.bot.send_message(
@@ -137,17 +183,46 @@ async def recevoir_hash_retrait(update: Update, context: ContextTypes.DEFAULT_TY
             text=f"\n`{hash_tx}`\n\n",
             parse_mode="Markdown"
         )
-        await update.message.reply_text("✅ The user has been notified with the transaction hash.")
-
-        # Libère l'entrée une fois utilisée
+        await update.message.reply_text(i18n.t("retraits.user_notified"))
+        
+        # Créer une occurrence dans la table retraits
+        try:
+            conn = sqlite3.connect("bot.db")
+            cursor = conn.cursor()
+            from datetime import datetime
+            date_retrait = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            
+            cursor.execute("""
+                INSERT INTO retraits (user_id, username, adresse, reseau, montant, date_retrait)
+                VALUES (?, ?, ?, ?, ?, ?)
+            """, (user_id, username, adresse, reseau, montant, date_retrait))
+            conn.commit()
+        except Exception as e:
+            print(f"Error inserting into retraits table: {e}")
+        finally:
+            if 'conn' in locals():
+                conn.close()
+        
+        # Mettre benefice_total à 0
+        try:
+            conn = sqlite3.connect("bot.db")
+            cursor = conn.cursor()
+            cursor.execute("UPDATE utilisateurs SET benefice_total = 0 WHERE user_id = ?", (user_id,))
+            conn.commit()
+        except Exception as e:
+            print(f"Error updating benefice_total: {e}")
+        finally:
+            if 'conn' in locals():
+                conn.close()
+        
         RETRAIT_EN_ATTENTE.pop(admin_id, None)
-
     except Exception as e:
-        await update.message.reply_text(f"⚠️ Failed to notify user: {e}")
+        await update.message.reply_text(i18n.t("retraits.failed_notify_user").format(error=e))
 
     return ConversationHandler.END
-
+    
 async def retrait_done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    set_user_locale(update)
     query = update.callback_query
     await query.answer()
 
@@ -155,14 +230,16 @@ async def retrait_done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     user_id = int(data.split("_")[-1])
     RETRAIT_EN_ATTENTE[update.effective_user.id] = user_id
 
-    await query.message.reply_text("✅ Please enter the transaction hash to confirm the withdrawal:")
+   
+
+    await query.message.reply_text(i18n.t("retraits.enter_transaction_hash"))
     return SAISIE_HASH_RETRAIT
 
 async def retrait_not(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    set_user_locale(update)
     query = update.callback_query
     await query.answer()
-    await query.message.reply_text("❌ Withdrawal was not confirmed.")
-
+    await query.message.reply_text(i18n.t("retraits.btn_not"))
 
 def is_valid_tx_hash(hash_tx: str) -> bool:
     return re.fullmatch(r"0x[a-fA-F0-9]{64}", hash_tx) is not None

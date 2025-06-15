@@ -1,160 +1,360 @@
 fr: 
-  langue:
-    choix: "Bienvenue ! Choisissez une langue / Please choose a language:"
-    definie: "Langue définie sur Français."
-
-  menu:
-    depot: "💰 Dépôt"
-    retrait: "📤 Retrait"
-    infos: "ℹ️ Infos"
-    lines_utiles: "🔗 Liens utiles"
-    support: "📞 Support"
-    a_propos: "👤 À propos"
-    upgrade: "⬆️ Augmenter mon dépôt"
-
-  boutons:
-    langues:
-      - "Français"
-      - "English"
-    confirmation:
-      confirmer: "✅ Confirmer"
-      annuler: "❌ Annuler"
-    reseaux_blockchain:
-      - "TRC20"
-      - "ERC20"
-      - "BEP20"
-
-  messages:
-    annulation: "❌ Action annulée."
-    operation_annulee: "Opération annulée."
-    depot_confirme_admin: "✅ Dépôt de {montant} USDT confirmé pour l'utilisateur ID {user_id}."
-    depot_confirme_user: "✅ Votre dépôt de {montant} USDT a été confirmé avec succès. Merci !"
-
-  commandes:
-    start: "/start - Démarrer le bot"
-    retrait: "/retrait - Retirer des fonds"
-    depot: "/depot - Faire un dépôt"
-    upgrade: "/upGrade - Ajouter un montant"
-    infos: "/infos - Voir vos informations"
-    liens_utiles: "/liens_utiles - Voir les liens utiles"
-    a_propos: "/a_propos - À propos du bot"
-    support: "/support - Contacter le support"
-    liste_utilisateurs: "/liste_utilisateurs - Liste des utilisateurs (admin)"
-    info_utilisateur: "/info_utilisateur - Détails utilisateur (admin)"
-    set_description: "/set_description - Définir description (admin)"
-
-  etats_conversation:
-    adresse_portefeuille: "Veuillez entrer votre adresse de portefeuille."
-    reseau_blockchain: "Choisissez le réseau blockchain."
-    montant_depot: "Entrez le montant à déposer."
-    montant_depot_supplementaire: "Entrez le montant supplémentaire à ajouter à votre dépôt."
-
-  erreurs:
-    db_connexion: "[Erreur] Connexion à la base de données."
-    utilisateur_notification: "[Erreur notification utilisateur] : {erreur}"
-    callback_query: "[Erreur] callback_query_handler_admin: {erreur}"
-    set_langue: "[Erreur] set_langue: {erreur}"
-
-
   admin:
-    acces_refuse: "⛔ Accès réservé à l'administrateur."
-    aucun_utilisateur: "Aucun utilisateur enregistré."
-    liste_utilisateurs_titre: "👥 Liste des utilisateurs :"
-    utilisateur_id: "🆔 ID :"
-    langue: "🌐 Langue :"
-    montant_depose: "💰 Montant déposé :"
-    date_enregistrement: "📅 Date :"
-    separateur: "-----------------------"
-    erreur_recuperation: "Erreur lors de la récupération des utilisateurs : {erreur}"
-    demande_id: "Veuillez fournir un ID utilisateur : `/info_utilisateur <id>`"
-    utilisateur_non_trouve: "Utilisateur non trouvé."
-    infos_utilisateur: "🔍 Infos utilisateur {id} :"
-    adresse_wallet: "Adresse Wallet :"
-    erreur_generale: "Erreur : {erreur}"
-    usage_set_description: "Usage : /set_description <id_wallet> <nouvelle_description>"
-    description_maj: "✅ Description mise à jour avec succès."
+    # Fichier de langue pour admin.py
+
+    # Messages d'accès refusé
+    access_denied: "Accès refusé. Vous n'êtes pas autorisé à utiliser cette commande."
+
+    # Messages pour liste_utilisateurs
+    no_users_found: "Aucun utilisateur trouvé dans la base de données."
+    users_list_header: "Liste des utilisateurs enregistrés :"
+    user_id_label: "ID Utilisateur"
+    language_label: "Langue"
+    amount_deposited_label: "Montant Déposé"
+    registration_date_label: "Date d'Inscription"
+    total_profit_label: "Profit Total"
+    last_update_label: "Dernière Mise à Jour"
+    separator: "------------------------"
+    error_retrieving_users: "Erreur lors de la récupération des utilisateurs : {error}"
+
+    # Messages pour info_utilisateur
+    provide_user_id: "Veuillez fournir un ID utilisateur.\nUtilisation : /info_utilisateur <user_id>"
+    user_not_found: "Utilisateur non trouvé."
+    user_info_header: "Informations pour l'utilisateur ID {user_id} :"
+    wallet_address_label: "Adresse du Portefeuille"
+    error_occurred: "Une erreur s'est produite : {error}"
+
+    # Messages pour set_description (commenté mais préparé)
+    set_description_usage: "Utilisation : /set_description <wallet_id> <nouvelle_description>"
+    description_updated: "Description mise à jour avec succès."
 
   depot:
-    demander_montant: "Quel montant souhaitez-vous déposer ? (en USDT) :"
-    instructions:
-      intro: "Merci. Pour effectuer un dépôt de {montant} USDT, voici les informations :"
-      adresse_wallet: "📥 Adresse wallet de la boîte : `0xDEPOTEXEMPLE123456789ABC`"
-      reseau: "🌐 Réseau blockchain : Binance Smart Chain (BSC)"
-    confirmer: "✅ Confirmer"
-    annuler: "❌ Annuler"
-    admin_notification:
-      titre: "📥 [DEPÔT INITIÉ]"
-      utilisateur: "👤 Utilisateur : {utilisateur}"
-      id: "🆔 ID Telegram : {id}"
-      montant: "💵 Montant déclaré : {montant} USDT"
+    # Fichier de langue pour depot.py
 
-  support: "Pour un support en direct, contactez @m0x1mus."
+    # Messages pour la fonction depot
+    investment_exists: "❌ Vous avez déjà un investissement en cours, utilisez /top_up à la place"
+    enter_deposit_amount: "Veuillez saisir le montant USDT que vous souhaitez déposer :"
 
-  liens_utiles: |
-    🔗 Liens utiles :
+    # Messages pour recevoir_montant_depot
+    invalid_positive_amount: "❌ Veuillez saisir un montant positif valide. Réessayez :"
+    invalid_numeric_amount: "❌ Veuillez saisir un montant numérique valide. Réessayez :"
+    deposit_amount_confirm: "Vous souhaitez déposer {amount} USDT.\n\nVeuillez envoyer le montant à l'adresse de portefeuille suivante :\n\nUtilisez le réseau blockchain Binance Smart Chain (BEP20)."
+    enter_transaction_hash: "Maintenant, veuillez saisir le hash de votre transaction pour confirmer le dépôt :"
 
-    📊 CoinMarketCap : https://coinmarketcap.com
-    📈 CoinGecko : https://coingecko.com
-    💱 Binance : https://binance.com
-    🌐 Ethereum : https://ethereum.org
-    🔍 BSCScan : https://bscscan.com
-    ☀️ Solana : https://solana.com
+    # Messages pour recevoir_hash_depot
+    btn_confirm: "✅ Confirmer"
+    btn_cancel: "❌ Annuler"
+    admin_deposit_notification: "Nouvelle demande de dépôt :\nUtilisateur : {username}\nID Utilisateur : {user_id}\nMontant : {amount} USDT\nHash de Transaction :"
+    deposit_request_processing: "✅ Votre demande de dépôt et hash de transaction est en cours de traitement. Vous serez notifié sous peu."
 
-  a_propos: |
-    💼 Trading automatisé sur les Futures avec TWB – Gagnez 20% par semaine !
+  globale:
+    # Fichier de langue pour globale.py
 
-    Ce système avancé trade pour vous et génère 20% de rendement hebdomadaire pendant 2 mois ou plus, selon votre investissement.
-    Le meilleur ? Aucun blocage !
-    Vos fonds restent flexibles – retirez votre capital à tout moment, sans restriction.
+    # Messages pour la fonction support
+    support_message: "Si vous avez besoin d'assistance, veuillez contacter notre équipe à @TWBLiveChat"
 
-    📌 Comment ça marche :
-    1️⃣ Dépôt – Alimentez votre compte en toute sécurité.
-    2️⃣ Attendez 7 jours – Laissez TWB faire son travail.
-    3️⃣ Retirez vos profits – Profitez de gains réguliers sans tracas.
+    # Messages pour liens_utiles
+    useful_links_header: "🔗 Liens utiles :"
+    coinmarketcap_link: "📊 CoinMarketCap : https://coinmarketcap.com"
+    coingecko_link: "📈 CoinGecko : https://coingecko.com"
+    binance_link: "💱 Binance : https://binance.com"
+    ethereum_link: "🌐 Ethereum : https://ethereum.org"
+    bscscan_link: "🔍 BSCScan : https://bscscan.com"
+    solana_link: "☀️ Solana : https://solana.com"
 
-  retrait:
-    demande_adresse: "Merci de saisir votre adresse de portefeuille pour le retrait :"
-    demande_reseau: "Merci. Maintenant, sélectionnez le réseau blockchain utilisé :"
-    erreur: "Une erreur est survenue. Veuillez recommencer."
-    adresse_invalide: "❌ L'adresse du portefeuille ne correspond pas au format du réseau spécifié."
-    confirmation: "✅ Votre demande a bien été enregistrée. L’admin vous contactera bientôt."
-    admin_message: |
-      📤 [RETRAIT]
-      👤 Nom d'utilisateur : {username}
-      🆔 ID Telegram : {telegram_id}
-      🔢 UDI : {udi}
-      💸 Adresse de dépôt Binance : {binance_depot}
-      💰 Solde : {solde}
-      🔍 Adresse portefeuille : {adresse}
-      🌐 Réseau blockchain : {reseau}
-  depot_supplementaire:
-    non_enregistre: "❌ Vous devez d'abord vous enregistrer en utilisant /start pour faire votre premier dépôt."
-    demande_montant: "💰 Quel montant supplémentaire souhaitez-vous déposer ? (en USDT) :"
-    montant_invalide: "❌ Veuillez entrer un montant valide (nombre uniquement)."
-    instructions_utilisateur: |
-      Merci. Pour effectuer un dépôt supplémentaire de {montant} USDT, voici les informations :
-      📥 Adresse wallet de la boîte : `0xDEPOTEXEMPLE123456789ABC`
-      🌐 Réseau blockchain : Binance Smart Chain (BSC)
+    # Messages pour a_propos
+    about_us_header: "À propos de nous :"
+    about_title: "Trading Automatisé de Futures et Gagnez 25% par Semaine avec TWB"
+    about_description: "Ce système avancé trade pour vous, générant 25% de rendement hebdomadaire sur votre capital pendant 2 mois ou plus—évolutif selon votre investissement."
+    best_part_title: "Le Plus ? Pas de Blocage !"
+    best_part_description: "Vos fonds restent flexibles—retirez votre capital à tout moment sans restrictions."
+    how_it_works_title: "Comment ça Marche :"
+    step_1: "⿡ Déposer – Financez votre compte en toute sécurité."
+    step_2: "⿢ Attendre 7 Jours – Laissez TWB faire sa magie."
+    step_3: "⿣ Retirer les Profits – Profitez de gains constants et sans tracas"
 
-      Une fois le transfert effectué, l'admin confirmera votre dépôt.
-    bouton_confirmer: "✅ Confirmer le dépôt"
-    bouton_annuler: "❌ Annuler"
-    message_admin: |
-      📥 [DÉPÔT SUPPLÉMENTAIRE INITIÉ]
-      👤 Utilisateur : {username}
-      🆔 ID Telegram : {telegram_id}
-      💵 Montant supplémentaire déclaré : {montant} USDT
-      ℹ️ Utilisateur déjà enregistré
+  retraits:
+    # Fichier de langue pour retraits.py
+    user_not_registered: "❌ Vous devez d'abord effectuer un dépôt avant de pouvoir retirer des fonds."
+    no_benefits: "❌ Vous n'avez actuellement aucun bénéfice disponible pour un retrait."
+    database_error: "❌ Erreur lors de la vérification de votre statut : {error}"
+    # Messages pour la fonction retrait
+    enter_wallet_address: "Veuillez saisir votre adresse de portefeuille pour le retrait :"
 
-  utilisateur:
-    enregistrement:
-      erreur: "❌ Une erreur est survenue lors de votre enregistrement."
-    infos:
-      titre: |
-        🆔 Votre numéro UDI : {udi}
-        💼 Adresse dépôt Binance : {adresse_wallet}
-        💰 Solde: {solde}
-        📅 Date d'enregistrement : {date_enregistrement}
-      non_enregistre: "📅 Date d'enregistrement : pas encore enregistré, faites un investissement."
-    erreur:
-      get_infos: "❌ Impossible de récupérer vos informations pour le moment."
+    # Messages pour recevoir_adresse
+    invalid_input: "❌ Saisie invalide. Veuillez réessayer."
+    select_blockchain_network: "Veuillez sélectionner le réseau blockchain :"
+
+    # Messages pour recevoir_reseau
+    invalid_wallet_format: "❌ Le format de l'adresse de portefeuille ne correspond pas au réseau blockchain sélectionné."
+    withdrawal_request_received: "✅ Votre demande de retrait a été reçue. Veuillez patienter un moment."
+    withdrawal_request_recorded: "✅ Votre demande de retrait a été enregistrée."
+
+    # Messages pour l'admin
+    admin_withdrawal_header: "📤 [RETRAIT]"
+    admin_username: "👤 Nom d'utilisateur : @{username}"
+    admin_telegram_id: "🆔 ID Telegram : {user_id}"
+    admin_udi: "🔢 UDI : {udi}"
+    admin_binance_deposit: "💸 Adresse de Dépôt Binance : {binance_depot}"
+    admin_balance: "💰 Solde : {balance}"
+    admin_available_amount: "💸 Montant Disponible : {available_amount}"
+    admin_wallet_address: "🔍 Adresse de Portefeuille : {address}"
+    admin_blockchain_network: "🌐 Réseau Blockchain : {network}"
+
+    # Boutons pour l'admin
+    btn_done: "✅ Terminé"
+    btn_not: "❌ Non"
+
+    # Messages pour recevoir_hash_retrait
+    invalid_hash: "❌ Hash invalide. Veuillez réessayer."
+    invalid_hash_format: "❌ Format de hash invalide. Le hash doit commencer par '0x' et contenir 64 caractères hexadécimaux."
+    user_not_found: "⚠️ Erreur : utilisateur non trouvé."
+    withdrawal_processed: "✅ Votre retrait de {montant} USDT a été traité avec succès.\n\n🔗 Hash de transaction :"
+    user_notified: "✅ L'utilisateur a été notifié avec le hash de transaction."
+    failed_notify_user: "⚠️ Échec de la notification à l'utilisateur : {error}"
+
+    # Messages pour retrait_done
+    enter_transaction_hash: "✅ Veuillez saisir le hash de transaction pour confirmer le retrait :"
+
+    # Messages pour retrait_not
+    withdrawal_not_confirmed: "❌ Le retrait n'a pas été confirmé."
+
+  store:
+    # Fichier de langue pour store.py
+    # Données des produits
+    product_1_name: "Produit 1"
+    product_1_description: "Description du produit 1"
+    product_2_name: "Produit 2"
+    product_2_description: "Description du produit 2"
+    product_3_name: "Produit 3"
+    product_3_description: "Description du produit 3"
+    product_4_name: "Produit 4"
+    product_4_description: "Description du produit 4"
+    product_5_name: "Produit 5"
+    product_5_description: "Description du produit 5"
+    product_6_name: "Produit 6"
+    product_6_description: "Description du produit 6"
+    product_7_name: "Produit 7"
+    product_7_description: "Description du produit 7"
+    product_8_name: "Produit "
+    product_8_description: "Description du produit "
+    product_price_placeholder: "-- USDT"
+
+    # Messages pour our_store
+    store_header: "🏪 **NOTRE BOUTIQUE**"
+    store_intro: "Découvrez notre sélection de produits de qualité !\nVoici notre galerie de produits disponibles :"
+    gallery_caption: "🛍️ Voici nos produits disponibles :"
+    store_footer_header: "📞 **CONTACT**"
+    store_footer_message: "Pour toute question ou commande, veuillez contacter notre équipe de support !\n\n🔔 Restez à l'écoute pour découvrir nos nouveaux produits !"
+
+    # Messages pour les détails des produits
+    product_price_label: "💰 Prix : -- USDT"
+    product_separator: "━━━━━━━━━━━━━━━━━━━━"
+
+    # Boutons
+    btn_more_info: "💬 Plus d'infos"
+    btn_order: "🛒 Commander"
+    btn_order_now: "🛒 Commander maintenant"
+    btn_back_to_store: "⬅️ Retour à la boutique"
+    btn_contact_support: "📞 Contacter le support"
+
+    # Messages pour gerer_callback_produit - Info produit
+    detailed_description_header: "📝 **Description détaillée :**"
+    price_header: "💰 **Prix :** {price}"
+    features_header: "✅ **Caractéristiques :**"
+    feature_premium_quality: "• Qualité premium"
+    feature_fast_delivery: "• Livraison rapide"
+    feature_warranty: "• Garantie incluse"
+    contact_more_info: "📞 Contactez-nous pour plus d'informations !"
+
+    # Messages pour gerer_callback_produit - Commander produit
+    order_header: "🛒 **COMMANDE : {product_name}**"
+    order_instructions_header: "📞 **Pour finaliser votre commande :**"
+    order_step_1: "1. Contactez notre support"
+    order_step_2: "2. Spécifiez le produit"
+    order_step_3: "3. Confirmez votre adresse de livraison"
+    order_confirmation: "✅ Notre équipe vous contactera sous peu !"
+
+    # Messages pour retour boutique
+    back_to_store_message: "🏪 Retour à la boutique...\n\nUtilisez la commande 🏪 Our Store pour voir à nouveau nos produits."
+
+    # Messages pour contact support
+    contact_support_header: "📞 **CONTACTER LE SUPPORT**"
+    support_intro: "Notre équipe est là pour vous aider !"
+    support_email: "📧 Email : support@votreentreprise.com"
+    support_telegram: "💬 Telegram : @votre_support"
+    support_hours: "⏰ Horaires : 9h–18h (Lun–Ven)"
+    support_response: "Nous vous répondrons dans les plus brefs délais !"
+
+  telegrame:
+    # telegrame.py - Fichier de langue pour le bot Telegram
+
+    # Messages d'accueil et navigation
+    welcome_message: "Bienvenue ! Pour commencer, utilisez les commandes pour procéder."
+    operation_cancelled: "❌ Opération annulée."
+    previous_operation_cancelled: "❌ Opération précédente annulée. Démarrage de la nouvelle commande : {command}"
+    action_cancelled: "❌ Action annulée."
+
+    # Messages du système de bénéfices automatiques
+    benefits_update_title: "🎉 **Mise à Jour des Bénéfices !**"
+    new_benefits: "💰 **Nouveaux bénéfices :** {amount:.2f} USDT ({weeks} semaine(s))"
+    total_benefits: "📈 **Total des bénéfices :** {amount:.2f} USDT"
+    initial_investment: "💳 **Investissement initial :** {amount:.2f} USDT"
+    wallet_address: "🏦 **Adresse de portefeuille :** {address}"
+    wallet_not_provided: "Non fournie"
+    benefits_added_message: "Vos bénéfices ont été automatiquement ajoutés à votre compte !"
+    join_channel_message: "Rejoignez notre canal pour rester informé : https://t.me/+c0mWuQVC6OEwMTM0"
+
+    # Messages admin pour les bénéfices
+    admin_benefits_update: "📊 **Mise à jour automatique des bénéfices**"
+    admin_user_id: "👤 **ID Utilisateur :** {user_id}"
+    admin_benefits_added: "💰 **Bénéfices ajoutés :** {amount:.2f} USDT"
+    admin_new_total_benefits: "📈 **Nouveaux bénéfices totaux :** {amount:.2f} USDT"
+    admin_investment: "💳 **Investissement :** {amount:.2f} USDT"
+    admin_update_date: "🕒 **Date de mise à jour :** {date}"
+    admin_weeks_processed: "⏱️ **Semaines traitées :** {weeks}"
+
+    # Messages de confirmation de dépôts
+    existing_investment_error: "❌ Vous avez déjà un investissement en cours, utilisez /top_up à la place"
+    deposit_confirmed_admin: "✅ Dépôt de {amount} USDT confirmé pour l'utilisateur ID {user_id}."
+    deposit_confirmed_user: "✅ Votre dépôt de {amount} USDT a été confirmé avec succès. Merci !\nRejoignez notre canal pour rester informé de toutes les dernières informations :\nhttps://t.me/+c0mWuQVC6OEwMTM0"
+
+    # Boutons du menu principal
+    menu_deposit: "💰 Dépôt"
+    menu_withdraw: "💸 Retrait"
+    menu_top_up: "📈 Recharge"
+    menu_our_store: "🏪 Notre Boutique"
+    menu_my_info: "👤 Mes Infos"
+    menu_market_update: "📊 Actualité Marché"
+    menu_about: "ℹ️ À Propos"
+    menu_support: "🆘 Support"
+
+    # Boutons admin
+    admin_user_list: "👥 Liste Utilisateurs"
+    admin_user_info: "🔍 Info Utilisateur"
+
+    # Bouton d'annulation
+    cancel_button: "❌ Annuler"
+
+    # Messages de logs système
+    log_starting_benefits_system: "🚀 Démarrage du système de vérification automatique des bénéfices..."
+    log_checking_frequency: "⏰ Vérification toutes les 30 minutes, mise à jour des bénéfices toutes les 7 jours"
+    log_benefits_updated: "✅ Bénéfices mis à jour pour {count} utilisateur(s) à {time}"
+
+    # Messages d'erreur (pour les logs)
+    error_user_notification: "[Erreur de notification utilisateur] : {error}"
+    error_admin_notification: "[Erreur de notification admin pour l'utilisateur {user_id}] : {error}"
+    error_user_processing: "[Erreur de traitement utilisateur {user_id}] : {error}"
+    error_benefits_verification: "[Erreur de vérification des bénéfices] : {error}"
+    error_verification_loop: "[Erreur dans la boucle de vérification] : {error}"
+    error_callback_admin: "[Erreur] callback_query_handler_admin : {error}"
+
+    # Patterns de callback
+    pattern_confirm: "confirmer_"
+    pattern_cancel: "annuler"
+    pattern_withdrawal_done: "retrait_done_"
+    pattern_withdrawal_not: "retrait_not_"
+    pattern_product_info: "info_produit_"
+    pattern_order_product: "commander_produit_"
+    pattern_store_return: "retour_boutique"
+    pattern_contact_support: "contact_support"
+
+  update:
+    # update.py - Fichier de langue pour le système de mise à jour des dépôts
+    deposit_required: "❌ Vous devez effectuer un dépôt avant de pouvoir mettre à jour votre solde."
+    error_checking_deposit: "❌ Une erreur s'est produite lors de la vérification de votre dépôt."
+    # Messages de dépôt supplémentaire
+    must_register_first: "❌ Vous devez d'abord vous inscrire en utilisant /deposit avant de faire un dépôt."
+    balance_update_not_profitable: "Il ne serait pas rentable pour vous de faire cela maintenant. Veuillez attendre la fin du cycle dans {days} jours."
+    balance_update_wait: "La mise à jour du solde n'est pas possible aujourd'hui. Veuillez attendre {days} jours de plus pour la prochaine fenêtre de mise à jour."
+    balance_update_allowed: "La mise à jour du solde est autorisée."
+    registration_date_not_found: "Date d'inscription non trouvée."
+
+    additional_deposit_amount: "💰 Combien souhaitez-vous déposer en plus ? (en USDT) :"
+    invalid_amount_error: "❌ Veuillez saisir un montant valide et positif (chiffres uniquement)."
+    amount_error_restart: "❌ Erreur : Montant non trouvé. Veuillez redémarrer le processus."
+
+    # Messages d'instructions de dépôt supplémentaire
+    additional_deposit_info: "Merci. Pour effectuer un dépôt supplémentaire de {amount:.2f} USDT, voici les informations :\n📥 Adresse de portefeuille de la plateforme dans le message suivant :\n🌐 Réseau blockchain : Binance Smart Chain (BSC)\n\nUne fois le transfert effectué, l'admin confirmera votre dépôt."
+    hash_request_message: "Veuillez maintenant saisir le hash de votre transaction pour confirmer le dépôt supplémentaire :"
+
+    # Messages de traitement
+    processing_request: "✅ Votre demande de dépôt supplémentaire et hash de transaction est en cours de traitement. Vous serez notifié sous peu."
+    processing_error: "❌ Erreur lors du traitement de la demande. Veuillez réessayer."
+
+    # Messages admin pour dépôt supplémentaire
+    admin_additional_deposit_title: "📥 [DÉPÔT SUPPLÉMENTAIRE INITIÉ]"
+    admin_user_info: "👤 Utilisateur : @{username}"
+    admin_telegram_id: "🆔 ID Telegram : {user_id}"
+    admin_declared_amount: "💵 Montant supplémentaire déclaré : {amount:.2f} USDT"
+    admin_transaction_hash: "🔗 Hash de Transaction :"
+    admin_user_registered: "ℹ️ Utilisateur déjà enregistré"
+
+    # Boutons pour dépôt supplémentaire
+    confirm_deposit_button: "✅ Confirmer le dépôt"
+    cancel_button_supp: "❌ Annuler"
+
+    # Messages de confirmation admin
+    additional_deposit_confirmed: "✅ Dépôt supplémentaire de {amount:.2f} USDT confirmé pour l'utilisateur {user_id}."
+    additional_deposit_confirmed_user: "✅ Votre dépôt supplémentaire de {amount:.2f} USDT a été confirmé avec succès et ajouté à votre solde."
+    balance_update_failed: "❌ Échec de la mise à jour du solde pour l'utilisateur {user_id}. Veuillez vérifier la base de données."
+    additional_deposit_cancelled: "❌ Dépôt supplémentaire annulé"
+    invalid_confirmation_data: "❌ Données de confirmation invalides."
+
+    # Messages de logs pour update
+    log_database_path: "[DEBUG] Utilisation de la base de données à : {path}"
+    log_updating_user: "[DEBUG] Mise à jour user_id : {user_id} avec montant_ajoute : {amount}"
+    log_sql_update: "[DEBUG] SQL : UPDATE utilisateurs SET montant_depot = {total} WHERE user_id = {user_id}"
+    log_balance_success: "[SUCCÈS] Solde mis à jour pour l'utilisateur {user_id} : {current} + {added} = {total}"
+    log_user_not_found: "[ERREUR] Utilisateur {user_id} non trouvé dans la base de données"
+    log_callback_data: "[DEBUG] Données de callback reçues : {data}"
+    log_parsed_parts: "[DEBUG] Parties analysées : {parts}"
+    log_confirming_deposit: "[DEBUG] Confirmation du dépôt : user_id={user_id}, amount={amount}"
+    log_admin_notification_success: "[SUCCÈS] Notification admin envoyée pour l'utilisateur {user_id}"
+    log_admin_notification_failed: "[ERREUR] Échec de l'envoi de la notification admin : {error}"
+    log_user_notified: "[SUCCÈS] Utilisateur {user_id} notifié du dépôt confirmé"
+    log_user_notification_failed: "[ERREUR] Échec de la notification de l'utilisateur {user_id} : {error}"
+    log_deposit_cancelled: "[INFO] Dépôt supplémentaire annulé par l'admin"
+    log_invalid_confirmation: "[ERREUR] Données de confirmation invalides : {error}"
+
+    # Messages de test
+    log_testing_balance: "[DEBUG] Test de mise à jour du solde pour l'utilisateur {user_id} avec le montant {amount}"
+    log_user_does_not_exist: "[ERREUR] L'utilisateur {user_id} n'existe pas"
+    log_test_success: "[SUCCÈS] Test de mise à jour du solde terminé"
+    log_test_failed: "[ERREUR] Échec du test de mise à jour du solde"
+
+    # Erreurs générales
+    error_get_registration_date: "[Erreur] get_user_registration_date : {error}"
+    error_update_balance: "[Erreur] mettre_a_jour_solde : {error}"
+
+    # Patterns de callback pour update
+    pattern_confirm_supp: "confir_supp_"
+    pattern_cancel_supp: "annuler_supp_"
+
+    # États de conversation
+    hash_transaction_depot_supplementaire: "hash_transaction_depot_supplementaire"
+
+  user:
+    # user.py - Fichier de langue pour la gestion des utilisateurs
+
+    # Messages d'informations utilisateur
+    user_udi_number: "🆔 Votre numéro UDI : {udi}"
+    user_binance_address: "💼 Adresse de dépôt Binance : {address}"
+    user_balance: "💰 Solde : {balance}"
+    user_registration_date: "📅 Date d'inscription : {date}"
+    user_benefice_hrbdomadaire: "💳 Profit hebdomadaire : {benefice}"
+    user_benefice_total: "💸 Profit actuel : {benefice_total}"
+    # Messages d'état utilisateur
+    user_not_registered: "ℹ️ Vous n'êtes pas encore inscrit. Veuillez faire un investissement pour commencer."
+    user_address_not_registered: "Non enregistré"
+    user_balance_zero: "0 USDT"
+    user_info_error: "Erreur"
+
+    # Messages de logs pour user
+    log_error_register_user: "[Erreur] enregistrer_utilisateur : {error}"
+    log_error_get_user_info: "[Erreur] get_infos_utilisateur : {error}"
+    log_error_user_exists: "[Erreur] utilisateur_existe : {error}"
+    USER_NAME: "nom: {nom}"
+
+    # Langue par défaut
+    default_language: "fr"

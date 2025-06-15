@@ -7,85 +7,140 @@ from telegram.ext import ContextTypes
 import menu
 from lang import *
 from etats import*
-# Charger les variables d’environnement
+from i18n import t
+# Load environment variables
 load_dotenv()
 
-# États de la conversation (si besoin)
-
-# ID de l'admin Telegram
+# Telegram Admin ID
 ADMIN_ID = os.getenv("ADMIN_ID")
 
 
-def enregistrer_utilisateur(user_id: int, montant: str = None, wallet: str = None, parrain_id: int = None):
-    """Enregistre ou met à jour un utilisateur dans la base de données."""
+def enregistrer_utilisateur(user_id: int, montant: str = None, wallet: str = None, parrain_id: int = None, nom: str = None):
+    """Register or update a user in the database."""
+   
     try:
         conn = sqlite3.connect("bot.db")
         cursor = conn.cursor()
-        date_enregistrement = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        # Insère ou met à jour l'utilisateur (langue française par défaut)
-        cursor.execute("""
-            INSERT OR REPLACE INTO utilisateurs (user_id, langue, montant_depot, date_enregistrement, adresse_wallet)
-            VALUES (?, ?, ?, ?, ?)
-        """, (user_id, "fr", montant, date_enregistrement, wallet))
-
-        # TODO: gérer l'enregistrement du parrain si besoin ici
-
+        registration_date = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        
+        # Check if user exists
+        cursor.execute("SELECT user_id FROM utilisateurs WHERE user_id = ?", (user_id,))
+        user_exists = cursor.fetchone() is not None
+        
+        if user_exists:
+            # Update existing user - only update specified fields
+            update_fields = []
+            update_values = []
+            
+            if montant is not None:
+                update_fields.append("montant_depot = ?")
+                update_values.append(montant)
+            
+            if wallet is not None:
+                update_fields.append("adresse_wallet = ?")
+                update_values.append(wallet)
+            
+            if nom is not None:
+                update_fields.append("nom = ?")
+                update_values.append(nom)
+            
+            # Always update date_mise_a_jour when updating
+            update_fields.append("date_mise_a_jour = ?")
+            update_values.append(registration_date)
+            
+            if update_fields:  # Only execute if there are fields to update
+                update_values.append(user_id)  # Add user_id for WHERE clause
+                query = f"UPDATE utilisateurs SET {', '.join(update_fields)} WHERE user_id = ?"
+                cursor.execute(query, update_values)
+        else:
+            # Insert new user with default language
+            def_lang = f"{t('user.DEFAULT_LANGUAGE')}"
+            cursor.execute("""
+                INSERT INTO utilisateurs (user_id, nom, langue, montant_depot, date_enregistrement, adresse_wallet, date_mise_a_jour)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+            """, (user_id, nom, def_lang, montant, registration_date, wallet, registration_date))
+        
+        # TODO: handle referral registration here if needed
         conn.commit()
     except Exception as e:
-        print(f"[Erreur] enregistrer_utilisateur: {e}")
+        print(f"{t('user.log_error_register_user').format(error=e)}")
     finally:
         conn.close()
 
 
 def get_infos_utilisateur(user_id: int) -> dict:
-    """Récupère les informations d’un utilisateur depuis la base."""
+    """Retrieve user information from the database."""
     try:
         conn = sqlite3.connect("bot.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT adresse_wallet, montant_depot, date_enregistrement FROM utilisateurs WHERE user_id = ?", (user_id,))
+        cursor.execute("SELECT nom, adresse_wallet, montant_depot, date_enregistrement, benefice_total, cycle FROM utilisateurs WHERE user_id = ?", (user_id,))
         row = cursor.fetchone()
 
-        adresse_wallet = row[0] if row and row[0] else "Non enregistré"
-        montant_depot = row[1] if row and row[1] else "0 USDT"
-        date_enregistrement = row[2] if row and row[2] else None
-
+        nom = row[0] if row and row[0] else f"{t('user.USER_NAME_NOT_REGISTERED')}"
+        adresse_wallet = row[1] if row and row[1] else f"{t('user.USER_ADDRESS_NOT_REGISTERED')}"
+        montant_depot = row[2] if row and row[2] else "0 USDT"
+        date_enregistrement = row[3] if row and row[3] else None
+        benefice_total = row[4] if row and row[4] else 0
+        cycle = row[5] if row and row[5] else 1
+        
+        # Calcul du pourcentage de profit
+        pourcentage_profit = 0.25 * cycle
+        
     except Exception as e:
-        print(f"[Erreur] get_infos_utilisateur: {e}")
-        adresse_wallet = "Erreur"
-        montant_depot = "Erreur"
+        print(f"{t('user.LOG_ERROR_GET_USER_INFO').format(error=e)}")
+        nom = f"{t('user.USER_INFO_ERROR')}"
+        adresse_wallet = f"{t('user.USER_INFO_ERROR')}"
+        montant_depot = f"{t('user.USER_INFO_ERROR')}"
         date_enregistrement = None
+        benefice_total = 0
+        cycle = 1
+        pourcentage_profit = 0.25 * cycle
     finally:
         conn.close()
 
     return {
         "udi": f"UDI-{user_id}",
+        "nom": nom,
         "binance_depot": adresse_wallet,
         "date_enregistrement": date_enregistrement,
         "solde": montant_depot,
+        "benefice_total": benefice_total,
+        "cycle": cycle,
+        "pourcentage_profit": pourcentage_profit
     }
 
 
 async def infos(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Commande /infos affichant les données de l'utilisateur."""
+    """/infos command to display user's data."""
     user_id = update.effective_user.id
     infos = get_infos_utilisateur(user_id)
-
+    
+    # Conversion du solde en float pour éviter l'erreur de multiplication
+    try:
+        solde_numeric = float(infos['solde'].replace(' USDT', '')) if isinstance(infos['solde'], str) else float(infos['solde'])
+        benef = solde_numeric * 0.25
+    except (ValueError, TypeError):
+        benef = 0.0
+    
     if infos['date_enregistrement']:
         message = (
-            f"🆔 Votre numéro UDI : {infos['udi']}\n"
-            f"💼 Adresse dépôt Binance : {infos['binance_depot']}\n"
-            f"💰 Solde : {infos['solde']}\n"
-            f"📅 Date d'enregistrement : {infos['date_enregistrement']}\n"
+            f"{t('user.USER_UDI_NUMBER').format(udi=infos['udi'])}\n"
+            f"👤 {t('user.USER_NAME').format(nom=infos['nom'])}\n"
+            f"{t('user.USER_BINANCE_ADDRESS').format(address=infos['binance_depot'])}\n"
+            f"{t('user.USER_BALANCE').format(balance=infos['solde'])}\n"
+            f"{t('user.USER_REGISTRATION_DATE').format(date=infos['date_enregistrement'])}\n"
+            f"{t('user.user_benefice_hebdomadaire').format(benefice=benef)}\n"
+            f"{t('user.user_benefice_total').format(benefice_total=infos['benefice_total'])}\n"
+            f"⏳ Pourcent profit: {infos['pourcentage_profit']*100:.1f}%\n"
         )
     else:
-        message = "ℹ️ Vous n'êtes pas encore enregistré. Veuillez effectuer un investissement pour commencer."
+        message = f"{t('user.USER_NOT_REGISTERED')}"
 
     await update.message.reply_text(message, reply_markup=menu.get_menu_markup(user_id))
 
 
 def utilisateur_existe(user_id: int) -> bool:
-    """Vérifie si un utilisateur est déjà enregistré en base."""
+    """Check if a user is already registered in the database."""
     try:
         conn = sqlite3.connect("bot.db")
         cursor = conn.cursor()
@@ -93,7 +148,7 @@ def utilisateur_existe(user_id: int) -> bool:
         row = cursor.fetchone()
         return row is not None
     except Exception as e:
-        print(f"[Erreur] utilisateur_existe: {e}")
+        print(f"{t('user.LOG_ERROR_USER_EXISTS').format(error=e)}")
         return False
     finally:
         conn.close()

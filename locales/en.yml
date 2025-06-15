@@ -1,160 +1,353 @@
-en:
-  langue:
-    choix: "Welcome! Please choose a language / Choisissez une langue:"
-    definie: "Language set to French."
-
-  menu:
-    depot: "💰 Deposit"
-    retrait: "📤 Withdraw"
-    infos: "ℹ️ Info"
-    liens_utiles: "🔗 Useful links"
-    support: "📞 Support"
-    a_propos: "👤 About"
-    upgrade: "⬆️ Increase my deposit"
-
-  boutons:
-    langues:
-      - "Français"
-      - "English"
-    confirmation:
-      confirmer: "✅ Confirm"
-      annuler: "❌ Cancel"
-    reseaux_blockchain:
-      - "TRC20"
-      - "ERC20"
-      - "BEP20"
-
-  messages:
-    annulation: "❌ Action cancelled."
-    operation_annulee: "Operation cancelled."
-    depot_confirme_admin: "✅ Deposit of {montant} USDT confirmed for user ID {user_id}."
-    depot_confirme_user: "✅ Your deposit of {montant} USDT has been successfully confirmed. Thank you!"
-
-  commandes:
-    start: "/start - Start the bot"
-    retrait: "/withdraw - Withdraw funds"
-    depot: "/deposit - Make a deposit"
-    upgrade: "/upgrade - Add an amount"
-    infos: "/info - View your information"
-    liens_utiles: "/useful_links - View useful links"
-    a_propos: "/about - About the bot"
-    support: "/support - Contact support"
-    liste_utilisateurs: "/user_list - List of users (admin)"
-    info_utilisateur: "/user_info - User details (admin)"
-    set_description: "/set_description - Set description (admin)"
-
-  etats_conversation:
-    adresse_portefeuille: "Please enter your wallet address."
-    reseau_blockchain: "Choose the blockchain network."
-    montant_depot: "Enter the amount to deposit."
-    montant_depot_supplementaire: "Enter the additional amount to add to your deposit."
-
-  erreurs:
-    db_connexion: "[Error] Database connection."
-    utilisateur_notification: "[User notification error] : {erreur}"
-    callback_query: "[Error] callback_query_handler_admin: {erreur}"
-    set_langue: "[Error] set_langue: {erreur}"
-
+en: 
   admin:
-    acces_refuse: "⛔ Access reserved for administrator."
-    aucun_utilisateur: "No registered users."
-    liste_utilisateurs_titre: "👥 List of users:"
-    utilisateur_id: "🆔 ID:"
-    langue: "🌐 Language:"
-    montant_depose: "💰 Deposited amount:"
-    date_enregistrement: "📅 Date:"
-    separateur: "-----------------------"
-    erreur_recuperation: "Error retrieving users: {erreur}"
-    demande_id: "Please provide a user ID: `/info_utilisateur <id>`"
-    utilisateur_non_trouve: "User not found."
-    infos_utilisateur: "🔍 User info {id}:"
-    adresse_wallet: "Wallet address:"
-    erreur_generale: "Error: {erreur}"
-    usage_set_description: "Usage: /set_description <wallet_id> <new_description>"
-    description_maj: "✅ Description successfully updated."
+    # Language file for admin.py
 
+    # Access denied messages
+    access_denied: "Access denied. You are not authorized to use this command."
+
+    # Messages for liste_utilisateurs
+    no_users_found: "No users found in the database."
+    users_list_header: "List of registered users:"
+    user_id_label: "User ID"
+    language_label: "Language"
+    amount_deposited_label: "Amount Deposited"
+    registration_date_label: "Registration Date"
+    total_profit_label: "Total Profit"
+    last_update_label: "Last Update"
+    separator: "------------------------"
+    error_retrieving_users: "Error retrieving users: {error}"
+
+    # Messages for info_utilisateur
+    provide_user_id: "Please provide a user ID.\nUsage: /info_user <user_id>"
+    user_not_found: "User not found."
+    user_info_header: "Information for user ID {user_id}:"
+    wallet_address_label: "Wallet Address"
+    error_occurred: "An error occurred: {error}"
+
+    # Messages for set_description (commented but prepared)
+    set_description_usage: "Usage: /set_description <wallet_id> <new_description>"
+    description_updated: "Description updated successfully."
   depot:
-    demander_montant: "What amount would you like to deposit? (in USDT):"
-    instructions:
-      intro: "Thank you. To make a deposit of {montant} USDT, here is the information:"
-      adresse_wallet: "📥 Box wallet address: `0xDEPOTEXEMPLE123456789ABC`"
-      reseau: "🌐 Blockchain network: Binance Smart Chain (BSC)"
-    confirmer: "✅ Confirm"
-    annuler: "❌ Cancel"
-    admin_notification:
-      titre: "📥 [DEPOSIT INITIATED]"
-      utilisateur: "👤 User: {utilisateur}"
-      id: "🆔 Telegram ID: {id}"
-      montant: "💵 Declared amount: {montant} USDT"
+    # Language file for depot.py
 
-  support: "For live support, contact @m0x1mus."
+    # Messages for the depot function
+    investment_exists: "❌ You already have an ongoing investment, use /top_up instead"
+    enter_deposit_amount: "Please enter the USDT amount you want to deposit:"
 
-  liens_utiles: |
-    🔗 Useful links:
+    # Messages for recevoir_montant_depot
+    invalid_positive_amount: "❌ Please enter a valid positive amount. Try again:"
+    invalid_numeric_amount: "❌ Please enter a valid numeric amount. Try again:"
+    deposit_amount_confirm: "You want to deposit {amount} USDT.\n\nPlease send the amount to the following wallet address:\n\nUse the Binance Smart Chain (BEP20) blockchain network."
+    enter_transaction_hash: "Now, please enter the hash of your transaction to confirm the deposit:"
 
-    📊 CoinMarketCap: https://coinmarketcap.com
-    📈 CoinGecko: https://coingecko.com
-    💱 Binance: https://binance.com
-    🌐 Ethereum: https://ethereum.org
-    🔍 BSCScan: https://bscscan.com
-    ☀️ Solana: https://solana.com
+    # Messages for recevoir_hash_depot
+    btn_confirm: "✅ Confirm"
+    btn_cancel: "❌ Cancel"
+    admin_deposit_notification: "New deposit request:\nUser: {username}\nUser ID: {user_id}\nAmount: {amount} USDT\nTransaction Hash:"
+    deposit_request_processing: "✅ Your deposit request and transaction hash is currently being processed. You will be notified shortly."
+  globale:
+    # Language file for globale.py
 
-  a_propos: |
-    💼 Automated trading on Futures with TWB – Earn 20% weekly!
+    # Messages for the support function
+    support_message: "If you need support, please contact our team at @TWBLiveChat"
 
-    This advanced system trades for you and generates a 20% weekly return for 2 months or more, depending on your investment.
-    The best part? No lock-in!
-    Your funds stay flexible – withdraw your capital anytime, no restriction.
+    # Messages for liens_utiles
+    useful_links_header: "🔗 Useful links:"
+    coinmarketcap_link: "📊 CoinMarketCap: https://coinmarketcap.com"
+    coingecko_link: "📈 CoinGecko: https://coingecko.com"
+    binance_link: "💱 Binance: https://binance.com"
+    ethereum_link: "🌐 Ethereum: https://ethereum.org"
+    bscscan_link: "🔍 BSCScan: https://bscscan.com"
+    solana_link: "☀️ Solana: https://solana.com"
 
-    📌 How it works:
-    1️⃣ Deposit – Securely fund your account.
-    2️⃣ Wait 7 days – Let TWB do the work.
-    3️⃣ Withdraw profits – Enjoy steady returns without hassle.
+    # Messages for a_propos
+    about_us_header: "About us:"
+    about_title: "Automated Trading Futures and Earn 25% Weekly using TWB"
+    about_description: "This advanced system trades for you, generating 25% weekly returns on your principal for 2 months or longer—scalable based on your investment."
+    best_part_title: "Best Part? No Lock-In!"
+    best_part_description: "Your funds stay flexible—withdraw your principal anytime without restrictions."
+    how_it_works_title: "How It Works:"
+    step_1: "⿡ Deposit – Fund your account securely."
+    step_2: "⿢ Wait 7 Days – Let TWB work its magic."
+    step_3: "⿣ Withdraw Profits – Enjoy consistent, hassle-free earnings"
+  retraits:
+    # Language file for retraits.py
+    user_not_registered: "❌ You need to make a deposit before requesting a withdrawal."
+    no_benefits: "❌ You currently have no available benefits to withdraw."
+    database_error: "❌ Error while checking your status: {error}"
+    # Messages for the retrait function
+    enter_wallet_address: "Please enter your wallet address for the withdrawal:"
 
-  retrait:
-    demande_adresse: "Please enter your wallet address for the withdrawal:"
-    demande_reseau: "Thank you. Now select the blockchain network used:"
-    erreur: "An error occurred. Please try again."
-    adresse_invalide: "❌ The wallet address does not match the format of the selected network."
-    confirmation: "✅ Your request has been recorded. The admin will contact you soon."
-    admin_message: |
-      📤 [WITHDRAWAL]
-      👤 Username: {username}
-      🆔 Telegram ID: {telegram_id}
-      🔢 UDI: {udi}
-      💸 Binance deposit address: {binance_depot}
-      💰 Balance: {solde}
-      🔍 Wallet address: {adresse}
-      🌐 Blockchain network: {reseau}
+    # Messages for recevoir_adresse
+    invalid_input: "❌ Invalid input. Please try again."
+    select_blockchain_network: "Please select the blockchain network:"
 
-  depot_supplementaire:
-    non_enregistre: "❌ You must first register using /start to make your first deposit."
-    demande_montant: "💰 What additional amount would you like to deposit? (in USDT):"
-    montant_invalide: "❌ Please enter a valid amount (numbers only)."
-    instructions_utilisateur: |
-      Thank you. To make an additional deposit of {montant} USDT, here is the information:
-      📥 Box wallet address: `0xDEPOTEXEMPLE123456789ABC`
-      🌐 Blockchain network: Binance Smart Chain (BSC)
+    # Messages for recevoir_reseau
+    invalid_wallet_format: "❌ The wallet address format does not match the selected blockchain network."
+    withdrawal_request_received: "✅ Your withdrawal request has been received. Please wait a moment."
+    withdrawal_request_recorded: "✅ Your withdrawal request has been recorded."
 
-      Once the transfer is made, the admin will confirm your deposit.
-    bouton_confirmer: "✅ Confirm deposit"
-    bouton_annuler: "❌ Cancel"
-    message_admin: |
-      📥 [ADDITIONAL DEPOSIT INITIATED]
-      👤 User: {username}
-      🆔 Telegram ID: {telegram_id}
-      💵 Declared additional amount: {montant} USDT
-      ℹ️ User already registered
+    # Messages for admin
+    admin_withdrawal_header: "📤 [WITHDRAWAL]"
+    admin_username: "👤 Username: @{username}"
+    admin_telegram_id: "🆔 Telegram ID: {user_id}"
+    admin_udi: "🔢 UDI: {udi}"
+    admin_binance_deposit: "💸 Binance Deposit Address: {binance_depot}"
+    admin_balance: "💰 Balance: {balance}"
+    admin_available_amount: "💸 Available Amount: {available_amount}"
+    admin_wallet_address: "🔍 Wallet Address: {address}"
+    admin_blockchain_network: "🌐 Blockchain Network: {network}"
 
-  utilisateur:
-    enregistrement:
-      erreur: "❌ An error occurred during your registration."
-    infos:
-      titre: |
-        🆔 Your UDI number: {udi}
-        💼 Binance deposit address: {adresse_wallet}
-        💰 Balance: {solde}
-        📅 Registration date: {date_enregistrement}
-      non_enregistre: "📅 Registration date: not yet registered, please make an investment."
-    erreur:
-      get_infos: "❌ Unable to retrieve your information at the moment."
+    # Buttons for admin
+    btn_done: "✅ Done"
+    btn_not: "❌ Not"
+
+    # Messages for recevoir_hash_retrait
+    invalid_hash: "❌ Invalid hash. Please try again."
+    invalid_hash_format: "❌ Invalid hash format. The hash must start with '0x' and contain 64 hexadecimal characters."
+    user_not_found: "⚠️ Error: user not found."
+    withdrawal_processed: "✅ Your withdrawal of {montant}  has been successfully processed.\n\n🔗 Transaction hash:"
+    user_notified: "✅ The user has been notified with the transaction hash."
+    failed_notify_user: "⚠️ Failed to notify user: {error}"
+
+    # Messages for retrait_done
+    enter_transaction_hash: "✅ Please enter the transaction hash to confirm the withdrawal:"
+
+    # Messages for retrait_not
+    withdrawal_not_confirmed: "❌ Withdrawal was not confirmed."
+  store:
+    # Language file for store.py
+
+    # Product data
+    product_1_name: "Product 1"
+    product_1_description: "Product 1 description"
+    product_2_name: "Product 2"
+    product_2_description: "Product 2 description"
+    product_3_name: "Product 3"
+    product_3_description: "Product 3 description"
+    product_4_name: "Product 4"
+    product_4_description: "Product 4 description"
+    product_5_name: "Product 5"
+    product_5_description: "Product 5 description"
+    product_6_name: "Product 6"
+    product_6_description: "Product 6 description"
+    product_7_name: "Product 7"
+    product_7_description: "Product 7 description"
+    product_8_name: "Product "
+    product_8_description: "Product  description"
+    product_price_placeholder: "-- USDT"
+
+    # Messages for our_store
+    store_header: "🏪 **OUR STORE**"
+    store_intro: "Discover our selection of quality products!\nHere is our gallery of available products:"
+    gallery_caption: "🛍️ Here are our available products:"
+    store_footer_header: "📞 **CONTACT**"
+    store_footer_message: "For any questions or orders, please contact our support team!\n\n🔔 Stay tuned to discover our new products!"
+
+    # Messages for product details
+    product_price_label: "💰 Price: {price}"
+    product_separator: "━━━━━━━━━━━━━━━━━━━━"
+
+    # Buttons
+    btn_more_info: "💬 More info"
+    btn_order: "🛒 Order"
+    btn_order_now: "🛒 Order now"
+    btn_back_to_store: "⬅️ Back to store"
+    btn_contact_support: "📞 Contact support"
+
+    # Messages for gerer_callback_produit - Product info
+    detailed_description_header: "📝 **Detailed description:**"
+    price_header: "💰 **Price:** {price}"
+    features_header: "✅ **Features:**"
+    feature_premium_quality: "• Premium quality"
+    feature_fast_delivery: "• Fast delivery"
+    feature_warranty: "• Warranty included"
+    contact_more_info: "📞 Contact us for more information!"
+
+    # Messages for gerer_callback_produit - Order product
+    order_header: "🛒 **ORDER: {product_name}**"
+    order_instructions_header: "📞 **To complete your order:**"
+    order_step_1: "1. Contact our support"
+    order_step_2: "2. Specify the product"
+    order_step_3: "3. Confirm your delivery address"
+    order_confirmation: "✅ Our team will contact you shortly!"
+
+    # Messages for store return
+    back_to_store_message: "🏪 Back to the store...\n\nUse the **🏪 Our Store** command to view our products again."
+
+    # Messages for contact support
+    contact_support_header: "📞 **CONTACT SUPPORT**"
+    support_intro: "Our team is here to help you!"
+    support_email: "📧 Email: support@yourcompany.com"
+    support_telegram: "💬 Telegram: @your_support"
+    support_hours: "⏰ Hours: 9am–6pm (Mon–Fri)"
+    support_response: "We will get back to you as soon as possible!"
+  telegrame:
+    # telegrame.py - Language file for the Telegram bot
+
+    # Welcome and navigation messages
+    WELCOME_MESSAGE : "Welcome! To begin, use the commands to proceed."
+    OPERATION_CANCELLED : "❌ Operation cancelled."
+    PREVIOUS_OPERATION_CANCELLED : "❌ Previous operation cancelled. Starting new command: {command}"
+    ACTION_CANCELLED : "❌ Action cancelled."
+
+    # Automatic benefits system messages
+    BENEFITS_UPDATE_TITLE : "🎉 **Benefits Update!**"
+    NEW_BENEFITS : "💰 **New benefits:** {amount:.2f} USDT ({weeks} week(s))"
+    TOTAL_BENEFITS : "📈 **Total benefits:** {amount:.2f} USDT"
+    INITIAL_INVESTMENT : "💳 **Initial investment:** {amount:.2f} USDT"
+    WALLET_ADDRESS : "🏦 **Wallet address:** {address}"
+    WALLET_NOT_PROVIDED : "Not provided"
+    BENEFITS_ADDED_MESSAGE : "Your benefits have been automatically added to your account!"
+    JOIN_CHANNEL_MESSAGE : "Join our channel to stay informed: https://t.me/+c0mWuQVC6OEwMTM0"
+
+    # Admin messages for benefits
+    ADMIN_BENEFITS_UPDATE : "📊 **Automatic benefits update**"
+    ADMIN_USER_ID : "👤 **User ID:** {user_id}"
+    ADMIN_BENEFITS_ADDED : "💰 **Benefits added:** {amount:.2f} USDT"
+    ADMIN_NEW_TOTAL_BENEFITS : "📈 **New total benefits:** {amount:.2f} USDT"
+    ADMIN_INVESTMENT : "💳 **Investment:** {amount:.2f} USDT"
+    ADMIN_UPDATE_DATE : "🕒 **Update date:** {date}"
+    ADMIN_WEEKS_PROCESSED : "⏱️ **Weeks processed:** {weeks}"
+
+    # Deposit confirmation messages
+    EXISTING_INVESTMENT_ERROR : "❌ You already have an ongoing investment, use /top_up instead"
+    DEPOSIT_CONFIRMED_ADMIN : "✅ Deposit of {amount} USDT confirmed for user ID {user_id}."
+    DEPOSIT_CONFIRMED_USER : "✅ Your deposit of {amount} USDT has been successfully confirmed. Thank you!\nJoin our channel to stay updated with all the latest information:\nhttps://t.me/+c0mWuQVC6OEwMTM0"
+
+    # Main menu buttons
+    MENU_DEPOSIT : "💰 Deposit"
+    MENU_WITHDRAW : "💸 Withdraw"
+    MENU_TOP_UP : "📈 Top Up"
+    MENU_OUR_STORE : "🏪 Our Store"
+    MENU_MY_INFO : "👤 My Info"
+    MENU_MARKET_UPDATE : "📊 Market Update"
+    MENU_ABOUT : "ℹ️ About"
+    MENU_SUPPORT : "🆘 Support"
+
+    # Admin buttons
+    ADMIN_USER_LIST : "👥 User List"
+    ADMIN_USER_INFO : "🔍 User Info"
+
+    # Cancel button
+    CANCEL_BUTTON : "❌cancel"
+
+    # System log messages
+    LOG_STARTING_BENEFITS_SYSTEM : "🚀 Starting automatic benefits verification system..."
+    LOG_CHECKING_FREQUENCY : "⏰ Checking every 30 minutes, updating benefits every 7 days"
+    LOG_BENEFITS_UPDATED : "✅ Updated benefits for {count} user(s) at {time}"
+
+    # Error messages (for logs)
+    ERROR_USER_NOTIFICATION : "[User notification error]: {error}"
+    ERROR_ADMIN_NOTIFICATION : "[Admin notification error for user {user_id}]: {error}"
+    ERROR_USER_PROCESSING : "[User processing error {user_id}]: {error}"
+    ERROR_BENEFITS_VERIFICATION : "[Benefits verification error]: {error}"
+    ERROR_VERIFICATION_LOOP : "[Error in verification loop]: {error}"
+    ERROR_CALLBACK_ADMIN : "[Error] callback_query_handler_admin: {error}"
+
+    # Callback patterns
+    PATTERN_CONFIRM : "confirmer_"
+    PATTERN_CANCEL : "annuler"
+    PATTERN_WITHDRAWAL_DONE : "retrait_done_"
+    PATTERN_WITHDRAWAL_NOT : "retrait_not_"
+    PATTERN_PRODUCT_INFO : "info_produit_"
+    PATTERN_ORDER_PRODUCT : "commander_produit_"
+    PATTERN_STORE_RETURN : "retour_boutique"
+    PATTERN_CONTACT_SUPPORT : "contact_support"
+  update:
+    # update.py - Language file for the deposit update system
+    deposit_required: "❌ You must make a deposit before you can update your balance."
+    error_checking_deposit: "❌ An error occurred while checking your deposit."
+    # Additional deposit messages
+    MUST_REGISTER_FIRST : "❌ You must first register using /deposit before making a deposit."
+    BALANCE_UPDATE_NOT_PROFITABLE : "It would not be profitable for you to do this now. Please wait for the end of the cycle in {days} days."
+    BALANCE_UPDATE_WAIT : "Balance update is not possible today. Please wait {days} more days for the next update window."
+    BALANCE_UPDATE_ALLOWED : "Balance update is allowed."
+    REGISTRATION_DATE_NOT_FOUND : "Registration date not found."
+
+    ADDITIONAL_DEPOSIT_AMOUNT : "💰 How much more would you like to deposit? (in USDT):"
+    INVALID_AMOUNT_ERROR : "❌ Please enter a valid and positive amount (numbers only)."
+    AMOUNT_ERROR_RESTART : "❌ Error: Amount not found. Please restart the process."
+
+    # Additional deposit instruction messages
+    ADDITIONAL_DEPOSIT_INFO : "Thank you. To make an additional deposit of {amount:.2f} USDT, here is the information:\n📥 Platform wallet address in the next message:\n🌐 Blockchain network: Binance Smart Chain (BSC)\n\nOnce the transfer is completed, the admin will confirm your deposit."
+    HASH_REQUEST_MESSAGE : "Please now enter the hash of your transaction to confirm the additional deposit:"
+
+    # Processing messages
+    PROCESSING_REQUEST : "✅ Your additional deposit request and transaction hash is currently being processed. You will be notified shortly."
+    PROCESSING_ERROR : "❌ Error processing request. Please try again."
+
+    # Admin messages for additional deposit
+    ADMIN_ADDITIONAL_DEPOSIT_TITLE : "📥 [ADDITIONAL DEPOSIT INITIATED]"
+    ADMIN_USER_INFO : "👤 User: @{username}"
+    ADMIN_TELEGRAM_ID : "🆔 Telegram ID: {user_id}"
+    ADMIN_DECLARED_AMOUNT : "💵 Declared additional amount: {amount:.2f} USDT"
+    ADMIN_TRANSACTION_HASH : "🔗 Transaction Hash:"
+    ADMIN_USER_REGISTERED : "ℹ️ User already registered"
+
+    # Buttons for additional deposit
+    CONFIRM_DEPOSIT_BUTTON : "✅ Confirm deposit"
+    CANCEL_BUTTON_SUPP : "❌ Cancel"
+
+    # Admin confirmation messages
+    ADDITIONAL_DEPOSIT_CONFIRMED : "✅ Additional deposit of {amount:.2f} USDT confirmed for user {user_id}."
+    ADDITIONAL_DEPOSIT_CONFIRMED_USER : "✅ Your additional deposit of {amount:.2f} USDT has been successfully confirmed and added to your balance."
+    BALANCE_UPDATE_FAILED : "❌ Failed to update balance for user {user_id}. Please check the database."
+    ADDITIONAL_DEPOSIT_CANCELLED : "❌ Additional deposit cancelled"
+    INVALID_CONFIRMATION_DATA : "❌ Invalid confirmation data."
+
+    # Log messages for update
+    LOG_DATABASE_PATH : "[DEBUG] Using database at: {path}"
+    LOG_UPDATING_USER : "[DEBUG] Updating user_id: {user_id} with montant_ajoute: {amount}"
+    LOG_SQL_UPDATE : "[DEBUG] SQL: UPDATE users SET deposit_amount = {total} WHERE user_id = {user_id}"
+    LOG_BALANCE_SUCCESS : "[SUCCESS] Balance updated for user {user_id}: {current} + {added} = {total}"
+    LOG_USER_NOT_FOUND : "[ERROR] User {user_id} not found in database"
+    LOG_CALLBACK_DATA : "[DEBUG] Callback data received: {data}"
+    LOG_PARSED_PARTS : "[DEBUG] Parsed parts: {parts}"
+    LOG_CONFIRMING_DEPOSIT : "[DEBUG] Confirming deposit: user_id:{user_id}, amount:{amount}"
+    LOG_ADMIN_NOTIFICATION_SUCCESS : "[SUCCESS] Admin notification sent for user {user_id}"
+    LOG_ADMIN_NOTIFICATION_FAILED : "[ERROR] Failed to send admin notification: {error}"
+    LOG_USER_NOTIFIED : "[SUCCESS] User {user_id} notified of confirmed deposit"
+    LOG_USER_NOTIFICATION_FAILED : "[ERROR] Failed to notify user {user_id}: {error}"
+    LOG_DEPOSIT_CANCELLED : "[INFO] Additional deposit cancelled by admin"
+    LOG_INVALID_CONFIRMATION : "[ERROR] Invalid confirmation data: {error}"
+
+    # Test messages
+    LOG_TESTING_BALANCE : "[DEBUG] Testing balance update for user {user_id} with amount {amount}"
+    LOG_USER_DOES_NOT_EXIST : "[ERROR] User {user_id} does not exist"
+    LOG_TEST_SUCCESS : "[SUCCESS] Test balance update completed"
+    LOG_TEST_FAILED : "[ERROR] Test balance update failed"
+
+    # General errors
+    ERROR_GET_REGISTRATION_DATE : "[Error] get_user_registration_date: {error}"
+    ERROR_UPDATE_BALANCE : "[Error] update_balance: {error}"
+
+    # Callback patterns for update
+    PATTERN_CONFIRM_SUPP : "confir_supp_"
+    PATTERN_CANCEL_SUPP : "annuler_supp_"
+
+    # Conversation states
+    HASH_TRANSACTION_DEPOT_SUPPLEMENTAIRE : "hash_transaction_depot_supplementaire"
+  user:
+    # user.py - Language file for user management
+
+    # User information messages
+    USER_UDI_NUMBER : "🆔 Your UDI number: {udi}"
+    USER_BINANCE_ADDRESS : "💼 Binance deposit address: {address}"
+    USER_BALANCE : "💰 Balance: {balance}"
+    USER_REGISTRATION_DATE : "📅 Registration date: {date}"
+    user_benefice_hebdomadaire: "💳 Weekly profit: {benefice}"
+    user_benefice_total: "💸 Current profit: {benefice_total}"
+    # User status messages
+    USER_NOT_REGISTERED : "ℹ️ You are not registered yet. Please make an investment to get started."
+    USER_ADDRESS_NOT_REGISTERED : "Not registered"
+    USER_BALANCE_ZERO : "0 USDT"
+    USER_INFO_ERROR : "Error"
+
+    # Log messages for user
+    LOG_ERROR_REGISTER_USER : "[Error] register_user: {error}"
+    LOG_ERROR_GET_USER_INFO : "[Error] get_user_info: {error}"
+    LOG_ERROR_USER_EXISTS : "[Error] user_exists: {error}"
+    USER_NAME: "name: {nom}"
+    # Default language
+    DEFAULT_LANGUAGE : "en"

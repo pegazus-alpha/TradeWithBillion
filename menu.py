@@ -11,11 +11,12 @@ def get_menu_markup(user_id: int, langue: str=None):
         ["🆘 Support", "📊 Market Update"],
         ["👤 My Info", "ℹ️ About"],
         ["📈 Top Up", "🏪 Our Store"],
+        ["/cancel"]
     ]
     
     # Ajout des commandes admin uniquement si c'est l'admin
     if str(user_id) == ADMIN_ID:
         menu.append(["👥 User List", "🔍 User Info"])
-        menu.append(["📝 Set Description"])
+        # menu.append(["📝 Set Description"])
 
     return ReplyKeyboardMarkup(menu, resize_keyboard=True)
