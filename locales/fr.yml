@@ -72,6 +72,17 @@ fr:
     step_1: "⿡ Déposer – Financez votre compte en toute sécurité."
     step_2: "⿢ Attendre 7 Jours – Laissez TWB faire sa magie."
     step_3: "⿣ Retirer les Profits – Profitez de gains constants et sans tracas"
+  
+  parrainage:
+    title: "📊 *Parrainage - Résumé de vos gains*"
+    referrals: "👥 Filleuls"
+    level: "Niveau"
+    referrals_count: "filleuls"
+    commissions_received: "💵 Commissions reçues"
+    current_balance: "💰 *Solde Actuel*"
+
+  errors:
+    data_retrieval_error: "❌ Une erreur est survenue lors de la récupération de vos données."
 
   retraits:
     # Fichier de langue pour retraits.py
@@ -92,13 +103,14 @@ fr:
 
     # Messages pour l'admin
     admin_withdrawal_header: "📤 [RETRAIT]"
+    admin_withdrawal_header2: "📤 [RETRAIT Parrainage]"
     admin_username: "👤 Nom d'utilisateur : @{username}"
     admin_telegram_id: "🆔 ID Telegram : {user_id}"
     admin_udi: "🔢 UDI : {udi}"
     admin_binance_deposit: "💸 Adresse de Dépôt Binance : {binance_depot}"
     admin_balance: "💰 Solde : {balance}"
     admin_available_amount: "💸 Montant Disponible : {available_amount}"
-    admin_wallet_address: "🔍 Adresse de Portefeuille : {address}"
+    admin_wallet_address: "🔍 Adresse de Portefeuille :"
     admin_blockchain_network: "🌐 Réseau Blockchain : {network}"
 
     # Boutons pour l'admin
@@ -358,3 +370,18 @@ fr:
 
     # Langue par défaut
     default_language: "fr"
+
+  commissions:
+    notification_received: "🎉 Félicitations ! Vous avez reçu une commission de {montant} USDT (niveau {niveau}) grâce au dépôt d'un de vos filleuls."
+    withdrawal_available: "💰 Excellente nouvelle !\n\nVos commissions totales s'élèvent à {total} USDT.\nVous pouvez maintenant effectuer un retrait de vos commissions !\n\nUtilisez la commande appropriée pour procéder au retrait."
+
+  referral_system:
+    explanation: "🎯 *Fonctionnement du système de parrainage*\n\nNotre système de parrainage vous permet de gagner des commissions chaque fois qu'un utilisateur rejoint le bot avec votre lien et effectue un dépôt.\n\n🧩 *3 niveaux de parrainage* sont pris en compte :\n• 🔹 *Niveau 1* (vos filleuls directs) : 5%\n• 🔸 *Niveau 2* (les filleuls de vos filleuls) : 3%\n• ⚫ *Niveau 3* (les filleuls du niveau 2) : 2%\n\n📌 *Exemple :* Si votre filleul direct dépose 100 USDT, vous recevez 5 USDT.\nSi ce dernier parraine à son tour, vous continuez à gagner, automatiquement.\n\n💰 *Les gains sont cumulés dans votre solde de parrainage*, consultable à tout moment.\nVous pouvez demander un retrait dès que votre solde atteint 10 USDT.\n\n📨 Pour inviter des personnes, partagez simplement votre lien de parrainage que vous trouverez dans le menu principal."
+
+
+  notif:
+    demande: "✅ Votre demande de retrait   USDT a été enregistrée avec succès !\n"
+    address: "🪪 Adresse :"
+    reseau: "🔗 Réseau :"
+    texte: "❌Pour faire un retrait, Vous devez avoir un bonus de parrainage d'au moins 10 USDT.\n"
+    solde: "💰 Solde actuel :"

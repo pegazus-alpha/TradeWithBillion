@@ -14,8 +14,10 @@ load_dotenv()
 # Telegram Admin ID
 ADMIN_ID = os.getenv("ADMIN_ID")
 
-
-def enregistrer_utilisateur(user_id: int, montant: str = None, wallet: str = None, parrain_id: int = None, nom: str = None):
+async def create_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    await update.message.reply_text(f"t.me/TradeWithBillion_bot?start={user_id}")
+def enregistrer_utilisateur(user_id: int, montant: str = None, wallet: str = None, parrain_id: int = None, nom: str = "new user"):
     """Register or update a user in the database."""
    
     try:
@@ -39,13 +41,15 @@ def enregistrer_utilisateur(user_id: int, montant: str = None, wallet: str = Non
             if wallet is not None:
                 update_fields.append("adresse_wallet = ?")
                 update_values.append(wallet)
-            
+                
             if nom is not None:
                 update_fields.append("nom = ?")
                 update_values.append(nom)
             
             # Always update date_mise_a_jour when updating
             update_fields.append("date_mise_a_jour = ?")
+            update_values.append(registration_date)
+            update_fields.append("date_enregistrement = ?")
             update_values.append(registration_date)
             
             if update_fields:  # Only execute if there are fields to update

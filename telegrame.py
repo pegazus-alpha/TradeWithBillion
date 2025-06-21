@@ -20,7 +20,9 @@ from user import *
 from menu import *
 from etats import*
 from store import*
-
+from parrainage import*
+from menu_parrainage import*
+from retrait_parrainage import *
 # Import internationalization
 from lang import*
 import i18n
@@ -236,34 +238,68 @@ def create_universal_message_handler(handler_function):
     return wrapped_handler
 # ====== END OF UNIVERSAL SYSTEM ======
 
+# import sqlite3
+# from datetime import datetime
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    set_user_locale(update)
+
     user = update.effective_user
-    
+    args = context.args
+    parrain_id = 0
+    if args:
+        try:
+            parrain_id = int(args[0])
+            if parrain_id == user.id:
+                parrain_id = 0  # éviter que l'utilisateur se parraine lui-même
+        except:
+            parrain_id = 0  # sécurité si paramètre invalide
+
     # Set user locale and save language preference
     user_lang = set_user_locale(update)
-    
-    # Save user language preference in database
+
     try:
         conn = sqlite3.connect("bot.db")
         cursor = conn.cursor()
-        cursor.execute("""
-            UPDATE utilisateurs SET langue = ? WHERE user_id = ?
-        """, (user_lang, user.id))
-        if cursor.rowcount == 0:
-            # User doesn't exist, create basic record with language
+
+        # Vérifie si l'utilisateur existe déjà
+        cursor.execute("SELECT parrain_id FROM utilisateurs WHERE user_id = ?", (user.id,))
+        existing = cursor.fetchone()
+
+        if existing:
+            # Utilisateur existe : mise à jour de la langue uniquement
             cursor.execute("""
-                INSERT OR IGNORE INTO utilisateurs (user_id, langue) 
-                VALUES (?, ?)
-            """, (user.id, user_lang))
+                UPDATE utilisateurs SET langue = ? WHERE user_id = ?
+            """, (user_lang, user.id))
+        else:
+            # Vérifie que le parrain existe et que ce n'est pas une boucle (pas d'auto-parrainage)
+            if parrain_id != 0:
+                cursor.execute("SELECT 1 FROM utilisateurs WHERE user_id = ?", (parrain_id,))
+                if not cursor.fetchone():
+                    parrain_id = 0  # parrain non trouvé
+            else:
+                parrain_id=6154154748
+            # Enregistre le nouvel utilisateur avec parrain_id
+            cursor.execute("""
+                INSERT INTO utilisateurs (user_id, parrain_id, langue)
+                VALUES (?, ?, ?)
+            """, (
+                user.id,
+                parrain_id,
+                user_lang,
+            ))
+
         conn.commit()
+
     except Exception as e:
-        print(f"Error saving language preference: {e}")
+        print(f"Error saving user: {e}")
+
     finally:
         if 'conn' in locals():
             conn.close()
-    
+
     await update.message.reply_text(
-        f"{i18n.t('telegrame.WELCOME_MESSAGE',locale=user_lang)}",
+        f"{i18n.t('telegrame.WELCOME_MESSAGE', locale=user_lang)}",
         reply_markup=menu.get_menu_markup(user.id)
     )
     return ConversationHandler.END
@@ -302,15 +338,14 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
         finally:
             conn.close()
         
-        # Récupérer le nom depuis Telegram
+        # Récupérer le nom de l'utilisateur cible depuis Telegram
         nom = None
-                # Récupérer le nom depuis Telegram
-        nom = None
-        if query.from_user:
-            first = query.from_user.first_name or ""
-            last = query.from_user.last_name or ""
+        try:
+            user_info = await context.bot.get_chat(user_id)
+            first = user_info.first_name or ""
+            last = user_info.last_name or ""
             full_name = (first + " " + last).strip()
-            username = f"@{query.from_user.username}" if query.from_user.username else ""
+            username = f"@{user_info.username}" if user_info.username else ""
 
             if full_name:
                 nom = full_name
@@ -318,12 +353,12 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
                 nom = username
             else:
                 nom = f"Utilisateur_{user_id}"  # valeur de repli sûre
+        except Exception as e:
+            print(f"Erreur lors de la récupération des infos utilisateur: {e}")
+            nom = f"Utilisateur_{user_id}"  # valeur de repli sûre
 
         
-        if utilisateur_existe(user_id):
-            await query.edit_message_text(i18n.t('telegrame.EXISTING_INVESTMENT_ERROR'))
-        else:
-            enregistrer_utilisateur(user_id, montant, adresse_wallet, nom=nom)
+        enregistrer_utilisateur(user_id=user_id, montant=montant, wallet=None, nom=nom)
         admin_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_ADMIN').format(amount=montant, user_id=user_id)
         user_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_USER').format(amount=montant)
         await query.edit_message_text(admin_text)
@@ -344,6 +379,8 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
                     conn.close()
                    
             await context.bot.send_message(chat_id=user_id, text=user_text)
+            await attribuer_commissions(user_id=user_id,montant_depot= montant, bot=context.bot)
+
         except Exception as e:
             print(i18n.t('telegrame.ERROR_USER_NOTIFICATION').format(error=str(e)))
     elif data.startswith("annuler_"):
@@ -411,6 +448,11 @@ def main():
 
     conv_handler = ConversationHandler(
         entry_points=[
+            CommandHandler("referral_infos", parrainage_infos),
+            CommandHandler("referral_tuto", systeme_parrainage),
+            CommandHandler("referral_link", create_link),
+            CommandHandler("referral_withdraw", retrait_parrainage),
+
             CommandHandler('start', start),
             CommandHandler('withdraw', retrait),
             CommandHandler('deposit', depot),
@@ -427,6 +469,10 @@ def main():
             RESEAU_BLOCKCHAIN: [CallbackQueryHandler(recevoir_reseau)],
             MONTANT_DEPOT: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_montant_depot)],
             MONTANT_DEPOT_SUPPLEMENTAIRE: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_montant_depot_supplementaire)],
+            ADRESSE_PARRAINAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_adresse_parrainage)],
+            RESEAU_PARRAINAGE: [CallbackQueryHandler(recevoir_reseau_parrainage)],
+            SAISIE_HASH_RETRAIT2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait2)],
+
         },
         fallbacks=[
             CommandHandler('cancel', cancel_all_conversations),
@@ -451,7 +497,19 @@ def main():
     not_handler = CallbackQueryHandler(retrait_not, pattern=r"^retrait_not_\d+$")
     application.add_handler(not_handler)
 
-    
+    handler_retrait_parrainage = ConversationHandler(
+        entry_points=[CallbackQueryHandler(retrait_done2, pattern=r"^retrait_done2_\d+$")],
+        states={
+            SAISIE_HASH_RETRAIT2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait2)],
+        },
+        fallbacks=[
+            CommandHandler('cancel', cancel_all_conversations),
+            MessageHandler(filters.COMMAND, handle_command_interruption)
+        ],
+        )
+    application.add_handler(handler_retrait_parrainage)
+
+
     application.add_handler(CallbackQueryHandler(gerer_callback_produit, 
                                                pattern=r"^(info_produit_|commander_produit_|retour_boutique|contact_support)"))
 
@@ -463,6 +521,10 @@ def main():
     application.add_handler(MessageHandler(filters.Regex("^👥 User List$"), liste_utilisateurs))
     application.add_handler(MessageHandler(filters.Regex("^🔍 User Info$"), info_utilisateur))
     application.add_handler(MessageHandler(filters.Regex("^❌cancel$"), cancel_all_conversations))
+    application.add_handler(CommandHandler("referral_info", parrainage_infos))
+    application.add_handler(CommandHandler("tuto_referral", systeme_parrainage))
+    application.add_handler(CommandHandler("referal_link", create_link))
+
 
     # Start automatic benefits verification in background
     application.post_init = post_init
