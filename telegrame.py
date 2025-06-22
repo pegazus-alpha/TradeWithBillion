@@ -109,9 +109,9 @@ async def verifier_et_mettre_a_jour_benefices(application):
                     # Send notification to user with translation
                     message_utilisateur = f"""{i18n.t('BENEFITS_UPDATE_TITLE')}
 
-{i18n.t('telegrame.NEW_BENEFITS').format(amount=f"{nouveaux_benefices:.2f}", weeks=weeks_passees)}
-{i18n.t('telegrame.TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total:.2f}")}
-{i18n.t('telegrame.INITIAL_INVESTMENT').format(amount=f"{montant_depot:.2f}")}
+{i18n.t('telegrame.NEW_BENEFITS').format(amount=f"{nouveaux_benefices}", weeks=weeks_passees)}
+{i18n.t('telegrame.TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total}")}
+{i18n.t('telegrame.INITIAL_INVESTMENT').format(amount=f"{montant_depot}")}
 {i18n.t('telegrame.WALLET_ADDRESS').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
 Cycles complétés: {nouveau_cycle}/8
 
@@ -132,9 +132,9 @@ Cycles complétés: {nouveau_cycle}/8
                     message_admin = f"""{i18n.t('telegrame.ADMIN_BENEFITS_UPDATE')}
 
 {i18n.t('telegrame.ADMIN_USER_ID').format(user_id=user_id)}
-{i18n.t('telegrame.ADMIN_BENEFITS_ADDED').format(amount=f"{nouveaux_benefices:.2f}")}
-{i18n.t('telegrame.ADMIN_NEW_TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total:.2f}")}
-{i18n.t('telegrame.ADMIN_INVESTMENT').format(amount=f"{montant_depot:.2f}")}
+{i18n.t('telegrame.ADMIN_BENEFITS_ADDED').format(amount=f"{nouveaux_benefices}")}
+{i18n.t('telegrame.ADMIN_NEW_TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total}")}
+{i18n.t('telegrame.ADMIN_INVESTMENT').format(amount=f"{montant_depot}")}
 {i18n.t('telegrame.WALLET_ADDRESS').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
 {i18n.t('telegrame.ADMIN_UPDATE_DATE').format(date=nouvelle_date_maj)}
 {i18n.t('telegrame.ADMIN_WEEKS_PROCESSED').format(weeks=weeks_passees)}
