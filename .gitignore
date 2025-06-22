@@ -26,5 +26,5 @@ coverage/
 *.sqlite3
 
 # Ignore les fichiers .env de test/de développement
-!.env.*
+
 !.env.example
