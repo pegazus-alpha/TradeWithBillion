@@ -80,8 +80,8 @@ def get_infos_utilisateur(user_id: int) -> dict:
         cursor.execute("SELECT nom, adresse_wallet, montant_depot, date_enregistrement, benefice_total, cycle FROM utilisateurs WHERE user_id = ?", (user_id,))
         row = cursor.fetchone()
 
-        nom = row[0] if row and row[0] else f"{t('user.USER_NAME_NOT_REGISTERED')}"
-        adresse_wallet = row[1] if row and row[1] else f"{t('user.USER_ADDRESS_NOT_REGISTERED')}"
+        nom = row[0] if row and row[0] else f"{t('user.user_name_not_registered')}"
+        adresse_wallet = row[1] if row and row[1] else f"{t('user.user_address_not_registered')}"
         montant_depot = row[2] if row and row[2] else "0 USDT"
         date_enregistrement = row[3] if row and row[3] else None
         benefice_total = row[4] if row and row[4] else 0
@@ -91,10 +91,10 @@ def get_infos_utilisateur(user_id: int) -> dict:
         pourcentage_profit = 0.25 * cycle
         
     except Exception as e:
-        print(f"{t('user.LOG_ERROR_GET_USER_INFO').format(error=e)}")
-        nom = f"{t('user.USER_INFO_ERROR')}"
-        adresse_wallet = f"{t('user.USER_INFO_ERROR')}"
-        montant_depot = f"{t('user.USER_INFO_ERROR')}"
+        print(f"{t('user.log_error_get_user_info').format(error=e)}")
+        nom = f"{t('user.user_info_error')}"
+        adresse_wallet = f"{t('user.user_info_error')}"
+        montant_depot = f"{t('user.user_info_error')}"
         date_enregistrement = None
         benefice_total = 0
         cycle = 1
@@ -128,17 +128,17 @@ async def infos(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     if infos['date_enregistrement']:
         message = (
-            f"{t('user.USER_UDI_NUMBER').format(udi=infos['udi'])}\n"
-            f"👤 {t('user.USER_NAME').format(nom=infos['nom'])}\n"
-            f"{t('user.USER_BINANCE_ADDRESS').format(address=infos['binance_depot'])}\n"
-            f"{t('user.USER_BALANCE').format(balance=infos['solde'])}\n"
-            f"{t('user.USER_REGISTRATION_DATE').format(date=infos['date_enregistrement'])}\n"
+            f"{t('user.user_udi_number').format(udi=infos['udi'])}\n"
+            f"👤 {t('user.user_name').format(nom=infos['nom'])}\n"
+            f"{t('user.user_binance_address').format(address=infos['binance_depot'])}\n"
+            f"{t('user.user_balance').format(balance=infos['solde'])}\n"
+            f"{t('user.user_registration_date').format(date=infos['date_enregistrement'])}\n"
             f"{t('user.user_benefice_hebdomadaire').format(benefice=benef)}\n"
             f"{t('user.user_benefice_total').format(benefice_total=infos['benefice_total'])}\n"
             f"⏳ Pourcent profit: {infos['pourcentage_profit']*100:.1f}%\n"
         )
     else:
-        message = f"{t('user.USER_NOT_REGISTERED')}"
+        message = f"{t('user.user_not_registered')}"
 
     await update.message.reply_text(message, reply_markup=menu.get_menu_markup(user_id))
 
@@ -152,7 +152,7 @@ def utilisateur_existe(user_id: int) -> bool:
         row = cursor.fetchone()
         return row is not None
     except Exception as e:
-        print(f"{t('user.LOG_ERROR_USER_EXISTS').format(error=e)}")
+        print(f"{t('user.log_error_user_exists').format(error=e)}")
         return False
     finally:
         conn.close()
