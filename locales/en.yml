@@ -199,171 +199,171 @@ en:
     # telegrame.py - Language file for the Telegram bot
 
     # Welcome and navigation messages
-    WELCOME_MESSAGE : "Welcome! To begin, use the commands to proceed."
-    OPERATION_CANCELLED : "❌ Operation cancelled."
-    PREVIOUS_OPERATION_CANCELLED : "❌ Previous operation cancelled. Starting new command: {command}"
-    ACTION_CANCELLED : "❌ Action cancelled."
+    welcome_message: "Welcome! To begin, use the commands to proceed."
+    operation_cancelled: "❌ Operation cancelled."
+    previous_operation_cancelled: "❌ Previous operation cancelled. Starting new command: {command}"
+    action_cancelled: "❌ Action cancelled."
 
     # Automatic benefits system messages
-    BENEFITS_UPDATE_TITLE : "🎉 **Benefits Update!**"
-    NEW_BENEFITS : "💰 **New benefits:** {amount:.2f} USDT ({weeks} week(s))"
-    TOTAL_BENEFITS : "📈 **Total benefits:** {amount:.2f} USDT"
-    INITIAL_INVESTMENT : "💳 **Initial investment:** {amount:.2f} USDT"
-    WALLET_ADDRESS : "🏦 **Wallet address:** {address}"
-    WALLET_NOT_PROVIDED : "Not provided"
-    BENEFITS_ADDED_MESSAGE : "Your benefits have been automatically added to your account!"
-    JOIN_CHANNEL_MESSAGE : "Join our channel to stay informed: https://t.me/+c0mWuQVC6OEwMTM0"
+    benefits_update_title: "🎉 **Benefits Update!**"
+    new_benefits: "💰 **New benefits:** {amount:.2f} USDT ({weeks} week(s))"
+    total_benefits: "📈 **Total benefits:** {amount:.2f} USDT"
+    initial_investment: "💳 **Initial investment:** {amount:.2f} USDT"
+    wallet_address: "🏦 **Wallet address:** {address}"
+    wallet_not_provided: "Not provided"
+    benefits_added_message: "Your benefits have been automatically added to your account!"
+    join_channel_message: "Join our channel to stay informed: https://t.me/+c0mWuQVC6OEwMTM0"
 
     # Admin messages for benefits
-    ADMIN_BENEFITS_UPDATE : "📊 **Automatic benefits update**"
-    ADMIN_USER_ID : "👤 **User ID:** {user_id}"
-    ADMIN_BENEFITS_ADDED : "💰 **Benefits added:** {amount:.2f} USDT"
-    ADMIN_NEW_TOTAL_BENEFITS : "📈 **New total benefits:** {amount:.2f} USDT"
-    ADMIN_INVESTMENT : "💳 **Investment:** {amount:.2f} USDT"
-    ADMIN_UPDATE_DATE : "🕒 **Update date:** {date}"
-    ADMIN_WEEKS_PROCESSED : "⏱️ **Weeks processed:** {weeks}"
+    admin_benefits_update: "📊 **Automatic benefits update**"
+    admin_user_id: "👤 **User ID:** {user_id}"
+    admin_benefits_added: "💰 **Benefits added:** {amount:.2f} USDT"
+    admin_new_total_benefits: "📈 **New total benefits:** {amount:.2f} USDT"
+    admin_investment: "💳 **Investment:** {amount:.2f} USDT"
+    admin_update_date: "🕒 **Update date:** {date}"
+    admin_weeks_processed: "⏱️ **Weeks processed:** {weeks}"
 
     # Deposit confirmation messages
-    EXISTING_INVESTMENT_ERROR : "❌ You already have an ongoing investment, use /top_up instead"
-    DEPOSIT_CONFIRMED_ADMIN : "✅ Deposit of {amount} USDT confirmed for user ID {user_id}."
-    DEPOSIT_CONFIRMED_USER : "✅ Your deposit of {amount} USDT has been successfully confirmed. Thank you!\nJoin our channel to stay updated with all the latest information:\nhttps://t.me/+c0mWuQVC6OEwMTM0"
+    existing_investment_error: "❌ You already have an ongoing investment, use /top_up instead"
+    deposit_confirmed_admin: "✅ Deposit of {amount} USDT confirmed for user ID {user_id}."
+    deposit_confirmed_user: "✅ Your deposit of {amount} USDT has been successfully confirmed. Thank you!\nJoin our channel to stay updated with all the latest information:\nhttps://t.me/+c0mWuQVC6OEwMTM0"
 
     # Main menu buttons
-    MENU_DEPOSIT : "💰 Deposit"
-    MENU_WITHDRAW : "💸 Withdraw"
-    MENU_TOP_UP : "📈 Top Up"
-    MENU_OUR_STORE : "🏪 Our Store"
-    MENU_MY_INFO : "👤 My Info"
-    MENU_MARKET_UPDATE : "📊 Market Update"
-    MENU_ABOUT : "ℹ️ About"
-    MENU_SUPPORT : "🆘 Support"
+    menu_deposit: "💰 Deposit"
+    menu_withdraw: "💸 Withdraw"
+    menu_top_up: "📈 Top Up"
+    menu_our_store: "🏪 Our Store"
+    menu_my_info: "👤 My Info"
+    menu_market_update: "📊 Market Update"
+    menu_about: "ℹ️ About"
+    menu_support: "🆘 Support"
 
     # Admin buttons
-    ADMIN_USER_LIST : "👥 User List"
-    ADMIN_USER_INFO : "🔍 User Info"
+    admin_user_list: "👥 User List"
+    admin_user_info: "🔍 User Info"
 
     # Cancel button
-    CANCEL_BUTTON : "❌cancel"
+    cancel_button: "❌cancel"
 
     # System log messages
-    LOG_STARTING_BENEFITS_SYSTEM : "🚀 Starting automatic benefits verification system..."
-    LOG_CHECKING_FREQUENCY : "⏰ Checking every 30 minutes, updating benefits every 7 days"
-    LOG_BENEFITS_UPDATED : "✅ Updated benefits for {count} user(s) at {time}"
+    log_starting_benefits_system: "🚀 Starting automatic benefits verification system..."
+    log_checking_frequency: "⏰ Checking every 30 minutes, updating benefits every 7 days"
+    log_benefits_updated: "✅ Updated benefits for {count} user(s) at {time}"
 
     # Error messages (for logs)
-    ERROR_USER_NOTIFICATION : "[User notification error]: {error}"
-    ERROR_ADMIN_NOTIFICATION : "[Admin notification error for user {user_id}]: {error}"
-    ERROR_USER_PROCESSING : "[User processing error {user_id}]: {error}"
-    ERROR_BENEFITS_VERIFICATION : "[Benefits verification error]: {error}"
-    ERROR_VERIFICATION_LOOP : "[Error in verification loop]: {error}"
-    ERROR_CALLBACK_ADMIN : "[Error] callback_query_handler_admin: {error}"
+    error_user_notification: "[User notification error]: {error}"
+    error_admin_notification: "[Admin notification error for user {user_id}]: {error}"
+    error_user_processing: "[User processing error {user_id}]: {error}"
+    error_benefits_verification: "[Benefits verification error]: {error}"
+    error_verification_loop: "[Error in verification loop]: {error}"
+    error_callback_admin: "[Error] callback_query_handler_admin: {error}"
 
     # Callback patterns
-    PATTERN_CONFIRM : "confirmer_"
-    PATTERN_CANCEL : "annuler"
-    PATTERN_WITHDRAWAL_DONE : "retrait_done_"
-    PATTERN_WITHDRAWAL_NOT : "retrait_not_"
-    PATTERN_PRODUCT_INFO : "info_produit_"
-    PATTERN_ORDER_PRODUCT : "commander_produit_"
-    PATTERN_STORE_RETURN : "retour_boutique"
-    PATTERN_CONTACT_SUPPORT : "contact_support"
+    pattern_confirm: "confirmer_"
+    pattern_cancel: "annuler"
+    pattern_withdrawal_done: "retrait_done_"
+    pattern_withdrawal_not: "retrait_not_"
+    pattern_product_info: "info_produit_"
+    pattern_order_product: "commander_produit_"
+    pattern_store_return: "retour_boutique"
+    pattern_contact_support: "contact_support"
   update:
     # update.py - Language file for the deposit update system
     deposit_required: "❌ You must make a deposit before you can update your balance."
     error_checking_deposit: "❌ An error occurred while checking your deposit."
     # Additional deposit messages
-    MUST_REGISTER_FIRST : "❌ You must first register using /deposit before making a deposit."
-    BALANCE_UPDATE_NOT_PROFITABLE : "It would not be profitable for you to do this now. Please wait for the end of the cycle in {days} days."
-    BALANCE_UPDATE_WAIT : "Balance update is not possible today. Please wait {days} more days for the next update window."
-    BALANCE_UPDATE_ALLOWED : "Balance update is allowed."
-    REGISTRATION_DATE_NOT_FOUND : "Registration date not found."
+    must_register_first: "❌ You must first register using /deposit before making a deposit."
+    balance_update_not_profitable: "It would not be profitable for you to do this now. Please wait for the end of the cycle in {days} days."
+    balance_update_wait: "Balance update is not possible today. Please wait {days} more days for the next update window."
+    balance_update_allowed: "Balance update is allowed."
+    registration_date_not_found: "Registration date not found."
 
-    ADDITIONAL_DEPOSIT_AMOUNT : "💰 How much more would you like to deposit? (in USDT):"
-    INVALID_AMOUNT_ERROR : "❌ Please enter a valid and positive amount (numbers only)."
-    AMOUNT_ERROR_RESTART : "❌ Error: Amount not found. Please restart the process."
+    additional_deposit_amount: "💰 How much more would you like to deposit? (in USDT):"
+    invalid_amount_error: "❌ Please enter a valid and positive amount (numbers only)."
+    amount_error_restart: "❌ Error: Amount not found. Please restart the process."
 
     # Additional deposit instruction messages
-    ADDITIONAL_DEPOSIT_INFO : "Thank you. To make an additional deposit of {amount:.2f} USDT, here is the information:\n📥 Platform wallet address in the next message:\n🌐 Blockchain network: Binance Smart Chain (BSC)\n\nOnce the transfer is completed, the admin will confirm your deposit."
-    HASH_REQUEST_MESSAGE : "Please now enter the hash of your transaction to confirm the additional deposit:"
+    additional_deposit_info: "Thank you. To make an additional deposit of {amount:.2f} USDT, here is the information:\n📥 Platform wallet address in the next message:\n🌐 Blockchain network: Binance Smart Chain (BSC)\n\nOnce the transfer is completed, the admin will confirm your deposit."
+    hash_request_message: "Please now enter the hash of your transaction to confirm the additional deposit:"
 
     # Processing messages
-    PROCESSING_REQUEST : "✅ Your additional deposit request and transaction hash is currently being processed. You will be notified shortly."
-    PROCESSING_ERROR : "❌ Error processing request. Please try again."
+    processing_request: "✅ Your additional deposit request and transaction hash is currently being processed. You will be notified shortly."
+    processing_error: "❌ Error processing request. Please try again."
 
     # Admin messages for additional deposit
-    ADMIN_ADDITIONAL_DEPOSIT_TITLE : "📥 [ADDITIONAL DEPOSIT INITIATED]"
-    ADMIN_USER_INFO : "👤 User: @{username}"
-    ADMIN_TELEGRAM_ID : "🆔 Telegram ID: {user_id}"
-    ADMIN_DECLARED_AMOUNT : "💵 Declared additional amount: {amount:.2f} USDT"
-    ADMIN_TRANSACTION_HASH : "🔗 Transaction Hash:"
-    ADMIN_USER_REGISTERED : "ℹ️ User already registered"
+    admin_additional_deposit_title: "📥 [ADDITIONAL DEPOSIT INITIATED]"
+    admin_user_info: "👤 User: @{username}"
+    admin_telegram_id: "🆔 Telegram ID: {user_id}"
+    admin_declared_amount: "💵 Declared additional amount: {amount:.2f} USDT"
+    admin_transaction_hash: "🔗 Transaction Hash:"
+    admin_user_registered: "ℹ️ User already registered"
 
     # Buttons for additional deposit
-    CONFIRM_DEPOSIT_BUTTON : "✅ Confirm deposit"
-    CANCEL_BUTTON_SUPP : "❌ Cancel"
+    confirm_deposit_button: "✅ Confirm deposit"
+    cancel_button_supp: "❌ Cancel"
 
     # Admin confirmation messages
-    ADDITIONAL_DEPOSIT_CONFIRMED : "✅ Additional deposit of {amount:.2f} USDT confirmed for user {user_id}."
-    ADDITIONAL_DEPOSIT_CONFIRMED_USER : "✅ Your additional deposit of {amount:.2f} USDT has been successfully confirmed and added to your balance."
-    BALANCE_UPDATE_FAILED : "❌ Failed to update balance for user {user_id}. Please check the database."
-    ADDITIONAL_DEPOSIT_CANCELLED : "❌ Additional deposit cancelled"
-    INVALID_CONFIRMATION_DATA : "❌ Invalid confirmation data."
+    additional_deposit_confirmed: "✅ Additional deposit of {amount:.2f} USDT confirmed for user {user_id}."
+    additional_deposit_confirmed_user: "✅ Your additional deposit of {amount:.2f} USDT has been successfully confirmed and added to your balance."
+    balance_update_failed: "❌ Failed to update balance for user {user_id}. Please check the database."
+    additional_deposit_cancelled: "❌ Additional deposit cancelled"
+    invalid_confirmation_data: "❌ Invalid confirmation data."
 
     # Log messages for update
-    LOG_DATABASE_PATH : "[DEBUG] Using database at: {path}"
-    LOG_UPDATING_USER : "[DEBUG] Updating user_id: {user_id} with montant_ajoute: {amount}"
-    LOG_SQL_UPDATE : "[DEBUG] SQL: UPDATE users SET deposit_amount = {total} WHERE user_id = {user_id}"
-    LOG_BALANCE_SUCCESS : "[SUCCESS] Balance updated for user {user_id}: {current} + {added} = {total}"
-    LOG_USER_NOT_FOUND : "[ERROR] User {user_id} not found in database"
-    LOG_CALLBACK_DATA : "[DEBUG] Callback data received: {data}"
-    LOG_PARSED_PARTS : "[DEBUG] Parsed parts: {parts}"
-    LOG_CONFIRMING_DEPOSIT : "[DEBUG] Confirming deposit: user_id:{user_id}, amount:{amount}"
-    LOG_ADMIN_NOTIFICATION_SUCCESS : "[SUCCESS] Admin notification sent for user {user_id}"
-    LOG_ADMIN_NOTIFICATION_FAILED : "[ERROR] Failed to send admin notification: {error}"
-    LOG_USER_NOTIFIED : "[SUCCESS] User {user_id} notified of confirmed deposit"
-    LOG_USER_NOTIFICATION_FAILED : "[ERROR] Failed to notify user {user_id}: {error}"
-    LOG_DEPOSIT_CANCELLED : "[INFO] Additional deposit cancelled by admin"
-    LOG_INVALID_CONFIRMATION : "[ERROR] Invalid confirmation data: {error}"
+    log_database_path: "[DEBUG] Using database at: {path}"
+    log_updating_user: "[DEBUG] Updating user_id: {user_id} with montant_ajoute: {amount}"
+    log_sql_update: "[DEBUG] SQL: UPDATE users SET deposit_amount = {total} WHERE user_id = {user_id}"
+    log_balance_success: "[SUCCESS] Balance updated for user {user_id}: {current} + {added} = {total}"
+    log_user_not_found: "[ERROR] User {user_id} not found in database"
+    log_callback_data: "[DEBUG] Callback data received: {data}"
+    log_parsed_parts: "[DEBUG] Parsed parts: {parts}"
+    log_confirming_deposit: "[DEBUG] Confirming deposit: user_id:{user_id}, amount:{amount}"
+    log_admin_notification_success: "[SUCCESS] Admin notification sent for user {user_id}"
+    log_admin_notification_failed: "[ERROR] Failed to send admin notification: {error}"
+    log_user_notified: "[SUCCESS] User {user_id} notified of confirmed deposit"
+    log_user_notification_failed: "[ERROR] Failed to notify user {user_id}: {error}"
+    log_deposit_cancelled: "[INFO] Additional deposit cancelled by admin"
+    log_invalid_confirmation: "[ERROR] Invalid confirmation data: {error}"
 
     # Test messages
-    LOG_TESTING_BALANCE : "[DEBUG] Testing balance update for user {user_id} with amount {amount}"
-    LOG_USER_DOES_NOT_EXIST : "[ERROR] User {user_id} does not exist"
-    LOG_TEST_SUCCESS : "[SUCCESS] Test balance update completed"
-    LOG_TEST_FAILED : "[ERROR] Test balance update failed"
+    log_testing_balance: "[DEBUG] Testing balance update for user {user_id} with amount {amount}"
+    log_user_does_not_exist: "[ERROR] User {user_id} does not exist"
+    log_test_success: "[SUCCESS] Test balance update completed"
+    log_test_failed: "[ERROR] Test balance update failed"
 
     # General errors
-    ERROR_GET_REGISTRATION_DATE : "[Error] get_user_registration_date: {error}"
-    ERROR_UPDATE_BALANCE : "[Error] update_balance: {error}"
+    error_get_registration_date: "[Error] get_user_registration_date: {error}"
+    error_update_balance: "[Error] update_balance: {error}"
 
     # Callback patterns for update
-    PATTERN_CONFIRM_SUPP : "confir_supp_"
-    PATTERN_CANCEL_SUPP : "annuler_supp_"
+    pattern_confirm_supp: "confir_supp_"
+    pattern_cancel_supp: "annuler_supp_"
 
     # Conversation states
-    HASH_TRANSACTION_DEPOT_SUPPLEMENTAIRE : "hash_transaction_depot_supplementaire"
+    hash_transaction_depot_supplementaire: "hash_transaction_depot_supplementaire"
   user:
     # user.py - Language file for user management
 
     # User information messages
-    USER_UDI_NUMBER : "🆔 Your UDI number: {udi}"
-    USER_BINANCE_ADDRESS : "💼 Binance deposit address: {address}"
-    USER_BALANCE : "💰 Balance: {balance}"
-    USER_REGISTRATION_DATE : "📅 Registration date: {date}"
+    user_udi_number: "🆔 Your UDI number: {udi}"
+    user_binance_address: "💼 Binance deposit address: {address}"
+    user_balance: "💰 Balance: {balance}"
+    user_registration_date: "📅 Registration date: {date}"
     user_benefice_hebdomadaire: "💳 Weekly profit: {benefice}"
     user_benefice_total: "💸 Current profit: {benefice_total}"
     # User status messages
-    USER_NOT_REGISTERED : "ℹ️ You are not registered yet. Please make an investment to get started."
-    USER_ADDRESS_NOT_REGISTERED : "Not registered"
-    USER_BALANCE_ZERO : "0 USDT"
-    USER_INFO_ERROR : "Error"
+    user_not_registered: "ℹ️ You are not registered yet. Please make an investment to get started."
+    user_address_not_registered: "Not registered"
+    user_balance_zero: "0 USDT"
+    user_info_error: "Error"
 
     # Log messages for user
-    LOG_ERROR_REGISTER_USER : "[Error] register_user: {error}"
-    LOG_ERROR_GET_USER_INFO : "[Error] get_user_info: {error}"
-    LOG_ERROR_USER_EXISTS : "[Error] user_exists: {error}"
-    USER_NAME: "name: {nom}"
+    log_error_register_user: "[Error] register_user: {error}"
+    log_error_get_user_info: "[Error] get_user_info: {error}"
+    log_error_user_exists: "[Error] user_exists: {error}"
+    user_name: "name: {nom}"
     # Default language
-    DEFAULT_LANGUAGE : "en"
+    default_language: "en"
 
   commissions:
     notification_received: "🎉 Congratulations! You received a commission of {montant} USDT (level {niveau}) thanks to a deposit from one of your referrals."
