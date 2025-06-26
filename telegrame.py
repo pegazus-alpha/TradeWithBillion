@@ -107,37 +107,37 @@ async def verifier_et_mettre_a_jour_benefices(application):
                     users_updated += 1
                     
                     # Send notification to user with translation
-                    message_utilisateur = f"""{i18n.t('BENEFITS_UPDATE_TITLE')}
+                    message_utilisateur = f"""{i18n.t('benefits_update_title')}
 
-{i18n.t('telegrame.NEW_BENEFITS').format(amount=f"{nouveaux_benefices}", weeks=weeks_passees)}
-{i18n.t('telegrame.TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total}")}
-{i18n.t('telegrame.INITIAL_INVESTMENT').format(amount=f"{montant_depot}")}
-{i18n.t('telegrame.WALLET_ADDRESS').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
+{i18n.t('telegrame.new_benefits').format(amount=nouveaux_benefices, weeks=weeks_passees)}
+{i18n.t('telegrame.total_benefits').format(amount=nouveau_benefice_total)}
+{i18n.t('telegrame.initial_investment').format(amount=montant_depot)}
+{i18n.t('telegrame.wallet_address').format(address=adresse_wallet or i18n.t('telegrame.wallet_not_provided'))}
 Cycles complétés: {nouveau_cycle}/8
 
-{i18n.t('telegrame.BENEFITS_ADDED_MESSAGE')}
-{i18n.t('telegrame.JOIN_CHANNEL_MESSAGE')}"""
+{i18n.t('telegrame.benefits_added_message')}
+{i18n.t('telegrame.join_channel_message')}"""
                     
                     # Add cycle completion message if 8 cycles reached
                     if nouveau_cycle >= 8:
-                        message_utilisateur += f"\n\n🎉 Félicitations! Vous avez complété tous vos 8 cycles d'investissement!"
+                        message_utilisateur += f"\n\n🎉 Félicitations! Vous avez terminé tous votre investissement!"
                     
                     try:
                         await application.bot.send_message(chat_id=user_id, text=message_utilisateur)
                     except Exception as e:
-                        print(i18n.t('telegrame.ERROR_USER_NOTIFICATION').format(error=str(e)))
+                        print(i18n.t('telegrame.error_user_notification').format(error=str(e)))
                     
                     # Send notification to admin (always in English for admin)
                     # i18n.set('locale', 'en')
-                    message_admin = f"""{i18n.t('telegrame.ADMIN_BENEFITS_UPDATE')}
+                    message_admin = f"""{i18n.t('telegrame.admin_benefits_update')}
 
-{i18n.t('telegrame.ADMIN_USER_ID').format(user_id=user_id)}
-{i18n.t('telegrame.ADMIN_BENEFITS_ADDED').format(amount=f"{nouveaux_benefices}")}
-{i18n.t('telegrame.ADMIN_NEW_TOTAL_BENEFITS').format(amount=f"{nouveau_benefice_total}")}
-{i18n.t('telegrame.ADMIN_INVESTMENT').format(amount=f"{montant_depot}")}
-{i18n.t('telegrame.WALLET_ADDRESS').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
-{i18n.t('telegrame.ADMIN_UPDATE_DATE').format(date=nouvelle_date_maj)}
-{i18n.t('telegrame.ADMIN_WEEKS_PROCESSED').format(weeks=weeks_passees)}
+{i18n.t('telegrame.admin_user_id').format(user_id=user_id)}
+{i18n.t('telegrame.admin_benefits_added').format(amount=nouveaux_benefices)}
+{i18n.t('telegrame.admin_new_total_benefits').format(amount=nouveau_benefice_total)}
+{i18n.t('telegrame.admin_investment').format(amount=montant_depot)}
+{i18n.t('telegrame.wallet_address').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
+{i18n.t('telegrame.admin_update_date').format(date=nouvelle_date_maj)}
+{i18n.t('telegrame.admin_weeks_processed').format(weeks=weeks_passees)}
 Cycles: {nouveau_cycle}/8"""
                     
                     # Add admin message if 8 cycles completed
@@ -147,21 +147,21 @@ Cycles: {nouveau_cycle}/8"""
                     try:
                         await application.bot.send_message(chat_id=ADMIN_ID, text=message_admin)
                     except Exception as e:
-                        print(i18n.t('telegrame.ERROR_ADMIN_NOTIFICATION').format(user_id=user_id, error=str(e)))
+                        print(i18n.t('telegrame.error_admin_notification').format(user_id=user_id, error=str(e)))
                         
             except Exception as e:
-                print(i18n.t('telegrame.ERROR_USER_PROCESSING').format(user_id=user_id, error=str(e)))
+                print(i18n.t('telegrame.error_user_processing').format(user_id=user_id, error=str(e)))
                 continue
         
         # Only commit if there were updates
         if users_updated > 0:
             conn.commit()
             i18n.set('locale', 'en')  # Reset to English for logs
-            print(i18n.t('telegrame.LOG_BENEFITS_UPDATED').format(count=users_updated, time=date_actuelle.strftime('%H:%M:%S')))
+            print(i18n.t('telegrame.log_benefits_updated').format(count=users_updated, time=date_actuelle.strftime('%H:%M:%S')))
         
     except Exception as e:
         i18n.set('locale', 'en')
-        print(i18n.t('telegrame.ERROR_BENEFITS_VERIFICATION').format(error=str(e)))
+        print(i18n.t('telegrame.error_benefits_verification').format(error=str(e)))
     finally:
         if 'conn' in locals():
             conn.close()
@@ -169,21 +169,21 @@ Cycles: {nouveau_cycle}/8"""
 async def demarrer_verification_benefices(application):
     """Starts periodic benefits verification - checks every 30 minutes"""
     i18n.set('locale', 'en')  # System messages in English
-    print(i18n.t('telegrame.LOG_STARTING_BENEFITS_SYSTEM'))
-    print(i18n.t('telegrame.LOG_CHECKING_FREQUENCY'))
+    print(i18n.t('telegrame.log_starting_benefits_system'))
+    print(i18n.t('telegrame.log_checking_frequency'))
     
     while True:
         try:
             # Run benefits check every 30 minutes
             await verifier_et_mettre_a_jour_benefices(application)
             
-            # Wait 30 minutes (1800 seconds) before next verification
-            await asyncio.sleep(1800)
+            # Wait 5 minutes (300 seconds) before next verification
+            await asyncio.sleep(300)
             
         except Exception as e:
-            print(i18n.t('telegrame.ERROR_VERIFICATION_LOOP').format(error=str(e)))
-            # In case of error, wait 5 minutes before retrying
-            await asyncio.sleep(300)
+            print(i18n.t('telegrame.error_verification_loop').format(error=str(e)))
+            # In case of error, wait 2 minutes before retrying
+            await asyncio.sleep(120)
 
 # ====== END OF AUTOMATIC BENEFITS SYSTEM ======
 
@@ -199,7 +199,7 @@ async def cancel_all_conversations(update: Update, context: ContextTypes.DEFAULT
     
     # Set user locale for proper translation
     set_user_locale(update)
-    await update.message.reply_text(i18n.t('telegrame.OPERATION_CANCELLED'), reply_markup=get_menu_markup(user_id))
+    await update.message.reply_text(i18n.t('telegrame.operation_cancelled'), reply_markup=get_menu_markup(user_id))
     return ConversationHandler.END
 
 def is_command_while_in_conversation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> bool:
@@ -224,9 +224,9 @@ async def handle_command_interruption(update: Update, context: ContextTypes.DEFA
     set_user_locale(update)
     
     if command == '/cancel':
-        await update.message.reply_text(i18n.t('telegrame.OPERATION_CANCELLED'), reply_markup=get_menu_markup(user_id))
+        await update.message.reply_text(i18n.t('telegrame.operation_cancelled'), reply_markup=get_menu_markup(user_id))
     else:
-        await update.message.reply_text(i18n.t('telegrame.PREVIOUS_OPERATION_CANCELLED').format(command=command), reply_markup=get_menu_markup(user_id))
+        await update.message.reply_text(i18n.t('telegrame.previous_operation_cancelled').format(command=command), reply_markup=get_menu_markup(user_id))
     return ConversationHandler.END
 
 def create_universal_message_handler(handler_function):
@@ -299,7 +299,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             conn.close()
 
     await update.message.reply_text(
-        f"{i18n.t('telegrame.WELCOME_MESSAGE', locale=user_lang)}",
+        f"{i18n.t('telegrame.welcome_message', locale=user_lang)}",
         reply_markup=menu.get_menu_markup(user.id)
     )
     return ConversationHandler.END
@@ -334,7 +334,7 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
             row = cursor.fetchone()
             adresse_wallet = row[0] if row else None
         except Exception as e:
-            print(i18n.t('telegrame.ERROR_CALLBACK_ADMIN').format(error=str(e)))
+            print(i18n.t('telegrame.error_callback_admin').format(error=str(e)))
         finally:
             conn.close()
         
@@ -359,8 +359,8 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
 
         
         enregistrer_utilisateur(user_id=user_id, montant=montant, wallet=None, nom=nom)
-        admin_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_ADMIN').format(amount=montant, user_id=user_id)
-        user_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_USER').format(amount=montant)
+        admin_text = i18n.t('telegrame.deposit_confirmed_admin').format(amount=montant, user_id=user_id)
+        user_text = i18n.t('telegrame.deposit_confirmed_user').format(amount=montant)
         await query.edit_message_text(admin_text)
         try:
             # Set locale for the target user
@@ -371,7 +371,7 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
                 lang_row = cursor.fetchone()
                 target_user_lang = lang_row[0] if lang_row and lang_row[0] else 'en'
                 i18n.set('locale', target_user_lang)
-                user_text = i18n.t('telegrame.DEPOSIT_CONFIRMED_USER').format(amount=montant)
+                user_text = i18n.t('telegrame.deposit_confirmed_user').format(amount=montant)
             except:
                 pass
             finally:
@@ -382,13 +382,13 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
             await attribuer_commissions(user_id=user_id,montant_depot= montant, bot=context.bot)
 
         except Exception as e:
-            print(i18n.t('telegrame.ERROR_USER_NOTIFICATION').format(error=str(e)))
+            print(i18n.t('telegrame.error_user_notification').format(error=str(e)))
     elif data.startswith("annuler_"):
         parts = data.split("_")
         if len(parts) == 2:
             try:
                 user_id = int(parts[1])
-                await query.edit_message_text(i18n.t('telegrame.ACTION_CANCELLED'))
+                await query.edit_message_text(i18n.t('telegrame.action_cancelled'))
                 print(f"[INFO] Annulation confirmée pour l'utilisateur {user_id}")
                 # Déterminer la langue de l'utilisateur
                 try:
@@ -406,19 +406,19 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
                 # Envoyer la notification à l'utilisateur
                 await context.bot.send_message(
                     chat_id=user_id,
-                    text=i18n.t('telegrame.ACTION_CANCELLED'),
+                    text=i18n.t('telegrame.action_cancelled'),
                     reply_markup=get_menu_markup(user_id)
                 )
                 print(f"[INFO] Notification d'annulation envoyée à l'utilisateur {user_id}")
             except Exception as e:
-                print(i18n.t('telegrame.ERROR_USER_NOTIFICATION').format(error=str(e)))
+                print(i18n.t('telegrame.error_user_notification').format(error=str(e)))
         else:
             print("[ERREUR] Format du callback_data invalide pour annulation.")
 
 async def annuler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     set_user_locale(update)
-    await update.message.reply_text(i18n.t('telegrame.OPERATION_CANCELLED'), reply_markup=get_menu_markup(user.id))
+    await update.message.reply_text(i18n.t('telegrame.operation_cancelled'), reply_markup=get_menu_markup(user.id))
     return ConversationHandler.END
 
 async def post_init(application):
