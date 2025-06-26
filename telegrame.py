@@ -107,7 +107,7 @@ async def verifier_et_mettre_a_jour_benefices(application):
                     users_updated += 1
                     
                     # Send notification to user with translation
-                    message_utilisateur = f"""{i18n.t('benefits_update_title')}
+                    message_utilisateur = f"""{i18n.t('telegrame.benefits_update_title')}
 
 {i18n.t('telegrame.new_benefits').format(amount=nouveaux_benefices, weeks=weeks_passees)}
 {i18n.t('telegrame.total_benefits').format(amount=nouveau_benefice_total)}
@@ -135,7 +135,7 @@ Cycles complétés: {nouveau_cycle}/8
 {i18n.t('telegrame.admin_benefits_added').format(amount=nouveaux_benefices)}
 {i18n.t('telegrame.admin_new_total_benefits').format(amount=nouveau_benefice_total)}
 {i18n.t('telegrame.admin_investment').format(amount=montant_depot)}
-{i18n.t('telegrame.wallet_address').format(address=adresse_wallet or i18n.t('WALLET_NOT_PROVIDED'))}
+{i18n.t('telegrame.wallet_address').format(address=adresse_wallet or i18n.t('telegrame.wallet_not_provided'))}
 {i18n.t('telegrame.admin_update_date').format(date=nouvelle_date_maj)}
 {i18n.t('telegrame.admin_weeks_processed').format(weeks=weeks_passees)}
 Cycles: {nouveau_cycle}/8"""
