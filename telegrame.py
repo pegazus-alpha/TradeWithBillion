@@ -177,13 +177,13 @@ async def demarrer_verification_benefices(application):
             # Run benefits check every 30 minutes
             await verifier_et_mettre_a_jour_benefices(application)
             
-            # Wait 5 minutes (300 seconds) before next verification
-            await asyncio.sleep(300)
+            # Wait 10 minutes (600 seconds) before next verification
+            await asyncio.sleep(600)
             
         except Exception as e:
             print(i18n.t('telegrame.error_verification_loop').format(error=str(e)))
-            # In case of error, wait 2 minutes before retrying
-            await asyncio.sleep(120)
+            # In case of error, wait 5 minutes before retrying
+            await asyncio.sleep(300)
 
 # ====== END OF AUTOMATIC BENEFITS SYSTEM ======
 
