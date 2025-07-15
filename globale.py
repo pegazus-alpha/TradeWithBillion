@@ -1,3 +1,11 @@
+'''
+Author: pegazus-alpha pourdebutantp@gmail.com
+Date: 2025-06-12 11:40:28
+LastEditors: pegazus-alpha pourdebutantp@gmail.com
+LastEditTime: 2025-07-16 00:27:49
+FilePath: \telegram_bot\globale.py
+Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+'''
 
 import sqlite3
 import os
@@ -8,6 +16,7 @@ import i18n
 from lang import*  # Assure-toi d’avoir ce fichier
 import menu
 from etats import *
+from user import utilisateur_bloque
 
 load_dotenv()
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
@@ -17,13 +26,24 @@ ADMIN_ID = int(os.getenv("ADMIN_ID"))
 #     return update.effective_user.langue or "en"
 
 async def support(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
     user = update.effective_user
     lang = get_user_lang(update)
+    if utilisateur_bloque(user.id):
+        await update.message.reply_text(
+            i18n.t("user.log_error_user_bloque")
+        )
+        return
     msg = i18n.t("globale.support_message", locale=lang)
     await update.message.reply_text(msg, reply_markup=menu.get_menu_markup(user.id))
 
 async def liens_utiles(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
+    if utilisateur_bloque(user_id):
+        await update.message.reply_text(
+            i18n.t("user.log_error_user_bloque")
+        )
+        return
     lang = get_user_lang(update)
     message = "\n".join([
         i18n.t("globale.useful_links_header", locale=lang),

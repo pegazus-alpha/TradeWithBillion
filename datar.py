@@ -15,7 +15,8 @@ def init_db():
             date_enregistrement TEXT,
             adresse_wallet TEXT,
             date_mise_a_jour TEXT,
-            cycle INTEGER DEFAULT 0
+            cycle INTEGER DEFAULT 0,
+            statut TEXT
         )
     """)
     cursor.execute("""
@@ -27,6 +28,16 @@ def init_db():
             reseau TEXT,
             montant FLOAT,
             date_retrait TEXT
+        )
+    """)
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS depot (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            username TEXT,
+            adresse TEXT,
+            montant FLOAT,
+            date_depot TEXT
         )
     """)
     cursor.execute("""

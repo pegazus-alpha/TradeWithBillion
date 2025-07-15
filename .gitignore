@@ -24,7 +24,7 @@ coverage/
 # Si tu utilises une base SQLite locale
 *.sqlite
 *.sqlite3
-
+bot.db
 # Ignore les fichiers .env de test/de développement
 
 !.env.example

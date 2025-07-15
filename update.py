@@ -12,7 +12,7 @@ from telegram.ext import (
     ContextTypes, ConversationHandler, CallbackQueryHandler
 )
 from menu import *
-from user import utilisateur_existe
+from user import utilisateur_existe, utilisateur_bloque
 from etats import*
 import i18n
 from lang import *
@@ -121,6 +121,12 @@ async def depot_supplementaire(update: Update, context: ContextTypes.DEFAULT_TYP
             reply_markup=get_menu_markup(user_id)
         )
         return ConversationHandler.END
+    if utilisateur_bloque(user_id):
+        await update.message.reply_text(
+            i18n.t("user.log_error_user_bloque"),
+            reply_markup=get_menu_markup(user_id)
+        )
+        return
     can_update, message = can_update_balance(user_id)
     if not can_update:
         await update.message.reply_text(

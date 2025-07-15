@@ -4,7 +4,7 @@ import re
 from dotenv import load_dotenv
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes, ConversationHandler
-from user import get_infos_utilisateur
+from user import *
 import menu
 from etats import *
 from lang import*
@@ -17,6 +17,11 @@ RETRAIT_EN_ATTENTE = {}
 async def retrait(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     set_user_locale(update)
     user = update.effective_user
+    if utilisateur_bloque(user.id):
+        await update.message.reply_text(
+            i18n.t("user.log_error_user_bloque")
+        )
+        return
 
     try:
         conn = sqlite3.connect("bot.db")

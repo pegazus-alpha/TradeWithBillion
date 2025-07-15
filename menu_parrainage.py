@@ -1,3 +1,4 @@
+
 import asyncio
 from telegram import Bot, BotCommand, MenuButtonCommands,Update
 from telegram.constants import ParseMode
@@ -5,6 +6,8 @@ from telegram.ext import Application,ContextTypes
 import sqlite3
 from lang import *
 from i18n import t
+
+from user import utilisateur_bloque
 
 # Remplace ceci par le token de ton bot
 BOT_TOKEN = "TON_TOKEN_ICI"
@@ -15,6 +18,11 @@ async def parrainage_infos(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     conn = sqlite3.connect("bot.db")
     cursor = conn.cursor()
+    if utilisateur_bloque(user_id):
+        await update.message.reply_text(
+            i18n.t("user.log_error_user_bloque")
+        )
+        return
 
     try:
         # Récupérer le bénéfice total

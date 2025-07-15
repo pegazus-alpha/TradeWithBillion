@@ -366,6 +366,7 @@ fr:
     log_error_register_user: "[Erreur] enregistrer_utilisateur : {error}"
     log_error_get_user_info: "[Erreur] get_infos_utilisateur : {error}"
     log_error_user_exists: "[Erreur] utilisateur_existe : {error}"
+    log_error_user_bloque: "Un problème est survenu"
     USER_NAME: "nom: {nom}"
 
     # Langue par défaut

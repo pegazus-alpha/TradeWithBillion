@@ -156,3 +156,16 @@ def utilisateur_existe(user_id: int) -> bool:
         return False
     finally:
         conn.close()
+def utilisateur_bloque(user_id: int) -> bool:
+    """Check if a user is bloqué in the database."""
+    try:
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        cursor.execute("SELECT statut FROM utilisateurs WHERE user_id = ?", (user_id,))
+        row = cursor.fetchone()
+        return row is not None
+    except Exception as e:
+        print(f"{t('user.log_error_user_bloque').format(error=e)}")
+        return False
+    finally:
+        conn.close()

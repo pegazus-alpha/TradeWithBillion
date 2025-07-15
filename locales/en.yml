@@ -361,6 +361,7 @@ en:
     log_error_register_user: "[Error] register_user: {error}"
     log_error_get_user_info: "[Error] get_user_info: {error}"
     log_error_user_exists: "[Error] user_exists: {error}"
+    log_error_user_bloque: "something wrong"
     user_name: "name: {nom}"
     # Default language
     default_language: "en"

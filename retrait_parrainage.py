@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 from etats import *
 from lang import*
 import i18n
+
+from user import utilisateur_bloque
 load_dotenv()
 
 
@@ -21,7 +23,11 @@ async def retrait_parrainage(update: Update, context: ContextTypes.DEFAULT_TYPE)
     user = update.effective_user
     conn = sqlite3.connect("bot.db")
     cursor = conn.cursor()
-
+    if utilisateur_bloque(user.id):
+        await update.message.reply_text(
+            i18n.t("user.log_error_user_bloque")
+        )
+        return
     try:
         cursor.execute("SELECT commissions_totales FROM utilisateurs WHERE user_id = ?", (user.id,))
         row = cursor.fetchone()

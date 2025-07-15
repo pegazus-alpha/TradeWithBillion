@@ -11,6 +11,7 @@ import sqlite3
 import i18n
 from lang import*
 from etats import *
+from user import utilisateur_bloque
 
 load_dotenv()
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
@@ -44,7 +45,7 @@ def check_user_deposit_status(user_id):
         conn.close()
         
         # Si l'utilisateur n'existe pas, il peut faire un dépôt
-        if result is None:
+        if result is None or utilisateur_bloque(user_id):
             return True
         
         # Si l'utilisateur existe, vérifier si montant_depot = 0
