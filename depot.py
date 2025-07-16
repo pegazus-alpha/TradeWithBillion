@@ -45,7 +45,7 @@ def check_user_deposit_status(user_id):
         conn.close()
         
         # Si l'utilisateur n'existe pas, il peut faire un dépôt
-        if result is None or utilisateur_bloque(user_id):
+        if result is None (user_id):
             return True
         
         # Si l'utilisateur existe, vérifier si montant_depot = 0
@@ -58,7 +58,12 @@ def check_user_deposit_status(user_id):
 async def depot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     user = update.effective_user
     lang = get_user_lang(update)
-
+    if utilisateur_bloque(user.id):
+        await update.message.reply_text(
+            i18n.t("depot.investment_exists", locale=lang)
+        )
+        return
+    
     # Vérifier si l'utilisateur peut faire un dépôt
     if not check_user_deposit_status(user.id):
         await update.message.reply_text(
