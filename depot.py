@@ -45,7 +45,7 @@ def check_user_deposit_status(user_id):
         conn.close()
         
         # Si l'utilisateur n'existe pas, il peut faire un dépôt
-        if result is None (user_id):
+        if result is None:
             return True
         
         # Si l'utilisateur existe, vérifier si montant_depot = 0
