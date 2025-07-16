@@ -60,9 +60,9 @@ async def depot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     lang = get_user_lang(update)
     if utilisateur_bloque(user.id):
         await update.message.reply_text(
-            i18n.t("depot.investment_exists", locale=lang)
+            i18n.t("user.log", locale=lang)
         )
-        return
+        return ConversationHandler.END
     
     # Vérifier si l'utilisateur peut faire un dépôt
     if not check_user_deposit_status(user.id):
