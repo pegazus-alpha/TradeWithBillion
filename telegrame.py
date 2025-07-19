@@ -428,6 +428,8 @@ async def post_init(application):
     """Démarre les tâches après l'initialisation de l'application"""
     asyncio.create_task(demarrer_verification_benefices(application))
 
+# Remplacez la partie des handlers à la fin de votre fonction main() par ceci :
+
 def main():
     application = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()
     init_db()
@@ -443,19 +445,20 @@ def main():
         pass
     finally:
         conn.close()
-        
-    application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^confirmer_\d+_\d+"))
-    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^confir_supp_\d+_\d+"))
+    
+    # Handlers pour les confirmations de dépôt (doivent être ajoutés en premier)
+    application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^confirmer_\d+_\d+$"))
+    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^confir_supp_\d+_\d+$"))
     application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^annuler_\d+$"))
-    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^annuler_supp_\d+_$"))
+    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^annuler_supp_\d+$"))
 
+    # Handler principal pour les conversations (dépôts, retraits normaux)
     conv_handler = ConversationHandler(
         entry_points=[
             CommandHandler("referral_infos", parrainage_infos),
             CommandHandler("referral_tuto", systeme_parrainage),
             CommandHandler("referral_link", create_link),
             CommandHandler("referral_withdraw", retrait_parrainage),
-
             CommandHandler('start', start),
             CommandHandler('withdraw', retrait),
             CommandHandler('deposit', depot),
@@ -475,30 +478,15 @@ def main():
             ADRESSE_PARRAINAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_adresse_parrainage)],
             RESEAU_PARRAINAGE: [CallbackQueryHandler(recevoir_reseau_parrainage)],
             SAISIE_HASH_RETRAIT2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait2)],
-            MODE_PAIEMENT: [
-            CallbackQueryHandler(recevoir_mode_paiement, pattern="^mode_(usdt|local)$")],
-            # Nouveau : Choix du pays (pour paiement local)
+            MODE_PAIEMENT: [CallbackQueryHandler(recevoir_mode_paiement, pattern="^mode_(usdt|local)$")],
             CHOIX_PAYS: [CallbackQueryHandler(recevoir_pays, pattern="^pays_")],
             CHOIX_OPERATEUR: [CallbackQueryHandler(recevoir_operateur, pattern="^op_")],
-            
-            # Nouveau : Saisie du numéro mobile (pour paiement local)
-            NUMERO_MOBILE: [MessageHandler(filters.TEXT & ~filters.COMMAND,recevoir_numero_mobile)],
-            
-            # Nouveau : Saisie du nom utilisateur (pour paiement local)
+            NUMERO_MOBILE: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_numero_mobile)],
             NOM_UTILISATEUR: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_nom_utilisateur)],
-            # Nouveau : Saisie image paiement local
-            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local)],
-            # Nouveau : Choix du pays (pour paiement local)
             CHOIX_PAYS2: [CallbackQueryHandler(recevoir_pays_parrainage, pattern="^pays_")],
-            # Nouveau : Choix de l'opérateur (pour paiement local)
             CHOIX_OPERATEUR2: [CallbackQueryHandler(recevoir_operateur_parrainage, pattern="^op_")],
-            # Nouveau : Saisie du numéro mobile (pour paiement local)
             NUMERO_MOBILE2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_numero_mobile_parrainage)],
-            # Nouveau : Saisie du nom utilisateur (pour paiement local)
             NOM_UTILISATEUR2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_nom_utilisateur_parrainage)],
-            # Nouveau : Saisie image paiement local
-            SAISIE_IMAGE_PAIEMENT_LOCAL2: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
-
         },
         fallbacks=[
             CommandHandler('cancel', cancel_all_conversations),
@@ -507,10 +495,12 @@ def main():
     )
     application.add_handler(conv_handler)
 
+    # Handler pour les retraits normaux (admin confirme le retrait)
     admin_conv_handler = ConversationHandler(
         entry_points=[CallbackQueryHandler(retrait_done, pattern=r"^retrait_done_\d+$")],
         states={
             SAISIE_HASH_RETRAIT: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait)],
+            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
         },
         fallbacks=[
             CommandHandler('cancel', cancel_all_conversations),
@@ -518,27 +508,29 @@ def main():
         ],
     )
     application.add_handler(admin_conv_handler)
-    
 
-    not_handler = CallbackQueryHandler(retrait_not, pattern=r"^retrait_not_\d+$")
-    application.add_handler(not_handler)
-
+    # Handler pour les retraits de parrainage (admin confirme le retrait parrainage)
     handler_retrait_parrainage = ConversationHandler(
         entry_points=[CallbackQueryHandler(retrait_done2, pattern=r"^retrait_done2_\d+$")],
         states={
             SAISIE_HASH_RETRAIT2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait2)],
+            SAISIE_IMAGE_PAIEMENT_LOCAL2: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local)],
         },
         fallbacks=[
             CommandHandler('cancel', cancel_all_conversations),
             MessageHandler(filters.COMMAND, handle_command_interruption)
         ],
-        )
+    )
     application.add_handler(handler_retrait_parrainage)
 
+    # Handler pour les refus de retrait (doit être ajouté séparément)
+    application.add_handler(CallbackQueryHandler(retrait_not, pattern=r"^retrait_not_\d+$"))
 
+    # Handlers pour la boutique
     application.add_handler(CallbackQueryHandler(gerer_callback_produit, 
                                                pattern=r"^(info_produit_|commander_produit_|retour_boutique|contact_support)"))
 
+    # Handlers pour les messages du menu
     application.add_handler(MessageHandler(filters.Regex("^🏪 Our Store$"), our_store))
     application.add_handler(MessageHandler(filters.Regex("^👤 My Info$"), infos))
     application.add_handler(MessageHandler(filters.Regex("^📊 Market Update$"), liens_utiles))
@@ -547,10 +539,11 @@ def main():
     application.add_handler(MessageHandler(filters.Regex("^👥 User List$"), liste_utilisateurs))
     application.add_handler(MessageHandler(filters.Regex("^🔍 User Info$"), info_utilisateur))
     application.add_handler(MessageHandler(filters.Regex("^❌cancel$"), cancel_all_conversations))
+    
+    # Commands handlers supplémentaires
     application.add_handler(CommandHandler("referral_info", parrainage_infos))
     application.add_handler(CommandHandler("tuto_referral", systeme_parrainage))
     application.add_handler(CommandHandler("referal_link", create_link))
-
 
     # Start automatic benefits verification in background
     application.post_init = post_init
