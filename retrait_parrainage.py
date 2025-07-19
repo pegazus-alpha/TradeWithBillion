@@ -244,7 +244,7 @@ import i18n
 load_dotenv()
 
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
-RETRAIT_EN_ATTENTE = {}
+# RETRAIT_EN_ATTENTE = {}
 
 # Nouveaux états pour le processus de retrait
 # MODE_PAIEMENT, CHOIX_PAYS, CHOIX_OPERATEUR, NUMERO_MOBILE, NOM_UTILISATEUR = range(5, 10)

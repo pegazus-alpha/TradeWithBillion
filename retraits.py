@@ -155,7 +155,7 @@
 #         await update.message.reply_text(i18n.t("retraits.invalid_hash_format"))
 #         return SAISIE_HASH_RETRAIT
 
-#     admin_id = update.effective_user.id
+#     ADMINID = update.effective_user.id
 #     user_id = RETRAIT_EN_ATTENTE.get(admin_id)
 
 #     if not user_id:
@@ -250,7 +250,7 @@ import i18n
 load_dotenv()
 
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
-RETRAIT_EN_ATTENTE = {}
+# RETRAIT_EN_ATTENTE = {}
 
 # Nouveaux états pour le processus de retrait
 # MODE_PAIEMENT, CHOIX_PAYS, CHOIX_OPERATEUR, NUMERO_MOBILE, NOM_UTILISATEUR = range(5, 10)
@@ -571,8 +571,11 @@ async def recevoir_hash_retrait(update: Update, context: ContextTypes.DEFAULT_TY
     admin_id = update.effective_user.id
     user_id = RETRAIT_EN_ATTENTE.get(admin_id)
 
+    print(f"DEBUG: admin_id={admin_id}, user_id from dict={user_id}")
+    print(f"DEBUG: RETRAIT_EN_ATTENTE={RETRAIT_EN_ATTENTE}")
+
     if not user_id:
-        await update.message.reply_text(i18n.t("retraits.user_not_found"))
+        await update.message.reply_text(f"❌ Utilisateur non trouvé. Admin ID: {admin_id}, Dict: {RETRAIT_EN_ATTENTE}")
         return ConversationHandler.END
 
     montant = 0
@@ -633,8 +636,11 @@ async def recevoir_image_paiement_local(update: Update, context: ContextTypes.DE
     admin_id = update.effective_user.id
     user_id = RETRAIT_EN_ATTENTE.get(admin_id)
 
+    print(f"DEBUG PAIEMENT LOCAL: admin_id={admin_id}, user_id from dict={user_id}")
+    print(f"DEBUG PAIEMENT LOCAL: RETRAIT_EN_ATTENTE={RETRAIT_EN_ATTENTE}")
+
     if not user_id:
-        await update.message.reply_text("❌ Utilisateur non trouvé.")
+        await update.message.reply_text(f"❌ Utilisateur non trouvé. Admin ID: {admin_id}, Dict: {RETRAIT_EN_ATTENTE}")
         return ConversationHandler.END
 
     # Récupérer le montant depuis la table retraits_locaux
@@ -681,6 +687,7 @@ async def recevoir_image_paiement_local(update: Update, context: ContextTypes.DE
             if 'conn' in locals():
                 conn.close()
         
+        # Supprimer l'entrée du dictionnaire
         RETRAIT_EN_ATTENTE.pop(admin_id, None)
     except Exception as e:
         await update.message.reply_text(f"❌ Erreur lors de la notification de l'utilisateur: {e}")
@@ -693,11 +700,26 @@ async def retrait_done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> in
     await query.answer()
 
     data = query.data
-    user_id = int(data.split("_")[-1])
-    RETRAIT_EN_ATTENTE[update.effective_user.id] = user_id
-
-    await query.message.reply_text(i18n.t("retraits.enter_transaction_hash"))
-    return SAISIE_HASH_RETRAIT
+    print(f"DEBUG RETRAIT_DONE: callback_data = {data}")
+    
+    try:
+        user_id = int(data.split("_")[-1])
+        admin_id = update.effective_user.id
+        
+        print(f"DEBUG RETRAIT_DONE: user_id extracted = {user_id}, admin_id = {admin_id}")
+        
+        # Stocker dans le dictionnaire avec l'ID de l'admin comme clé
+        RETRAIT_EN_ATTENTE[admin_id] = user_id
+        
+        print(f"DEBUG RETRAIT_DONE: RETRAIT_EN_ATTENTE après ajout = {RETRAIT_EN_ATTENTE}")
+        
+        await query.message.reply_text(i18n.t("retraits.enter_transaction_hash"))
+        return SAISIE_HASH_RETRAIT
+        
+    except (ValueError, IndexError) as e:
+        print(f"ERROR RETRAIT_DONE: {e}")
+        await query.message.reply_text("❌ Erreur lors de l'extraction de l'ID utilisateur")
+        return ConversationHandler.END
 
 async def retrait_local_done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     set_user_locale(update)
@@ -705,11 +727,26 @@ async def retrait_local_done(update: Update, context: ContextTypes.DEFAULT_TYPE)
     await query.answer()
 
     data = query.data
-    user_id = int(data.split("_")[-1])
-    RETRAIT_EN_ATTENTE[update.effective_user.id] = user_id
-
-    await query.message.reply_text("📷 Veuillez envoyer une image de confirmation du paiement mobile money :")
-    return SAISIE_IMAGE_PAIEMENT_LOCAL
+    print(f"DEBUG RETRAIT_LOCAL_DONE: callback_data = {data}")
+    
+    try:
+        user_id = int(data.split("_")[-1])
+        admin_id = update.effective_user.id
+        
+        print(f"DEBUG RETRAIT_LOCAL_DONE: user_id extracted = {user_id}, admin_id = {admin_id}")
+        
+        # Stocker dans le dictionnaire avec l'ID de l'admin comme clé
+        RETRAIT_EN_ATTENTE[admin_id] = user_id
+        
+        print(f"DEBUG RETRAIT_LOCAL_DONE: RETRAIT_EN_ATTENTE après ajout = {RETRAIT_EN_ATTENTE}")
+        
+        await query.message.reply_text("📷 Veuillez envoyer une image de confirmation du paiement mobile money :")
+        return SAISIE_IMAGE_PAIEMENT_LOCAL
+        
+    except (ValueError, IndexError) as e:
+        print(f"ERROR RETRAIT_LOCAL_DONE: {e}")
+        await query.message.reply_text("❌ Erreur lors de l'extraction de l'ID utilisateur")
+        return ConversationHandler.END
 
 async def retrait_not(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     set_user_locale(update)

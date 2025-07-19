@@ -500,7 +500,7 @@ def main():
         entry_points=[CallbackQueryHandler(retrait_done, pattern=r"^retrait_done_\d+$")],
         states={
             SAISIE_HASH_RETRAIT: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait)],
-            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
+            # SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
         },
         fallbacks=[
             CommandHandler('cancel', cancel_all_conversations),
@@ -508,6 +508,18 @@ def main():
         ],
     )
     application.add_handler(admin_conv_handler)
+    admin_conv_handler2 = ConversationHandler(
+        entry_points=[CallbackQueryHandler(retrait_local_done, pattern=r"^retrait_local_done_\d+$")],
+        states={
+            # SAISIE_HASH_RETRAIT: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait)],
+            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
+        },
+        fallbacks=[
+            CommandHandler('cancel', cancel_all_conversations),
+            MessageHandler(filters.COMMAND, handle_command_interruption)
+        ],
+    )
+    application.add_handler(admin_conv_handler2)
 
     # Handler pour les retraits de parrainage (admin confirme le retrait parrainage)
     handler_retrait_parrainage = ConversationHandler(
