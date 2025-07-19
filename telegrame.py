@@ -359,7 +359,7 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
 
         
         enregistrer_utilisateur(user_id=user_id, montant=montant, wallet=None, nom=nom)
-        enregistrer_depot(user_id=user_id, user_name=nom, addresse=HASH_TRANSACTION_DEPOT,montant=montant)
+        enregistrer_depot(user_id=user_id, username=nom, addresse=HASH_TRANSACTION_DEPOT,montant=montant)
 
         admin_text = i18n.t('telegrame.deposit_confirmed_admin').format(amount=montant, user_id=user_id)
         user_text = i18n.t('telegrame.deposit_confirmed_user').format(amount=montant)
