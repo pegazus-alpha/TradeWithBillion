@@ -277,8 +277,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 cursor.execute("SELECT 1 FROM utilisateurs WHERE user_id = ?", (parrain_id,))
                 if not cursor.fetchone():
                     parrain_id = 0  # parrain non trouvé
-            else:
-                parrain_id=6154154748
+            # else:
+            #     parrain_id=0
             # Enregistre le nouvel utilisateur avec parrain_id
             cursor.execute("""
                 INSERT INTO utilisateurs (user_id, parrain_id, langue)
@@ -359,6 +359,8 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
 
         
         enregistrer_utilisateur(user_id=user_id, montant=montant, wallet=None, nom=nom)
+        enregistrer_depot(user_id=user_id, user_name=nom, addresse=HASH_TRANSACTION_DEPOT,montant=montant)
+
         admin_text = i18n.t('telegrame.deposit_confirmed_admin').format(amount=montant, user_id=user_id)
         user_text = i18n.t('telegrame.deposit_confirmed_user').format(amount=montant)
         await query.edit_message_text(admin_text)
@@ -380,6 +382,7 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
                    
             await context.bot.send_message(chat_id=user_id, text=user_text)
             await attribuer_commissions(user_id=user_id,montant_depot= montant, bot=context.bot)
+
 
         except Exception as e:
             print(i18n.t('telegrame.error_user_notification').format(error=str(e)))
@@ -472,6 +475,29 @@ def main():
             ADRESSE_PARRAINAGE: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_adresse_parrainage)],
             RESEAU_PARRAINAGE: [CallbackQueryHandler(recevoir_reseau_parrainage)],
             SAISIE_HASH_RETRAIT2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait2)],
+            MODE_PAIEMENT: [
+            CallbackQueryHandler(retrait.recevoir_mode_paiement, pattern="^mode_(usdt|local)$")],
+            # Nouveau : Choix du pays (pour paiement local)
+            CHOIX_PAYS: [CallbackQueryHandler(retrait.recevoir_pays, pattern="^pays_")],
+            CHOIX_OPERATEUR: [CallbackQueryHandler(retrait.recevoir_operateur, pattern="^op_")],
+            
+            # Nouveau : Saisie du numéro mobile (pour paiement local)
+            NUMERO_MOBILE: [MessageHandler(filters.TEXT & ~filters.COMMAND, retrait.recevoir_numero_mobile)],
+            
+            # Nouveau : Saisie du nom utilisateur (pour paiement local)
+            NOM_UTILISATEUR: [MessageHandler(filters.TEXT & ~filters.COMMAND, retrait.recevoir_nom_utilisateur)],
+            # Nouveau : Saisie image paiement local
+            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, retrait.recevoir_image_paiement_local)],
+            # Nouveau : Choix du pays (pour paiement local)
+            CHOIX_PAYS2: [CallbackQueryHandler(recevoir_pays_parrainage, pattern="^pays_")],
+            # Nouveau : Choix de l'opérateur (pour paiement local)
+            CHOIX_OPERATEUR2: [CallbackQueryHandler(recevoir_operateur_parrainage, pattern="^op_")],
+            # Nouveau : Saisie du numéro mobile (pour paiement local)
+            NUMERO_MOBILE2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_numero_mobile_parrainage)],
+            # Nouveau : Saisie du nom utilisateur (pour paiement local)
+            NOM_UTILISATEUR2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_nom_utilisateur_parrainage)],
+            # Nouveau : Saisie image paiement local
+            SAISIE_IMAGE_PAIEMENT_LOCAL2: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
 
         },
         fallbacks=[

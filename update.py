@@ -59,18 +59,18 @@ def can_update_balance(user_id: int):
     finally:
         conn.close()
 
-    current_date = datetime.now()
-    days_since_registration = (current_date - registration_date).days
+    # current_date = datetime.now()
+    # days_since_registration = (current_date - registration_date).days
 
-    if days_since_registration >= 14:
-        days_until_cycle_end = 60 - days_since_registration
-        if days_until_cycle_end <= 0:
-            days_until_cycle_end = 60
-        return False, i18n.t("update.balance_update_not_profitable").format(days=days_until_cycle_end)
+    # if days_since_registration >= 14:
+    #     days_until_cycle_end = 60 - days_since_registration
+    #     if days_until_cycle_end <= 0:
+    #         days_until_cycle_end = 60
+    #     return False, i18n.t("update.balance_update_not_profitable").format(days=days_until_cycle_end)
 
-    days_to_next_update = 7 - (days_since_registration % 7)
-    if days_since_registration % 7 != 0:
-        return False, i18n.t("update.balance_update_wait").format(days=days_to_next_update)
+    # days_to_next_update = 7 - (days_since_registration % 7)
+    # if days_since_registration % 7 != 0:
+    #     return False, i18n.t("update.balance_update_wait").format(days=days_to_next_update)
 
     return True, i18n.t("update.balance_update_allowed")
 

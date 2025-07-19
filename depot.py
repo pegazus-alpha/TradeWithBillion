@@ -21,6 +21,21 @@ HASH_TRANSACTION_DEPOT = "hash_transaction_depot"
 # def get_user_lang(update: Update) -> str:
 #     return update.effective_user.langue or "en"
 
+def enregistrer_depot(user_id: int, username: str, adresse: str,  montant: float):
+    try:
+        from datetime import datetime
+        date_depot = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO depot (user_id, username, adresse,montant, date_depot)
+            VALUES (?, ?, ?, ?, ?)
+        """, (user_id, username, adresse,montant, date_depot))
+        conn.commit()
+    except Exception as e:
+        print(f"[Error] enregistrer_depot: {e}")
+    finally:
+        conn.close()
 def check_user_exists(user_id):
     try:
         conn = sqlite3.connect('bot.db')
