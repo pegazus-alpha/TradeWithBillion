@@ -476,18 +476,18 @@ def main():
             RESEAU_PARRAINAGE: [CallbackQueryHandler(recevoir_reseau_parrainage)],
             SAISIE_HASH_RETRAIT2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait2)],
             MODE_PAIEMENT: [
-            CallbackQueryHandler(retrait.recevoir_mode_paiement, pattern="^mode_(usdt|local)$")],
+            CallbackQueryHandler(recevoir_mode_paiement, pattern="^mode_(usdt|local)$")],
             # Nouveau : Choix du pays (pour paiement local)
-            CHOIX_PAYS: [CallbackQueryHandler(retrait.recevoir_pays, pattern="^pays_")],
-            CHOIX_OPERATEUR: [CallbackQueryHandler(retrait.recevoir_operateur, pattern="^op_")],
+            CHOIX_PAYS: [CallbackQueryHandler(recevoir_pays, pattern="^pays_")],
+            CHOIX_OPERATEUR: [CallbackQueryHandler(recevoir_operateur, pattern="^op_")],
             
             # Nouveau : Saisie du numéro mobile (pour paiement local)
-            NUMERO_MOBILE: [MessageHandler(filters.TEXT & ~filters.COMMAND, retrait.recevoir_numero_mobile)],
+            NUMERO_MOBILE: [MessageHandler(filters.TEXT & ~filters.COMMAND,recevoir_numero_mobile)],
             
             # Nouveau : Saisie du nom utilisateur (pour paiement local)
-            NOM_UTILISATEUR: [MessageHandler(filters.TEXT & ~filters.COMMAND, retrait.recevoir_nom_utilisateur)],
+            NOM_UTILISATEUR: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_nom_utilisateur)],
             # Nouveau : Saisie image paiement local
-            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, retrait.recevoir_image_paiement_local)],
+            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local)],
             # Nouveau : Choix du pays (pour paiement local)
             CHOIX_PAYS2: [CallbackQueryHandler(recevoir_pays_parrainage, pattern="^pays_")],
             # Nouveau : Choix de l'opérateur (pour paiement local)

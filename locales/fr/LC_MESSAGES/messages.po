@@ -754,3 +754,4 @@ msgstr "[Erreur] utilisateur_existe : {error}"
 # Langue par défaut
 msgid "user.default_language"
 msgstr "fr"
+
