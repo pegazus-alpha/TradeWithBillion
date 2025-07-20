@@ -97,8 +97,8 @@ async def verifier_et_mettre_a_jour_benefices(application):
                         nouveau_cycle = 0  # Reset cycle count after 8 cycles
                     
                     # Update database with current time
-                    nouvelle_date_maj = date_actuelle.strftime("%Y-%m-%d %H:%M:%S")
-                    cursor.execute("""
+                        nouvelle_date_mise_a_jour = date_mise_a_jour + timedelta(weeks=weeks_passees)
+                        nouvelle_date_maj = nouvelle_date_mise_a_jour.strftime("%Y-%m-%d %H:%M:%S")                    cursor.execute("""
                         UPDATE utilisateurs 
                         SET benefice_total = ?, date_mise_a_jour = ?, cycle = ?, montant_depot = ?
                         WHERE user_id = ?
