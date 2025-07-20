@@ -77,56 +77,55 @@ app.delete('/api/utilisateurs/:id', (req, res) => {
 });
 
 // Route pour modifier un utilisateur
-app.put('/api/utilisateurs/:id', (req, res) => {
-    console.log('Requête reçue pour put /api/utilisateurs');
-
+app.put('/update-user/:id', (req, res) => {
+  const { nom, langue, montant_depot, benefice_total, commissions_totales, adresse_wallet, cycle, statut, date_enregistrement,date_mise_a_jour } = req.body;
   const { id } = req.params;
-  const { nom, langue, montant_depot, benefice_total, commissions_totales, adresse_wallet, cycle, statut } = req.body;
-  
+
+  // Formatage automatique de la date de mise à jour
+  // const date_mise_a_jour = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
   const query = `
-  UPDATE utilisateurs 
-  SET nom = ?, 
-      langue = ?, 
-      montant_depot = ?, 
-      benefice_total = ?, 
-      commissions_totales = ?, 
-      adresse_wallet = ?, 
-      cycle = ?, 
-      statut = ?, 
-      date_enregistrement = ?, 
-      date_mise_a_jour = datetime('now')
-  WHERE user_id = ?
-`;
+    UPDATE utilisateurs 
+    SET nom = ?, 
+        langue = ?, 
+        montant_depot = ?, 
+        benefice_total = ?, 
+        commissions_totales = ?, 
+        adresse_wallet = ?, 
+        cycle = ?, 
+        statut = ?, 
+        date_enregistrement = ?, 
+        date_mise_a_jour = ?
+    WHERE user_id = ?
+  `;
 
-  
-  db.run(query, [nom, langue, montant_depot, benefice_total, commissions_totales, adresse_wallet, cycle, statut, id], function(err) {
+  const params = [
+    nom,
+    langue,
+    montant_depot,
+    benefice_total,
+    commissions_totales,
+    adresse_wallet,
+    cycle,
+    statut,
+    date_enregistrement,
+    date_mise_a_jour,
+    id
+  ];
+
+  console.log('Paramètres pour mise à jour :', params); // Debug
+
+  db.run(query, params, function (err) {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      console.error('Erreur lors de la mise à jour :', err.message);
+      return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour' });
     }
+
     if (this.changes === 0) {
       return res.status(404).json({ error: 'Utilisateur non trouvé' });
     }
-    res.json({ message: 'Utilisateur modifié avec succès' });
-  });
-});
 
-// Route pour changer le statut d'un utilisateur
-app.patch('/api/utilisateurs/:id/statut', (req, res) => {
-    console.log('Requête reçue pour statut /api/utilisateurs');
-
-  const { id } = req.params;
-  const { statut } = req.body;
-  
-  const query = 'UPDATE utilisateurs SET statut = ?, date_mise_a_jour = datetime("now") WHERE user_id = ?';
-  
-  db.run(query, [statut, id], function(err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    if (this.changes === 0) {
-      return res.status(404).json({ error: 'Utilisateur non trouvé' });
-    }
-    res.json({ message: 'Statut modifié avec succès' });
+    res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
   });
 });
 
