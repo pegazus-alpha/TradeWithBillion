@@ -130,6 +130,44 @@ app.put('/api/utilisateurs/:user_id', (req, res) => {
     res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
   });
 });
+// Route pour modifier uniquement le statut d'un utilisateur
+app.patch('/api/utilisateurs/:id/statut', (req, res) => {
+  console.log('Modification statut utilisateur ID:', req.params.id);
+  console.log('Nouveau statut:', req.body);
+
+  const { id } = req.params;
+  const { statut } = req.body;
+
+  // Validation du statut
+  if (!statut || !['actif', 'inactif'].includes(statut)) {
+    console.log('Statut invalide:', statut);
+    return res.status(400).json({ error: 'Statut invalide. Doit être "actif" ou "inactif"' });
+  }
+
+  const query = 'UPDATE utilisateurs SET statut = ? WHERE user_id = ?';
+  
+  console.log('Exécution requête SQL:', query);
+  console.log('Paramètres:', [statut, id]);
+
+  db.run(query, [statut, id], function (err) {
+    if (err) {
+      console.error('Erreur SQL:', err.message);
+      return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour du statut' });
+    }
+
+    if (this.changes === 0) {
+      console.log('Aucune ligne modifiée - utilisateur non trouvé');
+      return res.status(404).json({ error: 'Utilisateur non trouvé' });
+    }
+
+    console.log('Statut mis à jour avec succès - lignes modifiées:', this.changes);
+    res.status(200).json({ 
+      message: 'Statut mis à jour avec succès',
+      statut: statut,
+      user_id: id
+    });
+  });
+});
 // Routes pour les retraits
 app.get('/api/retraits', (req, res) => {
     console.log('Requête reçue pour /api/retrait');
