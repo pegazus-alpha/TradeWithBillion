@@ -77,12 +77,12 @@ app.delete('/api/utilisateurs/:id', (req, res) => {
 });
 
 // Route pour modifier un utilisateur
-app.put('/update-user/:id', (req, res) => {
-  const { nom, langue, montant_depot, benefice_total, commissions_totales, adresse_wallet, cycle, statut, date_enregistrement,date_mise_a_jour } = req.body;
-  const { id } = req.params;
+app.put('/api/utilisateurs/:user_id', (req, res) => {
+  console.log('Mise à jour utilisateur ID:', req.params.user_id);
+  console.log('Données reçues:', req.body);
 
-  // Formatage automatique de la date de mise à jour
-  // const date_mise_a_jour = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const { nom, langue, montant_depot, benefice_total, commissions_totales, adresse_wallet, cycle, statut, date_enregistrement, date_mise_a_jour } = req.body;
+  const { user_id } = req.params;
 
   const query = `
     UPDATE utilisateurs 
@@ -110,25 +110,26 @@ app.put('/update-user/:id', (req, res) => {
     statut,
     date_enregistrement,
     date_mise_a_jour,
-    id
+    user_id
   ];
 
-  console.log('Paramètres pour mise à jour :', params); // Debug
+  console.log('Paramètres SQL:', params);
 
   db.run(query, params, function (err) {
     if (err) {
-      console.error('Erreur lors de la mise à jour :', err.message);
+      console.error('Erreur SQL:', err.message);
       return res.status(500).json({ error: 'Erreur serveur lors de la mise à jour' });
     }
 
     if (this.changes === 0) {
+      console.log('Aucune ligne modifiée - utilisateur non trouvé');
       return res.status(404).json({ error: 'Utilisateur non trouvé' });
     }
 
+    console.log('Succès - lignes modifiées:', this.changes);
     res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
   });
 });
-
 // Routes pour les retraits
 app.get('/api/retraits', (req, res) => {
     console.log('Requête reçue pour /api/retrait');
