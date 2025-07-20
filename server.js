@@ -84,12 +84,20 @@ app.put('/api/utilisateurs/:id', (req, res) => {
   const { nom, langue, montant_depot, benefice_total, commissions_totales, adresse_wallet, cycle, statut } = req.body;
   
   const query = `
-    UPDATE utilisateurs 
-    SET nom = ?, langue = ?, montant_depot = ?, benefice_total = ?, 
-        commissions_totales = ?, adresse_wallet = ?, cycle = ?, statut = ?, 
-        date_mise_a_jour = datetime('now')
-    WHERE user_id = ?
-  `;
+  UPDATE utilisateurs 
+  SET nom = ?, 
+      langue = ?, 
+      montant_depot = ?, 
+      benefice_total = ?, 
+      commissions_totales = ?, 
+      adresse_wallet = ?, 
+      cycle = ?, 
+      statut = ?, 
+      date_enregistrement = ?, 
+      date_mise_a_jour = datetime('now')
+  WHERE user_id = ?
+`;
+
   
   db.run(query, [nom, langue, montant_depot, benefice_total, commissions_totales, adresse_wallet, cycle, statut, id], function(err) {
     if (err) {
