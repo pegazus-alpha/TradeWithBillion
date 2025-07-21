@@ -83,6 +83,54 @@ en:
     data_retrieval_error: "❌ An error occurred while retrieving your data."
 
   retraits:
+    # Additional translations for better consistency
+    processing_withdrawal: "🔄 Processing withdrawal..."
+    withdrawal_cancelled: "❌ Withdrawal cancelled"
+    invalid_amount: "❌ Invalid amount"
+    minimum_withdrawal: "❌ Minimum withdrawal amount is {min_amount}"
+    withdrawal_limit_exceeded: "❌ Withdrawal limit exceeded"
+    daily_limit_reached: "❌ Daily withdrawal limit reached"
+    
+    # Status messages
+    status_pending: "⏳ Pending"
+    status_processing: "🔄 Processing"
+    status_completed: "✅ Completed"
+    status_failed: "❌ Failed"
+    status_cancelled: "🚫 Cancelled"
+    
+    # Specific error messages
+    network_error: "❌ Network error. Please try again."
+    server_error: "❌ Server error. Contact support."
+    timeout_error: "⏰ Timeout exceeded. Please try again."
+    # Nouveaux textes à ajouter
+    btn_usdt_crypto: "💰 USDT (Crypto)"
+    btn_local_payment: "📱 Local Payment (Mobile Money)"
+    choose_payment_method: "Choose your payment method:"
+    choose_country: "🌍 Choose your country:"
+    no_operators_available: "❌ No operators available for this country."
+    choose_mobile_operator: "📱 Choose your mobile operator ({country}):"
+    enter_phone_number: "📞 Please enter your phone number associated with {operator}:"
+    enter_valid_number: "❌ Please enter a valid number."
+    enter_full_name: "👤 Please enter your full name:"
+    enter_your_name: "❌ Please enter your name."
+    local_withdrawal_recorded: "✅ Your local payment withdrawal request has been recorded.\nYou will receive confirmation once the payment is made."
+    
+    # Admin messages for local withdrawal
+    admin_new_local_withdrawal: |
+      🏦 NEW LOCAL WITHDRAWAL REQUEST
+      👤 User: {username}
+      🆔 Telegram ID: {user_id}
+      🆔 UDI: {udi}
+      💳 Binance Deposit: {binance_depot}
+      💰 Balance: {balance}
+      💸 Available Amount: {available_amount}
+      🌍 Country: {country}
+      📱 Operator: {operator}
+      📞 Phone Number: {phone_number}
+      👤 Full Name: {full_name}
+    
+    btn_payment_completed: "✅ Payment Completed"
+      
     # Language file for retraits.py
     user_not_registered: "❌ You need to make a deposit before requesting a withdrawal."
     no_benefits: "❌ You currently have no available benefits to withdraw."

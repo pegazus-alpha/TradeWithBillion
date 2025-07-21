@@ -85,6 +85,61 @@ fr:
     data_retrieval_error: "❌ Une erreur est survenue lors de la récupération de vos données."
 
   retraits:
+    # Traductions supplémentaires pour une meilleure cohérence
+    processing_withdrawal: "🔄 Traitement du retrait en cours..."
+    withdrawal_cancelled: "❌ Retrait annulé"
+    invalid_amount: "❌ Montant invalide"
+    minimum_withdrawal: "❌ Le montant minimum de retrait est de {min_amount}"
+    withdrawal_limit_exceeded: "❌ Limite de retrait dépassée"
+    daily_limit_reached: "❌ Limite quotidienne de retrait atteinte"
+    
+    # Messages de statut
+    status_pending: "⏳ En attente"
+    status_processing: "🔄 En traitement"
+    status_completed: "✅ Terminé"
+    status_failed: "❌ Échoué"
+    status_cancelled: "🚫 Annulé"
+    
+    # Messages d'erreur spécifiques
+    network_error: "❌ Erreur réseau. Veuillez réessayer."
+    server_error: "❌ Erreur serveur. Contactez le support."
+    timeout_error: "⏰ Délai d'attente dépassé. Veuillez réessayer."
+    # Nouveaux textes à ajouter
+    btn_usdt_crypto: "💰 USDT (Crypto)"
+    btn_local_payment: "📱 Paiement Local (Mobile Money)"
+    choose_payment_method: "Choisissez votre mode de paiement :"
+    choose_country: "🌍 Choisissez votre pays :"
+    no_operators_available: "❌ Aucun opérateur disponible pour ce pays."
+    choose_mobile_operator: "📱 Choisissez votre opérateur mobile ({country}) :"
+    enter_phone_number: "📞 Veuillez entrer votre numéro de téléphone associé à {operator} :"
+    enter_valid_number: "❌ Veuillez entrer un numéro valide."
+    enter_full_name: "👤 Veuillez entrer votre nom complet :"
+    enter_your_name: "❌ Veuillez entrer votre nom."
+    local_withdrawal_recorded: "✅ Votre demande de retrait par paiement local a été enregistrée.\nVous recevrez une confirmation dès que le paiement sera effectué."
+    
+    # Messages admin pour retrait local
+    admin_new_local_withdrawal: |
+      🏦 NOUVELLE DEMANDE DE RETRAIT LOCAL
+      👤 Utilisateur: {username}
+      🆔 Telegram ID: {user_id}
+      🆔 UDI: {udi}
+      💳 Dépôt Binance: {binance_depot}
+      💰 Solde: {balance}
+      💸 Montant disponible: {available_amount}
+      🌍 Pays: {country}
+      📱 Opérateur: {operator}
+      📞 Numéro: {phone_number}
+      👤 Nom: {full_name}
+    
+    btn_payment_completed: "✅ Paiement Effectué"
+    
+    # Messages pour la gestion des hash et images
+    user_not_found: "❌ Utilisateur non trouvé. Admin ID: {admin_id}, Dict: {dict_content}"
+    send_payment_image: "❌ Veuillez envoyer une image de confirmation du paiement."
+    local_withdrawal_success: "✅ Votre retrait de {amount} a été traité avec succès.\nVoici la preuve de paiement :"
+    user_notified_with_proof: "✅ L'utilisateur a été notifié avec la preuve de paiement."
+    send_mobile_money_proof: "📷 Veuillez envoyer une image de confirmation du paiement mobile money :"
+    error_extracting_user_id: "❌ Erreur lors de l'extraction de l'ID utilisateur"
     # Fichier de langue pour retraits.py
     user_not_registered: "❌ Vous devez d'abord effectuer un dépôt avant de pouvoir retirer des fonds."
     no_benefits: "❌ Vous n'avez actuellement aucun bénéfice disponible pour un retrait."
