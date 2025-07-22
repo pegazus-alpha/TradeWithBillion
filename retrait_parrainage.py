@@ -241,7 +241,7 @@ async def recevoir_reseau_parrainage(update: Update, context: ContextTypes.DEFAU
         f"{i18n.t('retraits.admin_udi').format(udi=infos['udi'])}\n"
         f"{i18n.t('retraits.admin_binance_deposit').format(binance_depot=infos['binance_depot'])}\n"
         f"{i18n.t('retraits.admin_balance').format(balance=infos['solde'])}\n"
-        f"{i18n.t('retraits.admin_available_amount').format(available_amount=infos['benefice_total'])}\n"
+        f"{i18n.t('retraits.admin_available_amount').format(available_amount=infos['commissions_totales'])}\n"
         f"{i18n.t('retraits.admin_wallet_address')} \n"
         f"{i18n.t('retraits.admin_blockchain_network').format(network=network)}"
     )
