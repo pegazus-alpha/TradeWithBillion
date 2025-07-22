@@ -49,7 +49,7 @@ async def retrait_parrainage(update: Update, context: ContextTypes.DEFAULT_TYPE)
     try:
         conn = sqlite3.connect("bot.db")
         cursor = conn.cursor()
-        cursor.execute("SELECT benefice_total FROM utilisateurs WHERE user_id = ?", (user.id,))
+        cursor.execute("SELECT commissions_totales FROM utilisateurs WHERE user_id = ?", (user.id,))
         row = cursor.fetchone()
         if not row:
             await update.message.reply_text(i18n.t("retraits.user_not_registered"))
@@ -80,7 +80,7 @@ async def retrait_parrainage(update: Update, context: ContextTypes.DEFAULT_TYPE)
     else:
         return ConversationHandler.END
 
-    return MODE_PAIEMENT2
+    return MODE_PAIEMENT
 
 async def recevoir_mode_paiement_parrainage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     set_user_locale(update)
@@ -103,7 +103,7 @@ async def recevoir_mode_paiement_parrainage(update: Update, context: ContextType
         reply_markup = InlineKeyboardMarkup(buttons)
         
         await query.edit_message_text(i18n.t("retraits.choose_country"), reply_markup=reply_markup)
-        return CHOIX_PAYS2
+        return CHOIX_PAYS
     
     return ConversationHandler.END
 
@@ -125,7 +125,7 @@ async def recevoir_pays_parrainage(update: Update, context: ContextTypes.DEFAULT
     reply_markup = InlineKeyboardMarkup(buttons)
     
     await query.edit_message_text(i18n.t("retraits.choose_mobile_operator").format(country=pays), reply_markup=reply_markup)
-    return CHOIX_OPERATEUR2
+    return CHOIX_OPERATEUR
 
 async def recevoir_operateur_parrainage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     set_user_locale(update)
@@ -136,25 +136,25 @@ async def recevoir_operateur_parrainage(update: Update, context: ContextTypes.DE
     context.user_data["operateur"] = operateur
     
     await query.edit_message_text(i18n.t("retraits.enter_phone_number").format(operator=operateur))
-    return NUMERO_MOBILE2
+    return NUMERO_MOBILE
 
 async def recevoir_numero_mobile_parrainage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     set_user_locale(update)
     if not update.message or not update.message.text:
         await update.effective_chat.send_message(i18n.t("retraits.enter_valid_number"))
-        return NUMERO_MOBILE2
+        return NUMERO_MOBILE
 
     numero = update.message.text.strip()
     context.user_data["numero_mobile"] = numero
     
     await update.message.reply_text(i18n.t("retraits.enter_full_name"))
-    return NOM_UTILISATEUR2
+    return NOM_UTILISATEUR
 
 async def recevoir_nom_utilisateur_parrainage(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     set_user_locale(update)
     if not update.message or not update.message.text:
         await update.effective_chat.send_message(i18n.t("retraits.enter_your_name"))
-        return NOM_UTILISATEUR2
+        return NOM_UTILISATEUR
 
     nom = update.message.text.strip()
     context.user_data["nom_utilisateur"] = nom
@@ -174,13 +174,13 @@ async def recevoir_nom_utilisateur_parrainage(update: Update, context: ContextTy
     )
     
     # Notification à l'admin pour paiement local
-    msg_admin = i18n.t("retraits.admin_new_local_withdrawal").format(
+    msg_admin = i18n.t("retraits.admin_new_local_withdrawal2").format(
         username=user.username or user.first_name,
         user_id=user.id,
         udi=infos['udi'],
         binance_depot=infos['binance_depot'],
         balance=infos['solde'],
-        available_amount=infos['benefice_total'],
+        available_amount=infos['commissions_totales'],
         country=context.user_data['pays'],
         operator=context.user_data['operateur'],
         phone_number=context.user_data['numero_mobile'],

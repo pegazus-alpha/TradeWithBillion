@@ -128,6 +128,18 @@ en:
       📱 Operator: {operator}
       📞 Phone Number: {phone_number}
       👤 Full Name: {full_name}
+    admin_new_local_withdrawal2: |
+      🏦 NEW LOCAL WITHDRAWAL REQUEST (referral)
+      👤 User: {username}
+      🆔 Telegram ID: {user_id}
+      🆔 UDI: {udi}
+      💳 Binance Deposit: {binance_depot}
+      💰 Balance: {balance}
+      💸 Available Amount: {available_amount}
+      🌍 Country: {country}
+      📱 Operator: {operator}
+      📞 Phone Number: {phone_number}
+      👤 Full Name: {full_name}
     
     btn_payment_completed: "✅ Payment Completed"
       

@@ -130,6 +130,18 @@ fr:
       📱 Opérateur: {operator}
       📞 Numéro: {phone_number}
       👤 Nom: {full_name}
+    admin_new_local_withdrawal2: |
+      🏦 NOUVELLE DEMANDE DE RETRAIT LOCAL (Commissions)
+      👤 Utilisateur: {username}
+      🆔 Telegram ID: {user_id}
+      🆔 UDI: {udi}
+      💳 Dépôt Binance: {binance_depot}
+      💰 Solde: {balance}
+      💸 Montant disponible: {available_amount}
+      🌍 Pays: {country}
+      📱 Opérateur: {operator}
+      📞 Numéro: {phone_number}
+      👤 Nom: {full_name}
     
     btn_payment_completed: "✅ Paiement Effectué"
     
