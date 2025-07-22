@@ -364,7 +364,7 @@ async def callback_query_handler_admin(update: Update, context: ContextTypes.DEF
 
         admin_text = i18n.t('telegrame.deposit_confirmed_admin').format(amount=montant, user_id=user_id)
         user_text = i18n.t('telegrame.deposit_confirmed_user').format(amount=montant)
-        await query.edit_message_text(admin_text)
+        await query..message.reply_text(admin_text)
         try:
             # Set locale for the target user
             try:
