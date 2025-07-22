@@ -16,7 +16,7 @@ from user import utilisateur_bloque
 load_dotenv()
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
 WALLET_KEY = os.getenv("WALLET_KEY")
-HASH_TRANSACTION_DEPOT = "hash_transaction_depot"
+
 
 # def get_user_lang(update: Update) -> str:
 #     return update.effective_user.langue or "en"

@@ -168,6 +168,114 @@ app.patch('/api/utilisateurs/:id/statut', (req, res) => {
     });
   });
 });
+// Route pour ajouter un utilisateur
+// Route pour ajouter un utilisateur avec user_id personnalisé
+app.post('/api/utilisateurs', (req, res) => {
+  console.log('Requête reçue pour POST /api/utilisateurs');
+  console.log('Données reçues:', req.body);
+  
+  const { user_id, parrain_id, nom, langue, adresse_wallet, statut } = req.body;
+  
+  // Validation des champs obligatoires
+  if (!user_id || !nom || !langue) {
+    return res.status(400).json({ 
+      error: 'Les champs user_id, nom et langue sont obligatoires' 
+    });
+  }
+
+  // Validation du format de user_id (optionnel - ajustez selon vos besoins)
+  if (typeof user_id !== 'string' && typeof user_id !== 'number') {
+    return res.status(400).json({ 
+      error: 'Le user_id doit être une chaîne de caractères ou un nombre' 
+    });
+  }
+
+  // Valeurs par défaut
+  const dateActuelle = new Date().toISOString();
+  const benefice_total = 0;
+  const commissions_totales = 0;
+  const montant_depot = null;
+  const cycle = null;
+  const statutFinal = statut || 'actif';
+
+  // Vérifier d'abord si l'user_id existe déjà
+  const checkQuery = 'SELECT user_id FROM utilisateurs WHERE user_id = ?';
+  
+  db.get(checkQuery, [user_id], (err, row) => {
+    if (err) {
+      console.error('Erreur lors de la vérification de l\'user_id:', err.message);
+      return res.status(500).json({ 
+        error: 'Erreur serveur lors de la vérification' 
+      });
+    }
+    
+    if (row) {
+      return res.status(409).json({ 
+        error: 'Un utilisateur avec cet user_id existe déjà' 
+      });
+    }
+
+    // Insérer le nouvel utilisateur avec l'user_id personnalisé
+    const insertQuery = `
+      INSERT INTO utilisateurs 
+      (user_id, parrain_id, nom, langue, montant_depot, benefice_total, commissions_totales, 
+       date_enregistrement, adresse_wallet, date_mise_a_jour, cycle, statut)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    const params = [
+      user_id,
+      parrain_id || null,
+      nom,
+      langue,
+      montant_depot,
+      benefice_total,
+      commissions_totales,
+      dateActuelle,
+      adresse_wallet || null,
+      dateActuelle,
+      cycle,
+      statutFinal
+    ];
+
+    console.log('Paramètres SQL:', params);
+
+    db.run(insertQuery, params, function (err) {
+      if (err) {
+        console.error('Erreur SQL:', err.message);
+        // Gestion spécifique des erreurs de contrainte
+        if (err.message.includes('UNIQUE constraint failed')) {
+          return res.status(409).json({ 
+            error: 'Un utilisateur avec cet user_id existe déjà' 
+          });
+        }
+        return res.status(500).json({ 
+          error: 'Erreur serveur lors de la création de l\'utilisateur' 
+        });
+      }
+
+      console.log('Utilisateur créé avec succès - ID:', user_id);
+      res.status(201).json({ 
+        message: 'Utilisateur créé avec succès',
+        user_id: user_id,
+        data: {
+          user_id: user_id,
+          parrain_id: parrain_id || null,
+          nom,
+          langue,
+          montant_depot,
+          benefice_total,
+          commissions_totales,
+          date_enregistrement: dateActuelle,
+          adresse_wallet: adresse_wallet || null,
+          date_mise_a_jour: dateActuelle,
+          cycle,
+          statut: statutFinal
+        }
+      });
+    });
+  });
+});
 // Routes pour les retraits
 app.get('/api/retraits', (req, res) => {
     console.log('Requête reçue pour /api/retrait');
