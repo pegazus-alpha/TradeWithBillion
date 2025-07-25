@@ -339,7 +339,7 @@ en:
     registration_date_not_found: "Registration date not found."
 
     additional_deposit_amount: "💰 How much more would you like to deposit? (in USDT):"
-    invalid_amount_error: "❌ Please enter a valid and positive amount (numbers only)."
+    invalid_amount_error: "❌ Please enter a valid and positive amount (numbers only) >10 USDT."
     amount_error_restart: "❌ Error: Amount not found. Please restart the process."
 
     # Additional deposit instruction messages

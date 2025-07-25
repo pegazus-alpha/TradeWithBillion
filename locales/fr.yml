@@ -350,7 +350,7 @@ fr:
     registration_date_not_found: "Date d'inscription non trouvée."
 
     additional_deposit_amount: "💰 Combien souhaitez-vous déposer en plus ? (en USDT) :"
-    invalid_amount_error: "❌ Veuillez saisir un montant valide et positif (chiffres uniquement)."
+    invalid_amount_error: "❌ Veuillez saisir un montant valide et positif (chiffres uniquement) >10 USDT."
     amount_error_restart: "❌ Erreur : Montant non trouvé. Veuillez redémarrer le processus."
 
     # Messages d'instructions de dépôt supplémentaire

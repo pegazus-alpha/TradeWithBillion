@@ -370,7 +370,7 @@ async def recevoir_hash_retrait2(update: Update, context: ContextTypes.DEFAULT_T
         try:
             conn = sqlite3.connect("bot.db")
             cursor = conn.cursor()
-            cursor.execute("UPDATE utilisateurs SET benefice_total = 0 WHERE user_id = ?", (user_id,))
+            cursor.execute("UPDATE utilisateurs SET commissions_totales = 0 WHERE user_id = ?", (user_id,))
             conn.commit()
         except Exception as e:
             print(f"Error updating benefice_total: {e}")
@@ -432,7 +432,7 @@ async def recevoir_image_paiement_local2(update: Update, context: ContextTypes.D
         try:
             conn = sqlite3.connect("bot.db")
             cursor = conn.cursor()
-            cursor.execute("UPDATE utilisateurs SET benefice_total = 0 WHERE user_id = ?", (user_id,))
+            cursor.execute("UPDATE utilisateurs SET commissions_totales = 0 WHERE user_id = ?", (user_id,))
             cursor.execute("UPDATE retraits_locaux SET statut = 'traité' WHERE user_id = ? AND statut = 'en_attente'", (user_id,))
             conn.commit()
         except Exception as e:

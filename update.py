@@ -44,7 +44,7 @@ def can_update_balance(user_id: int):
     registration_date = get_user_registration_date(user_id)
     if not registration_date:
         return False, i18n.t("update.registration_date_not_found")
-
+    
     # Vérifier si le montant_depot est à 0
     try:
         conn = sqlite3.connect("bot.db")
@@ -144,7 +144,7 @@ async def recevoir_montant_depot_supplementaire(update: Update, context: Context
     user_id = user.id
     try:
         montant_float = float(montant)
-        if montant_float <= 0:
+        if montant_float <= 10:
             raise ValueError
     except ValueError:
         await update.message.reply_text(i18n.t("update.invalid_amount_error"))
