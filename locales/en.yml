@@ -142,7 +142,14 @@ en:
       👤 Full Name: {full_name}
     
     btn_payment_completed: "✅ Payment Completed"
-      
+    # Messages for hash and image handling
+    user_not_found: "❌ User not found. Admin ID: {admin_id}, Dict: {dict_content}"
+    send_payment_image: "❌ Please send a payment confirmation image."
+    local_withdrawal_success: "✅ Your withdrawal of {amount} has been successfully processed.\nHere is the payment proof:"
+    user_notified_with_proof: "✅ The user has been notified with the payment proof."
+    send_mobile_money_proof: "📷 Please send a mobile money payment confirmation image:"
+    error_extracting_user_id: "❌ Error while extracting user ID"
+
     # Language file for retraits.py
     user_not_registered: "❌ You need to make a deposit before requesting a withdrawal."
     no_benefits: "❌ You currently have no available benefits to withdraw."
