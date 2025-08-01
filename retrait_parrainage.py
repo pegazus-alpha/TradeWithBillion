@@ -12,7 +12,7 @@ import i18n
 load_dotenv()
 
 ADMIN_ID = int(os.getenv("ADMIN_ID"))
-# RETRAIT_EN_ATTENTE = {}
+# RETRAIT_EN_ATTENTE2 = {}
 
 # Nouveaux états pour le processus de retrait
 # MODE_PAIEMENT, CHOIX_PAYS, CHOIX_OPERATEUR, NUMERO_MOBILE, NOM_UTILISATEUR = range(5, 10)
@@ -329,7 +329,7 @@ async def recevoir_hash_retrait2(update: Update, context: ContextTypes.DEFAULT_T
         return SAISIE_HASH_RETRAIT2
 
     admin_id = update.effective_user.id
-    user_id = RETRAIT_EN_ATTENTE.get(admin_id)
+    user_id = RETRAIT_EN_ATTENTE2.get(admin_id)
 
     if not user_id:
         await update.message.reply_text(i18n.t("retraits.user_not_found"))
@@ -378,7 +378,7 @@ async def recevoir_hash_retrait2(update: Update, context: ContextTypes.DEFAULT_T
             if 'conn' in locals():
                 conn.close()
         
-        RETRAIT_EN_ATTENTE.pop(admin_id, None)
+        RETRAIT_EN_ATTENTE2.pop(admin_id, None)
     except Exception as e:
         await update.message.reply_text(i18n.t("retraits.failed_notify_user").format(error=e))
 
@@ -391,7 +391,7 @@ async def recevoir_image_paiement_local2(update: Update, context: ContextTypes.D
         return SAISIE_IMAGE_PAIEMENT_LOCAL
 
     admin_id = update.effective_user.id
-    user_id = RETRAIT_EN_ATTENTE.get(admin_id)
+    user_id = RETRAIT_EN_ATTENTE2.get(admin_id)
 
     if not user_id:
         await update.message.reply_text(i18n.t("retraits.user_not_found"))
@@ -441,7 +441,7 @@ async def recevoir_image_paiement_local2(update: Update, context: ContextTypes.D
             if 'conn' in locals():
                 conn.close()
         
-        RETRAIT_EN_ATTENTE.pop(admin_id, None)
+        RETRAIT_EN_ATTENTE2.pop(admin_id, None)
     except Exception as e:
         await update.message.reply_text(i18n.t("retraits.failed_notify_user").format(error=e))
 
@@ -454,7 +454,7 @@ async def retrait_done2(update: Update, context: ContextTypes.DEFAULT_TYPE) -> i
 
     data = query.data
     user_id = int(data.split("_")[-1])
-    RETRAIT_EN_ATTENTE[update.effective_user.id] = user_id
+    RETRAIT_EN_ATTENTE2[update.effective_user.id] = user_id
 
     await query.message.reply_text(i18n.t("retraits.enter_transaction_hash"))
     return SAISIE_HASH_RETRAIT2
@@ -466,7 +466,7 @@ async def retrait_local_done2(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     data = query.data
     user_id = int(data.split("_")[-1])
-    RETRAIT_EN_ATTENTE[update.effective_user.id] = user_id
+    RETRAIT_EN_ATTENTE2[update.effective_user.id] = user_id
 
     await query.message.reply_text("📷 Veuillez envoyer une image de confirmation du paiement mobile money :")
     return SAISIE_IMAGE_PAIEMENT_LOCAL

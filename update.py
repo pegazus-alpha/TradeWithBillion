@@ -19,7 +19,7 @@ from lang import *
 load_dotenv()
 
 
-HASH_TRANSACTION_DEPOT_SUPPLEMENTAIRE = "hash_transaction_depot_supplementaire"
+# HASH_TRANSACTION_DEPOT_SUPPLEMENTAIRE = "hash_transaction_depot_supplementaire"
 ADMIN_ID = int(os.getenv("ADMIN_ID"))  # Must be an int
 WALLET_KEY = os.getenv("WALLET_KEY")  # Must be a string (wallet address)
 
@@ -170,9 +170,9 @@ async def recevoir_hash_depot_supplementaire(update: Update, context: ContextTyp
     context.user_data["hash_transaction_supplementaire"] = hash_transaction
     btn_confirmer = InlineKeyboardButton(
         i18n.t("update.confirm_deposit_button"),
-        callback_data=f"{i18n.t('update.pattern_confirm_supp')}{user_id}_{montant_float}"
+        callback_data=f"confir_supp_{user_id}_{montant_float}"
     )
-    btn_annuler = InlineKeyboardButton(i18n.t('update.cancel_button_supp'), callback_data= f"{i18n.t('update.pattern_cancel_supp')}{user_id}_")
+    btn_annuler = InlineKeyboardButton(i18n.t('update.cancel_button_supp'), callback_data= f"annuler_supp_{user_id}")
     buttons = InlineKeyboardMarkup([[btn_confirmer, btn_annuler]])
     msg_admin = (
         f"{i18n.t('update.admin_additional_deposit_title')}\n"
@@ -183,6 +183,7 @@ async def recevoir_hash_depot_supplementaire(update: Update, context: ContextTyp
         f"{i18n.t('update.admin_user_registered')}"
     )
     msg_a = f"{hash_transaction}"
+    print(hash_transaction)
     try:
         await context.bot.send_message(chat_id=ADMIN_ID, text=msg_admin, reply_markup=buttons)
         await context.bot.send_message(chat_id=ADMIN_ID, text=msg_a)
@@ -202,7 +203,8 @@ async def confirmer_depot_supplementaire(update: Update, context: ContextTypes.D
     query = update.callback_query
     await query.answer()
     data = query.data
-    if data.startswith(i18n.t("update.pattern_confirm_supp")):
+    print(f"[DEBUG] Callback reçu: {data}")
+    if data.startswith("confir_supp_"):
         try:
             parts = data.split("_")
             print(i18n.t("update.log_callback_data").format(data=data))
@@ -234,7 +236,7 @@ async def confirmer_depot_supplementaire(update: Update, context: ContextTypes.D
             await query.edit_message_text(
                 i18n.t("update.balance_update_failed").format(user_id=user_id)
             )
-    elif data.startswith(i18n.t("update.pattern_cancel_supp")):
+    elif data.startswith("annuler_supp_"):
         await query.edit_message_text(i18n.t("update.additional_deposit_cancelled"))
         print(i18n.t("update.log_deposit_cancelled"))
 

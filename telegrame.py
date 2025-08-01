@@ -448,8 +448,8 @@ def main():
         conn.close()
     
     # Handlers pour les confirmations de dépôt (doivent être ajoutés en premier)
-    application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^confirmer_\d+_\d+$"))
-    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^confir_supp_\d+_\d+$"))
+    application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^confirmer_\d+_[\d.]+$"))
+    application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^confir_supp_\d+_[\d.]+$"))
     application.add_handler(CallbackQueryHandler(callback_query_handler_admin, pattern=r"^annuler_\d+$"))
     application.add_handler(CallbackQueryHandler(confirmer_depot_supplementaire, pattern=r"^annuler_supp_\d+$"))
 
