@@ -513,7 +513,7 @@ def main():
         entry_points=[CallbackQueryHandler(retrait_local_done, pattern=r"^retrait_local_done_\d+$")],
         states={
             # SAISIE_HASH_RETRAIT: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait)],
-            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
+            SAISIE_IMAGE_PAIEMENT_LOCAL: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local)],
         },
         fallbacks=[
             CommandHandler('cancel', cancel_all_conversations),
@@ -527,7 +527,7 @@ def main():
         entry_points=[CallbackQueryHandler(retrait_done2, pattern=r"^retrait_done2_\d+$")],
         states={
             SAISIE_HASH_RETRAIT2: [MessageHandler(filters.TEXT & ~filters.COMMAND, recevoir_hash_retrait2)],
-            SAISIE_IMAGE_PAIEMENT_LOCAL2: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local)],
+            SAISIE_IMAGE_PAIEMENT_LOCAL2: [MessageHandler(filters.PHOTO, recevoir_image_paiement_local2)],
         },
         fallbacks=[
             CommandHandler('cancel', cancel_all_conversations),
