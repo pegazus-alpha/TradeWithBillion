@@ -1,3 +1,4 @@
+# telegrame.py
 import sqlite3
 import os
 from dotenv import load_dotenv
@@ -549,8 +550,8 @@ def main():
     application.add_handler(MessageHandler(filters.Regex("^📊 Market Update$"), liens_utiles))
     application.add_handler(MessageHandler(filters.Regex("^ℹ️ About$"), a_propos))
     application.add_handler(MessageHandler(filters.Regex("^🆘 Support$"), support))
-    application.add_handler(MessageHandler(filters.Regex("^👥 User List$"), liste_utilisateurs))
-    application.add_handler(MessageHandler(filters.Regex("^🔍 User Info$"), info_utilisateur))
+    # application.add_handler(MessageHandler(filters.Regex("^👥 User List$"), liste_utilisateurs))
+    # application.add_handler(MessageHandler(filters.Regex("^🔍 User Info$"), info_utilisateur))
     application.add_handler(MessageHandler(filters.Regex("^❌cancel$"), cancel_all_conversations))
     
     # Commands handlers supplémentaires

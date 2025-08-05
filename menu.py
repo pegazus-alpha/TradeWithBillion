@@ -15,8 +15,8 @@ def get_menu_markup(user_id: int, langue: str=None):
     ]
     
     # Ajout des commandes admin uniquement si c'est l'admin
-    if str(user_id) == ADMIN_ID:
-        menu.append(["👥 User List", "🔍 User Info"])
+    # if str(user_id) == ADMIN_ID:
+    #     menu.append(["👥 User List", "🔍 User Info"])
         # menu.append(["📝 Set Description"])
 
     return ReplyKeyboardMarkup(menu, resize_keyboard=True)
