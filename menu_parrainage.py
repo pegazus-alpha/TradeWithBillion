@@ -59,7 +59,7 @@ async def parrainage_infos(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(message, parse_mode="Markdown")
 
     except Exception as e:
-        await update.message.reply_text(t('errors.data_retrieval_error'))
+        await update.message.reply_text(t(f'errors.data_retrieval_error : {e}'))
         print(f"Erreur parrainage_infos: {e}")
 
     finally:
