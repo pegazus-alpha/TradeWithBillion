@@ -93,8 +93,10 @@ async def verifier_et_mettre_a_jour_benefices(application):
                     
                     # Check if user has reached 8 cycles limit
                     nouveau_montant_depot = montant_depot
+                    depot_precedent=montant_depot
                     if nouveau_cycle >= 8:
                         nouveau_montant_depot = 0  # Reset deposit amount after 8 cycles
+                        
                         nouveau_cycle = 0  # Reset cycle count after 8 cycles
                     
                     # Update database with current time
@@ -102,9 +104,9 @@ async def verifier_et_mettre_a_jour_benefices(application):
                     nouvelle_date_maj = nouvelle_date_mise_a_jour.strftime("%Y-%m-%d %H:%M:%S")
                     cursor.execute("""
                         UPDATE utilisateurs 
-                        SET benefice_total = ?, date_mise_a_jour = ?, cycle = ?, montant_depot = ?
+                        SET benefice_total = ?, date_mise_a_jour = ?, cycle = ?, montant_depot = ?, depot_precedent = ?
                         WHERE user_id = ?
-                    """, (nouveau_benefice_total, nouvelle_date_maj, nouveau_cycle, nouveau_montant_depot, user_id))
+                    """, (nouveau_benefice_total, nouvelle_date_maj, nouveau_cycle, nouveau_montant_depot,depot_precedent, user_id))
                     
                     users_updated += 1
                     
