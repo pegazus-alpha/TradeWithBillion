@@ -23,6 +23,25 @@ load_dotenv()
 ADMIN_ID = int(os.getenv("ADMIN_ID"))  # Must be an int
 WALLET_KEY = os.getenv("WALLET_KEY")  # Must be a string (wallet address)
 
+
+def get_montant_depot(user_id):
+    try:
+        # Requête préparée avec paramètre
+        conn = sqlite3.connect("bot.db")
+        cursor = conn.cursor()
+        query = "SELECT montant_depot FROM utilisateurs WHERE user_id = ?"
+        cursor.execute(query, (user_id,))
+        result = cursor.fetchone()
+        
+        # Retourner la valeur ou None si aucun résultat
+        if result and result[0] is not None:
+            return float(result[0])
+        else:
+            return None
+            
+    except Exception as e:
+        print(f"Erreur lors de la récupération du dépôt précédent: {e}")
+        return None
 def get_user_registration_date(user_id: int):
     conn = None
     try:
@@ -144,10 +163,10 @@ async def recevoir_montant_depot_supplementaire(update: Update, context: Context
     user_id = user.id
     try:
         montant_float = float(montant)
-        if montant_float <= 10:
+        if montant_float < get_montant_depot(user_id):
             raise ValueError
     except ValueError:
-        await update.message.reply_text(i18n.t("update.invalid_amount_error"))
+        await update.message.reply_text(i18n.t("update.invalid_amount_error").format(montant=get_montant_depot(user_id)))
         return MONTANT_DEPOT_SUPPLEMENTAIRE
     context.user_data["montant_depot_supplementaire"] = montant_float
     msg_user = i18n.t("update.additional_deposit_info").format(amount=montant_float)

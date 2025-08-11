@@ -13,10 +13,11 @@ load_dotenv()
 
 # Telegram Admin ID
 ADMIN_ID = os.getenv("ADMIN_ID")
+BOT_LINK = os.getenv("BOT_LINK")
 
 async def create_link(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    await update.message.reply_text(f"t.me/TradeWithBillion_bot?start={user_id}")
+    await update.message.reply_text(f"{BOT_LINK}{user_id}")
 def enregistrer_utilisateur(user_id: int, montant: str = None, wallet: str = None, parrain_id: int = None, nom: str = "new user"):
     """Register or update a user in the database."""
    

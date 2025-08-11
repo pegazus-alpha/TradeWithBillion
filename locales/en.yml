@@ -35,8 +35,9 @@ en:
     enter_deposit_amount: "Please enter the USDT amount you want to deposit:"
 
     # Messages for recevoir_montant_depot
-    invalid_positive_amount: "❌ Please enter a valid positive amount. Try again:"
-    invalid_numeric_amount: "❌ Please enter a valid numeric amount. Try again:"
+    invalid_positive_amount: "❌ Please enter a valid positive amount >= 100 usdt. Try again:"
+    invalid_numeric_amount: "❌ Please enter a valid numeric amount >= 100 usdt. Try again:"
+    invalid_petit: "❌ Your deposit must be at least 50% higher than your previous deposit (>= {montant} USDT). Please try again:"
     deposit_amount_confirm: "You want to deposit {amount} USDT.\n\nPlease send the amount to the following wallet address:\n\nUse the Binance Smart Chain (BEP20) blockchain network."
     enter_transaction_hash: "Now, please enter the hash of your transaction to confirm the deposit:"
 
@@ -346,7 +347,7 @@ en:
     registration_date_not_found: "Registration date not found."
 
     additional_deposit_amount: "💰 How much more would you like to deposit? (in USDT):"
-    invalid_amount_error: "❌ Please enter a valid and positive amount (numbers only) >10 USDT."
+    invalid_amount_error: "❌ Please enter a valid positive amount (numbers only). Minimum required: {montant}."    
     amount_error_restart: "❌ Error: Amount not found. Please restart the process."
 
     # Additional deposit instruction messages

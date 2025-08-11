@@ -92,32 +92,82 @@ async def depot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     )
     return MONTANT_DEPOT
 
+# async def recevoir_montant_depot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+#     montant_text = update.message.text
+#     user = update.effective_user
+#     lang = get_user_lang(update)
+
+#     try:
+#         montant = float(montant_text)
+#         if montant < 100:
+#             await update.message.reply_text(
+#                 i18n.t("depot.invalid_positive_amount", locale=lang),
+#                 reply_markup=menu.get_menu_markup(user.id)
+#             )
+#             return MONTANT_DEPOT
+#     except ValueError:
+#         await update.message.reply_text(
+#             i18n.t("depot.invalid_numeric_amount", locale=lang),
+#             reply_markup=menu.get_menu_markup(user.id)
+#         )
+#         return MONTANT_DEPOT
+
+#     context.user_data["montant_depot"] = montant_text
+
+#     msg_user = i18n.t("depot.deposit_amount_confirm", locale=lang, amount=montant_text)
+#     await update.message.reply_text(msg_user, reply_markup=menu.get_menu_markup(user.id))
+#     await update.message.reply_text(f"{WALLET_KEY}")
+
+#     await update.message.reply_text(i18n.t("depot.enter_transaction_hash", locale=lang))
+#     return HASH_TRANSACTION_DEPOT
+
 async def recevoir_montant_depot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     montant_text = update.message.text
     user = update.effective_user
     lang = get_user_lang(update)
-
     try:
         montant = float(montant_text)
-        if montant <= 0:
+        
+        # Récupérer le dépôt précédent de l'utilisateur
+        depot_precedent = get_depot_precedent(user.id)  # Fonction à implémenter pour récupérer depot_precedent
+        
+        # Vérification de base : montant >= 100
+        if montant < 100:
             await update.message.reply_text(
                 i18n.t("depot.invalid_positive_amount", locale=lang),
                 reply_markup=menu.get_menu_markup(user.id)
             )
             return MONTANT_DEPOT
+        
+        # Si dépôt précédent est 0 ou null, on s'arrête aux vérifications de base
+        if depot_precedent is None or depot_precedent == 0:
+            pass  # Continue avec les vérifications normales
+        else:
+            # Si dépôt précédent existe, vérifier le ratio 1.5x
+            montant_minimal_requis = depot_precedent * 1.5
+            
+            # Si 1.5x le dépôt précédent reste < 100, on garde la règle de base (100 USDT)
+            if montant_minimal_requis < 100:
+                montant_minimal_requis = 100
+            
+            # Vérifier que le dépôt actuel respecte le montant minimal requis
+            if montant < montant_minimal_requis:
+                await update.message.reply_text(
+                    i18n.t("depot.invalid_petit", locale=lang).format(montant=montant_minimal_requis),
+                    reply_markup=menu.get_menu_markup(user.id)
+                )
+                return MONTANT_DEPOT
+                
     except ValueError:
         await update.message.reply_text(
             i18n.t("depot.invalid_numeric_amount", locale=lang),
             reply_markup=menu.get_menu_markup(user.id)
         )
         return MONTANT_DEPOT
-
     context.user_data["montant_depot"] = montant_text
-
     msg_user = i18n.t("depot.deposit_amount_confirm", locale=lang, amount=montant_text)
     await update.message.reply_text(msg_user, reply_markup=menu.get_menu_markup(user.id))
     await update.message.reply_text(f"{WALLET_KEY}")
-
     await update.message.reply_text(i18n.t("depot.enter_transaction_hash", locale=lang))
     return HASH_TRANSACTION_DEPOT
 
@@ -142,3 +192,22 @@ async def recevoir_hash_depot(update: Update, context: ContextTypes.DEFAULT_TYPE
         reply_markup=menu.get_menu_markup(user.id)
     )
     return ConversationHandler.END
+
+def get_depot_precedent(user_id):
+        try:
+            # Requête préparée avec paramètre
+            conn = sqlite3.connect("bot.db")
+            cursor = conn.cursor()
+            query = "SELECT depot_precedent FROM utilisateurs WHERE user_id = ?"
+            cursor.execute(query, (user_id,))
+            result = cursor.fetchone()
+            
+            # Retourner la valeur ou None si aucun résultat
+            if result and result[0] is not None:
+                return float(result[0])
+            else:
+                return None
+                
+        except Exception as e:
+            print(f"Erreur lors de la récupération du dépôt précédent: {e}")
+            return None
