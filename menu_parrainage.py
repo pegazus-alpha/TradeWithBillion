@@ -1,4 +1,3 @@
-
 import asyncio
 from telegram import Bot, BotCommand, MenuButtonCommands,Update
 from telegram.constants import ParseMode
@@ -32,11 +31,13 @@ async def parrainage_infos(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         # Compter les filleuls niveau 1 uniquement
         cursor.execute("SELECT COUNT(*) FROM commissions WHERE user_id = ? AND niveau = 1", (user_id,))
-        niveau1_count = cursor.fetchone()[0] if cursor.fetchone() else 0
+        niveau1_count_result = cursor.fetchone()
+        niveau1_count = niveau1_count_result[0] if niveau1_count_result else 0
 
         # Montant reçu niveau 1 uniquement
         cursor.execute("SELECT SUM(montant) FROM commissions WHERE user_id = ? AND niveau = 1", (user_id,))
-        montant_niveau1 = cursor.fetchone()[0] if cursor.fetchone() else 0
+        montant_niveau1_result = cursor.fetchone()
+        montant_niveau1 = montant_niveau1_result[0] if montant_niveau1_result and montant_niveau1_result[0] else 0
 
         # Construction du message
         message = (
