@@ -30,29 +30,21 @@ async def parrainage_infos(update: Update, context: ContextTypes.DEFAULT_TYPE):
         result = cursor.fetchone()
         benefice_total = result[0] if result else 0
 
-        # Compter les filleuls par niveau
-        niveau_counts = {1: 0, 2: 0, 3: 0}
-        cursor.execute("SELECT niveau, COUNT(*) FROM commissions WHERE user_id = ? GROUP BY niveau", (user_id,))
-        for niveau, count in cursor.fetchall():
-            niveau_counts[niveau] = count
+        # Compter les filleuls niveau 1 uniquement
+        cursor.execute("SELECT COUNT(*) FROM commissions WHERE user_id = ? AND niveau = 1", (user_id,))
+        niveau1_count = cursor.fetchone()[0] if cursor.fetchone() else 0
 
-        # Montant reçu par niveau
-        montant_niveaux = {1: 0, 2: 0, 3: 0}
-        cursor.execute("SELECT niveau, SUM(montant) FROM commissions WHERE user_id = ? GROUP BY niveau", (user_id,))
-        for niveau, montant in cursor.fetchall():
-            montant_niveaux[niveau] = montant
+        # Montant reçu niveau 1 uniquement
+        cursor.execute("SELECT SUM(montant) FROM commissions WHERE user_id = ? AND niveau = 1", (user_id,))
+        montant_niveau1 = cursor.fetchone()[0] if cursor.fetchone() else 0
 
         # Construction du message
         message = (
             f"{t('parrainage.title')}\n\n"
             f"{t('parrainage.referrals')} :\n"
-            f"   • {t('parrainage.level')} 1 : {niveau_counts[1]} {t('parrainage.referrals_count')}\n"
-            f"   • {t('parrainage.level')} 2 : {niveau_counts[2]} {t('parrainage.referrals_count')}\n"
-            f"   • {t('parrainage.level')} 3 : {niveau_counts[3]} {t('parrainage.referrals_count')}\n\n"
+            f"   • {t('parrainage.level')} 1 : {niveau1_count} {t('parrainage.referrals_count')}\n\n"
             f"{t('parrainage.commissions_received')} :\n"
-            f"   • {t('parrainage.level')} 1 : {montant_niveaux[1]:.2f} USDT\n"
-            f"   • {t('parrainage.level')} 2 : {montant_niveaux[2]:.2f} USDT\n"
-            f"   • {t('parrainage.level')} 3 : {montant_niveaux[3]:.2f} USDT\n\n"
+            f"   • {t('parrainage.level')} 1 : {montant_niveau1:.2f} USDT\n\n"
             f"{t('parrainage.current_balance')} : {benefice_total:.2f} USDT"
         )
 

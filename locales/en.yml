@@ -439,7 +439,7 @@ en:
     withdrawal_available: "💰 Excellent news!\n\nYour total commissions amount to {total} USDT.\nYou can now withdraw your commissions!\n\nUse the appropriate command to proceed with the withdrawal."
 
   referral_system:
-    explanation: "🎯 *How the referral system works*\n\nOur referral system allows you to earn commissions every time a user joins the bot with your link and makes a deposit.\n\n🧩 *3 referral levels* are taken into account:\n• 🔹 *Level 1* (your direct referrals): 5%\n• 🔸 *Level 2* (referrals of your referrals): 3%\n• ⚫ *Level 3* (level 2 referrals): 2%\n\n📌 *Example:* If your direct referral deposits 100 USDT, you receive 5 USDT.\nIf they refer someone in turn, you continue to earn, automatically.\n\n💰 *Earnings are accumulated in your referral balance*, viewable at any time.\nYou can request a withdrawal once your balance reaches 10 USDT.\n\n📨 To invite people, simply share your referral link that you'll find in the main menu."
+    explanation: "🎯 *How the referral system works*\n\nOur referral system allows you to earn commissions every time a user joins the bot with your link and makes a deposit.\n\n🧩 *1 referral levels* are taken into account:\n• 🔹 *Level 1* (your direct referrals): 2%\n\n📌 *Example:* If your direct referral deposits 100 USDT, you receive 2 USDT.\n\n💰 *Earnings are accumulated in your referral balance*, viewable at any time.\nYou can request a withdrawal once your balance reaches 10 USDT.\n\n📨 To invite people, simply share your referral link that you'll find in the main menu."
 
   notif:
     demande: "✅ Your withdrawal request has been received. Please wait a moment.!\n"
